@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Grass Roots Gun Rights</string>
+
+    <string name="tab1_theMovement">The Movement</string>
+    <string name="Movement_Fragment">Movement Fragment</string>
+
+    <string name="tab2_yourRights">Your Rights</string>
+    <string name="Rights_Fragment">Your Rights Fragment</string>
+
+    <string name="action_settings">Settings</string>
+
+</resources>
