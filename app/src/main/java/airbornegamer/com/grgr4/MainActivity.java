@@ -154,9 +154,18 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             return null;
         }
     }
-    
+
     // Button click even handler for btnTakeAction
     public void takeAction(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityLocalReps.class));
+    }
+
+    // Button click even handler for btnReadConstition
+    public void readConstitution(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadConstitution.class));
+    }
+
+    public void readDeclarationOfIndependence(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadDeclarationOfIndependence.class));
     }
 }

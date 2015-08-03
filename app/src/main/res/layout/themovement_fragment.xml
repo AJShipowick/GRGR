@@ -28,13 +28,13 @@
         android:textColor="@color/primary_material_dark" />
 
     <Button
-        android:layout_width="193dp"
+        android:layout_width="234dp"
         android:layout_height="wrap_content"
         android:text="Take Action Now!"
         android:id="@+id/btnTakeAction"
         android:layout_gravity="center_horizontal"
         android:layout_marginTop="50dp"
-        android:layout_weight="0.11"
+        android:layout_weight="0.17"
         android:onClick="takeAction"
         />
 
