@@ -7,9 +7,67 @@
     <ImageView
 
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="118dp"
         android:id="@+id/imageView"
         android:nestedScrollingEnabled="false"
-        android:src="@drawable/foundingfathers1" />
+        android:src="@drawable/american_revolution_banner"
+        android:scaleType="fitStart"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="@string/YourRights_3"
+        android:textSize="30sp"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:textColor="@color/primary_material_dark"
+        android:id="@+id/txtYourRightsHeader" />
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/grdYourRights"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="The Constitution"
+            android:id="@+id/txtOurConstitution"
+            android:layout_row="0"
+            android:layout_column="0" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Declaration Of Independence"
+            android:id="@+id/txtdeclarationofindependence"
+            android:layout_row="1"
+            android:layout_column="0" />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Read"
+            android:id="@+id/btnReadConstitution"
+            android:layout_row="0"
+            android:layout_column="2"
+            android:layout_alignParentRight="true"
+            />
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Read"
+            android:id="@+id/btnDeclarationOfIndependence"
+            android:layout_row="1"
+            android:layout_column="2"
+            android:layout_alignParentRight="true"
+            />
+    </GridLayout>
+
 
 </LinearLayout>

@@ -3,14 +3,40 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    >
+    android:weightSum="1">
 
 
     <ImageView
 
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_width="match_parent"
+        android:layout_height="118dp"
         android:id="@+id/imageView"
         android:nestedScrollingEnabled="false"
-        android:src="@drawable/baldeagle" />
+        android:src="@drawable/flag_eagle_banner"
+        android:contentDescription="picEagleFlag"
+        android:scaleType="fitStart"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/MovementIntroMsg_1"
+        android:id="@+id/txtTheMovementHeader"
+        android:paddingTop="5dp"
+        android:textSize="25sp"
+        style="?android:attr/listSeparatorTextViewStyle"
+        android:textColor="@color/primary_material_dark" />
+
+    <Button
+        android:layout_width="193dp"
+        android:layout_height="wrap_content"
+        android:text="Take Action Now!"
+        android:id="@+id/btnTakeAction"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="50dp"
+        android:layout_weight="0.11"
+        android:onClick="takeAction"
+        />
+
+
 </LinearLayout>

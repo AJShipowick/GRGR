@@ -2,6 +2,8 @@ package airbornegamer.com.grgr4;
 
 import java.util.Locale;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -12,6 +14,8 @@ import android.os.Bundle;
 import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
@@ -30,6 +34,15 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+//        Button btnTakeAction;
+//        btnTakeAction = (Button)findViewById(R.id.btnTakeAction);
+//        btnTakeAction.setOnClickListener(new View.OnClickListener(){
+//            @Override
+//            public void onClick(View v){
+//
+//            }
+//        });
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -140,5 +153,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             }
             return null;
         }
+    }
+    
+    // Button click even handler for btnTakeAction
+    public void takeAction(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityLocalReps.class));
     }
 }

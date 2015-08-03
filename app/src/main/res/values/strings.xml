@@ -1,12 +1,26 @@
 <resources>
     <string name="app_name">Grass Roots Gun Rights</string>
-
+    <string name="action_settings">Settings</string>
+    <!-- Tab 1 -->
     <string name="tab1_theMovement">The Movement</string>
     <string name="Movement_Fragment">Movement Fragment</string>
-
+    <!-- Tab 2 -->
     <string name="tab2_yourRights">Your Rights</string>
     <string name="Rights_Fragment">Your Rights Fragment</string>
 
-    <string name="action_settings">Settings</string>
+    <!-- The Movement Introduction strings (top header) -->
+    <string name="MovementIntroMsg_1">Preserve your natural born right to keep and bear arms</string>
+    <string name="MovementIntroMsg_2">It is your Right</string>
+    <string name="MovementIntroMsg_3">Those before us have given everything, take a stand</string>
+    <string name="MovementIntroMsg_4">Ensure your local representatives uphold their oath of office</string>
+    <string name="MovementIntroMsg_5">Hold your elected officials accountable</string>
+    <string name="MovementIntroMsg_6">Take action today.</string>
 
+    <!-- Your Rights Introduction strings (top header) -->
+    <string name="YourRights_1">Explore your natural born rights</string>
+    <string name="YourRights_2">Time to learn some history</string>
+    <string name="YourRights_3">It\'s reading time</string>
+    <string name="title_activity_activity_local_reps">ActivityLocalReps</string>
+
+    <string name="hello_world">Hello world!</string>
 </resources>
