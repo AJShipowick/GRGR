@@ -23,9 +23,9 @@
     <string name="title_activity_activity_local_reps">ActivityLocalReps</string>
 
     <string name="YourLocalReps">Your Local Representatives</string>
-    <string name="title_activity_activity_read_constitution">ActivityReadConstitution</string>
+    <string name="title_activity_activity_read_constitution">The US Constitution</string>
     <string name="title_activity_activity_read_declaration_of_independence">
-        ActivityReadDeclarationOfIndependence</string>
+        The Declaration Of Independence</string>
 
 
 </resources>
