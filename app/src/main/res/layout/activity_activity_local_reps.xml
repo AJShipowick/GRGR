@@ -4,28 +4,61 @@
     android:layout_height="match_parent"
     tools:context="airbornegamer.com.grgr4.ActivityLocalReps">
 
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:id="@+id/imageView"
-        android:nestedScrollingEnabled="false"
-        android:src="@drawable/vote_elected_officials"
-        android:contentDescription="picEagleFlag"
-        android:scaleType="fitStart"
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chkSelectAllReps"
+        android:id="@+id/ckSelectAllReps"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="30dp"
+        android:checked="false" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="@string/txtLocationLabel"
+        android:id="@+id/txtLocationLabel"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:paddingRight="10dp"
+        android:paddingEnd="10dp"
         />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/YourLocalReps"
-        android:id="@+id/txtTheMovementHeader"
-        android:paddingTop="5dp"
-        android:textSize="22sp"
-        style="?android:attr/listSeparatorTextViewStyle"
-        android:textColor="@color/primary_material_dark"
-        android:layout_below="@+id/imageView"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:id="@+id/txtYourLocation"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/txtLocationLabel"
+        android:layout_toEndOf="@+id/txtLocationLabel"
+        android:text="@string/txtActualLocation" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txtyourLocation"
+        android:id="@+id/button"
+        android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="false"
-        android:layout_alignLeft="@+id/imageView" />
+        android:layout_alignParentEnd="true" />
+
+    <TableLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/ckSelectAllReps"
+        android:layout_toStartOf="@id/txtYourLocation"
+        android:layout_toLeftOf="@+id/txtYourLocation"
+        android:layout_alignRight="@+id/button"
+        android:layout_alignEnd="@+id/button"
+        android:orientation="vertical"
+        android:id="@+id/tblLocalReps">
+
+    </TableLayout>
 
 </RelativeLayout>

@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="KnowStates">
+        <item>Alabama</item>
+        <item>AL</item>
+        <item>Alaska</item>
+        <item>AK</item>
+        <item>Arizona</item>
+        <item>AZ</item>
+        <item>Arkansas</item>
+        <item>AR</item>
+        <item>California</item>
+        <item>CA</item>
+        <item>Colorado</item>
+        <item>CO</item>
+        <item>Connecticut</item>
+        <item>CT</item>
+        <item>Delaware</item>
+        <item>DE</item>
+        <item>Florida</item>
+        <item>FL</item>
+        <item>Georgia</item>
+        <item>GA</item>
+        <item>Hawaii</item>
+        <item>HI</item>
+        <item>Idaho</item>
+        <item>ID</item>
+        <item>Illinois</item>
+        <item>IL</item>
+        <item>Indiana</item>
+        <item>IN</item>
+        <item>Iowa</item>
+        <item>IA</item>
+        <item>Kansas</item>
+        <item>KS</item>
+        <item>Kentucky</item>
+        <item>KY</item>
+        <item>Louisiana</item>
+        <item>LA</item>
+        <item>Maine</item>
+        <item>ME</item>
+        <item>Maryland</item>
+        <item>MD</item>
+        <item>Massachusetts</item>
+        <item>MA</item>
+        <item>Michigan</item>
+        <item>MI</item>
+        <item>Minnesota</item>
+        <item>MN</item>
+        <item>Mississippi</item>
+        <item>MS</item>
+        <item>Missouri</item>
+        <item>MO</item>
+        <item>Montana</item>
+        <item>MT</item>
+        <item>Nebraska</item>
+        <item>NE</item>
+        <item>Nevada</item>
+        <item>NV</item>
+        <item>New Hampshire</item>
+        <item>NH</item>
+        <item>New Jersey</item>
+        <item>NJ</item>
+        <item>New Mexico</item>
+        <item>NM</item>
+        <item>New York</item>
+        <item>NY</item>
+        <item>North Carolina</item>
+        <item>NC</item>
+        <item>North Dakota</item>
+        <item>ND</item>
+        <item>Ohio</item>
+        <item>OH</item>
+        <item>Oklahoma</item>
+        <item>OK</item>
+        <item>Oregon</item>
+        <item>OR</item>
+        <item>Pennsylvania</item>
+        <item>PA</item>
+        <item>Rhode Island</item>
+        <item>RI</item>
+        <item>South Carolina</item>
+        <item>SC</item>
+        <item>South Dakota</item>
+        <item>SD</item>
+        <item>Tennessee</item>
+        <item>TN</item>
+        <item>Texas</item>
+        <item>TX</item>
+        <item>Utah</item>
+        <item>UT</item>
+        <item>Vermont</item>
+        <item>VT</item>
+        <item>Virginia</item>
+        <item>VA</item>
+        <item>Washington</item>
+        <item>WA</item>
+        <item>West Virginia</item>
+        <item>WV</item>
+        <item>Wisconsin</item>
+        <item>WI</item>
+        <item>Wyoming</item>
+        <item>WY</item>
+    </string-array>
+</resources>

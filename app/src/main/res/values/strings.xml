@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Grass Roots Gun Rights</string>
+    <string name="app_name">GrassRoots Gun Rights</string>
     <string name="action_settings">Settings</string>
     <!-- Tab 1 -->
     <string name="tab1_theMovement">The Movement</string>
@@ -20,12 +20,18 @@
     <string name="YourRights_1">Explore your natural born rights</string>
     <string name="YourRights_2">Time to learn some history</string>
     <string name="YourRights_3">It\'s reading time</string>
-    <string name="title_activity_activity_local_reps">ActivityLocalReps</string>
+    <string name="title_activity_activity_local_reps">Your Local Representatives</string>
 
     <string name="YourLocalReps">Your Local Representatives</string>
     <string name="title_activity_activity_read_constitution">The US Constitution</string>
     <string name="title_activity_activity_read_declaration_of_independence">
         The Declaration Of Independence</string>
 
+
+    <!-- Your Local Representatives -->
+    <string name="txtyourLocation">Change Location</string>
+    <string name="txtActualLocation">the world</string>
+    <string name="txtLocationLabel">Your Location:</string>
+    <string name="chkSelectAllReps">Select All</string>
 
 </resources>
