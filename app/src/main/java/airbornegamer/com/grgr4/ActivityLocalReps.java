@@ -80,7 +80,11 @@ public class ActivityLocalReps extends ActionBarActivity {
 
     public void setRepresentativePics(String currentState){
 
-        //Query how many representatives are present for currentState.
+        //https://www.govtrack.us/api/v2/role?state=ne&current=true
+        //parse json
+        // http://stackoverflow.com/questions/2845599/how-do-i-parse-json-from-a-java-httpresponse
+
+
         Integer stateReps = 0;
 
         //http://stackoverflow.com/questions/3090650/android-loading-an-image-from-the-web-with-asynctask
