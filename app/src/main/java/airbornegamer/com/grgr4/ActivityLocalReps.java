@@ -9,16 +9,30 @@ import android.location.LocationManager;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TableLayout;
-import android.widget.TableRow;
 import android.widget.TextView;
 
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.List;
 import java.util.Locale;
+import java.util.concurrent.ExecutionException;
+
 
 //https://www.govtrack.us/
 //https://www.govtrack.us/developers/api
@@ -37,17 +51,20 @@ public class ActivityLocalReps extends ActionBarActivity {
         setContentView(R.layout.activity_activity_local_reps);
 
         //Do all below stuff in long running async task;
+        //http://stackoverflow.com/questions/3090650/android-loading-an-image-from-the-web-with-asynctask
         //http://developer.android.com/intl/ko/reference/android/os/AsyncTask.html
 
-        String currentState = currentUserState();
-        if (currentUserState() != null && PhysicalStateIsKnown(currentState)){
-            setRepresentativePics(currentState);
+        String currentState = getCurrentUsersState();
+        if (currentState != null && PhysicalStateIsKnown(currentState)){
+            SetStateLabel(currentState);
+            SetStateFlag(currentState);
+            setRepresentativeInfo(currentState);
+        }else{
+            //State not know, do something (audit...write msg to user....for us user only at this time....Manually select state....)
         }
-
-
     }
 
-    public String currentUserState(){
+    public String getCurrentUsersState(){
 
         LocationManager lm = (LocationManager)getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
@@ -65,50 +82,88 @@ public class ActivityLocalReps extends ActionBarActivity {
     }
 
     public Boolean PhysicalStateIsKnown(String currentState){
-
         String[] knownStates = getResources().getStringArray(R.array.KnowStates);
+
         for(Integer i=0; i < knownStates.length; i++){
-            if(knownStates[i].equals(currentState)){
-                TextView stateLabel = (TextView)findViewById(R.id.txtYourLocation);
-                stateLabel.setText(currentState);
-                //also set an image of the state flag in top left banner area of page....
+            String[] StatePair = knownStates[i].split(",");
+
+            //StatePair[0] is full state name (Nebraska) ; StatePair[1] is state abbreviation (NE).
+            if(StatePair[0].equals(currentState) || StatePair[1].equals(currentState)){
                 return true;
             }
         }
         return false;
     }
 
-    public void setRepresentativePics(String currentState){
+    public void SetStateLabel(String currentState){
+        TextView stateLabel = (TextView)findViewById(R.id.txtYourLocation);
+        stateLabel.setText(currentState);
+    }
 
+    public void SetStateFlag(String currentState){
+//                Find image of currentState and set below.....
+//                ImageView stateImage = (ImageView)findViewById(R.id.imgYourState);
+//                stateImage.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.flag_ne));
+    }
+
+    public void setRepresentativeInfo(String currentState){
+
+        String repInfo = getRepresentativeInfo();
+
+    }
+
+    public String getRepresentativeInfo(){
         //https://www.govtrack.us/api/v2/role?state=ne&current=true
         //parse json
         // http://stackoverflow.com/questions/2845599/how-do-i-parse-json-from-a-java-httpresponse
 
-
-        Integer stateReps = 0;
-
-        //http://stackoverflow.com/questions/3090650/android-loading-an-image-from-the-web-with-asynctask
+        String repUrl = "https://www.govtrack.us/api/v2/role?state=ne&current=true";
+        new DownloadLink().execute(repUrl);
 
 
+       return null;
+    }
 
-        TableLayout tblLocal = (TableLayout) findViewById(R.id.tblLocalReps);
-        for (int i = 0; i < (stateReps / 3); i++) {
+    class DownloadLink extends AsyncTask<String, Void, Void> {
 
-            TableRow tr = new TableRow(getApplicationContext());
-            tr.setLayoutParams(new TableRow.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT));
+        @Override
+        protected Void doInBackground(String... params) {
+            try {
+                URL url = new URL("https://www.govtrack.us/api/v2/role?state=ne&current=true");
+                BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream()));
 
-            for (int j = 0; j < stateReps; j++) {
+                StringBuilder sb = new StringBuilder();
+                String line;
+                //br = new BufferedReader(new InputStreamReader(new InputStreamReader(url.openStream()));
+                while ((line = br.readLine()) != null) {
+                    sb.append(line);
+                }
 
-                ImageView view = new ImageView(this);
-                view.setImageResource(R.drawable.mushroom);
-                view.setId(j); //needs to match the image and rep name
-                view.isClickable();
-                tr.addView(view);
+                JSONObject json = new JSONObject(sb.toString());
+                //json.getString("status");
+                //JSONArray jsonArray = new JSONArray(json.getString("object"));
+                //JSONArray jsonArray = json.getJSONArray("object");
+
+
+            }catch (Exception ex){
+                String myEx = ex.toString();
             }
 
-            tblLocal.addView(tr);
 
+            return null;
         }
+    }
+
+    private static String convertInputStreamToString(InputStream inputStream) throws IOException {
+        BufferedReader bufferedReader = new BufferedReader( new InputStreamReader(inputStream));
+        String line = "";
+        String result = "";
+        while((line = bufferedReader.readLine()) != null)
+            result += line;
+
+        inputStream.close();
+        return result;
+
     }
 
     @Override
@@ -132,4 +187,9 @@ public class ActivityLocalReps extends ActionBarActivity {
 
         return super.onOptionsItemSelected(item);
     }
+
+
+
 }
+
+

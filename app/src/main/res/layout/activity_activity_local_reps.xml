@@ -4,61 +4,51 @@
     android:layout_height="match_parent"
     tools:context="airbornegamer.com.grgr4.ActivityLocalReps">
 
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/chkSelectAllReps"
-        android:id="@+id/ckSelectAllReps"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginTop="30dp"
-        android:checked="false" />
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="@string/txtLocationLabel"
-        android:id="@+id/txtLocationLabel"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:paddingRight="10dp"
-        android:paddingEnd="10dp"
-        />
+    <ImageView
+        android:layout_width="112.5dp"
+        android:layout_height="75dp"
+        android:id="@+id/imgYourState"
+        android:minHeight="100dp"
+        android:minWidth="50dp"
+        android:src="@drawable/flag_allstates"
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:id="@+id/txtYourLocation"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/txtLocationLabel"
-        android:layout_toEndOf="@+id/txtLocationLabel"
-        android:text="@string/txtActualLocation" />
+        android:text="@string/txtActualLocation"
+        android:layout_alignRight="@+id/btnChangeLocation"
+        android:layout_alignEnd="@+id/btnChangeLocation" />
 
     <Button
         style="?android:attr/buttonStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/txtyourLocation"
-        android:id="@+id/button"
-        android:layout_alignParentTop="true"
+        android:id="@+id/btnChangeLocation"
+        android:layout_below="@+id/txtYourLocation"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/ckSelectAllReps"
-        android:layout_toStartOf="@id/txtYourLocation"
-        android:layout_toLeftOf="@+id/txtYourLocation"
-        android:layout_alignRight="@+id/button"
-        android:layout_alignEnd="@+id/button"
-        android:orientation="vertical"
-        android:id="@+id/tblLocalReps">
+    <CheckBox
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/chkSelectAllReps"
+        android:id="@+id/ckSelectAllReps"
+        android:checked="false"
+        android:layout_below="@+id/imgYourState"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
-    </TableLayout>
+    <ListView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/lstViewYourRepresentatives"
+        android:layout_below="@+id/ckSelectAllReps"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:choiceMode="singleChoice" />
 
 </RelativeLayout>
