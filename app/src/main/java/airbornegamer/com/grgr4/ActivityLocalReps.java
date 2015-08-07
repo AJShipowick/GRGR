@@ -171,10 +171,13 @@ public class ActivityLocalReps extends ActionBarActivity {
 
             for (int i = 0; i < allRepsResults.length(); i++) {
                 JSONObject currentItem = allRepsResults.getJSONObject(i);
+                String phNumber = currentItem.getString("phone");
+                String webSite = currentItem.getString("website");
+
                 JSONObject person = currentItem.getJSONObject("person");
 
-                String firstName = person.getString("firstname");
-                String lastName = person.getString("lastname");
+                String firstName = person.getString("name");
+                String lastName = person.getString("nickname"); //check if empty
 
                 aList.add(firstName + " " + lastName);
             }
