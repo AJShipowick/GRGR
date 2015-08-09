@@ -11,7 +11,7 @@ public class ActivityReadConstitution extends ActionBarActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_activity_read_constitution);
+        setContentView(R.layout.activity_read_constitution);
     }
 
     @Override

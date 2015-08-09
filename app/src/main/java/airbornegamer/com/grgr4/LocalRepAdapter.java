@@ -1,0 +1,60 @@
+package airbornegamer.com.grgr4;
+
+import android.app.Activity;
+import android.content.Context;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+//http://www.ezzylearning.com/tutorial/customizing-android-listview-items-with-custom-arrayadapter
+public class LocalRepAdapter extends ArrayAdapter<Reps> {
+
+    Context context;
+    int layoutResourceId;
+    Reps data[] = null;
+
+    public LocalRepAdapter(Context context, int layoutResourceId, Reps[] data) {
+        super(context, layoutResourceId, data);
+        this.layoutResourceId = layoutResourceId;
+        this.context = context;
+        this.data = data;
+    }
+
+    @Override
+    public View getView(int position, View convertView, ViewGroup parent) {
+        View row = convertView;
+        RepsHolder holder = null;
+
+        if(row == null)
+        {
+            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+            row = inflater.inflate(layoutResourceId, parent, false);
+
+            holder = new RepsHolder();
+            holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
+            holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
+
+            row.setTag(holder);
+        }
+        else
+        {
+            holder = (RepsHolder)row.getTag();
+        }
+
+        Reps reps = data[position];
+        holder.txtTitle.setText(reps.title);
+        holder.imgIcon.setImageResource(reps.icon);
+
+        return row;
+    }
+
+    static class RepsHolder
+    {
+        ImageView imgIcon;
+        TextView txtTitle;
+    }
+}
+
