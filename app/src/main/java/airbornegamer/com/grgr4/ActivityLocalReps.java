@@ -47,22 +47,11 @@ public class ActivityLocalReps extends Activity {
 
     public void DisplayData(List<String> neededRepData) {
 
-        List<Reps> listOfReps = new ArrayList<Reps>();
+        ArrayList<Reps> listOfReps = new ArrayList<Reps>();
         for (int i = 0; i < neededRepData.size(); i++) {
             String currentRep = neededRepData.get(i);
-            listOfReps.add(new Reps(R.drawable.unknown_representative, currentRep));
+            listOfReps.add(new Reps(R.drawable.foundingfathers1, currentRep));
         }
-
-//        Reps customRepData[] = new Reps[]{
-//                           new Reps(listOfReps.get(0).icon, listOfReps.get(0).title)
-//        };
-
-//
-//        for (int i = 0; i < neededRepData.size(); i++) {
-//            customRepData = new Reps[]{
-//                    new Reps(listOfReps.get(i).icon, listOfReps.get(i).title)
-//            };
-//        }
 
 
         LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.mylist, listOfReps);

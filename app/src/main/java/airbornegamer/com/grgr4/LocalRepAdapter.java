@@ -46,7 +46,7 @@ public class LocalRepAdapter extends ArrayAdapter<Reps> {
             holder = (RepsHolder)row.getTag();
         }
 
-        Reps reps = data[position];
+        Reps reps = data.get(position);
         holder.txtTitle.setText(reps.title);
         holder.imgIcon.setImageResource(reps.icon);
 
