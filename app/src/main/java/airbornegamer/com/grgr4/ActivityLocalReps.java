@@ -21,7 +21,7 @@ import java.util.List;
 public class ActivityLocalReps extends Activity {
 
     LocalRepData repData = null;
-    ListView listview;
+    ListView repsListView;
     List<String> stateSpecificRepData = null;
 
     @Override
@@ -34,47 +34,48 @@ public class ActivityLocalReps extends Activity {
 
         if (currentState != null && repData.physicalStateIsKnown(currentState)) {
             String repURL = repData.buildCustomAPIURL(currentState);
-            AsyncTask queryReps = new QueryRepData(this,repURL).execute();
+            AsyncTask queryReps = new QueryRepData(this, repURL).execute();
         } else {
             //State not know, do something (audit...write msg to user....for us user only at this time....Manually select state....)
         }
     }
 
-    public void filterRepData(JSONObject allRepData){
+    public void filterRepData(JSONObject allRepData) {
         stateSpecificRepData = repData.filterRepDataForUser(allRepData);
         DisplayData(stateSpecificRepData);
     }
 
-     public void DisplayData(List<String> neededRepData) {
+    public void DisplayData(List<String> neededRepData) {
 
         List<Reps> listOfReps = new ArrayList<Reps>();
-        for(int i = 0; i < neededRepData.size(); i++){
+        for (int i = 0; i < neededRepData.size(); i++) {
             String currentRep = neededRepData.get(i);
             listOfReps.add(new Reps(R.drawable.unknown_representative, currentRep));
-            //new Reps(R.drawable.unknown_representative, currentRep);
         }
 
-        Reps customRepData[] = new Reps[]{};
-        customRepData = new Reps[]{
-                new Reps(R.drawable.unknown_representative, listOfReps.get(0).title),
-                new Reps(R.drawable.unknown_representative, listOfReps.get(1).title),
-                new Reps(R.drawable.unknown_representative, listOfReps.get(2).title),
-                new Reps(R.drawable.unknown_representative, listOfReps.get(3).title)
-        };
+//        Reps customRepData[] = new Reps[]{
+//                           new Reps(listOfReps.get(0).icon, listOfReps.get(0).title)
+//        };
 
-        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.mylist, customRepData);
+//
+//        for (int i = 0; i < neededRepData.size(); i++) {
+//            customRepData = new Reps[]{
+//                    new Reps(listOfReps.get(i).icon, listOfReps.get(i).title)
+//            };
+//        }
 
-        listview = (ListView)findViewById(R.id.listView);
 
-        View header = (View)getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
-        listview.addHeaderView(header);
+        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.mylist, listOfReps);
 
-        listview.setAdapter(adapter);
+        repsListView = (ListView) findViewById(R.id.listView);
+        View header = (View) getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
+        repsListView.addHeaderView(header);
+        repsListView.setAdapter(adapter);
     }
 
     //public void setStateLabel(String currentState) {
-        //TextView stateLabel = (TextView) findViewById(R.id.txtYourLocation);
-        //stateLabel.setText(currentState);
+    //TextView stateLabel = (TextView) findViewById(R.id.txtYourLocation);
+    //stateLabel.setText(currentState);
     //}
 
     //public void setStateFlag(String currentState) {

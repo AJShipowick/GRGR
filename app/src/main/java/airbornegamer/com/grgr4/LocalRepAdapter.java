@@ -9,18 +9,20 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
+
 //http://www.ezzylearning.com/tutorial/customizing-android-listview-items-with-custom-arrayadapter
 public class LocalRepAdapter extends ArrayAdapter<Reps> {
 
     Context context;
     int layoutResourceId;
-    Reps data[] = null;
+    ArrayList<Reps> data = null;
 
-    public LocalRepAdapter(Context context, int layoutResourceId, Reps[] data) {
-        super(context, layoutResourceId, data);
+    public LocalRepAdapter(Context context, int layoutResourceId, ArrayList<Reps> list) {
+        super(context, layoutResourceId, list);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
-        this.data = data;
+        this.data = list;
     }
 
     @Override
