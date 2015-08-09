@@ -15,6 +15,7 @@ import android.widget.ListView;
 
 import org.json.JSONObject;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -42,19 +43,41 @@ public class ActivityLocalReps extends Activity {
 
     public void filterRepData(JSONObject allRepData) {
         stateSpecificRepData = repData.filterRepDataForUser(allRepData);
-        DisplayData(stateSpecificRepData);
+
+        //build name and photo Reps list of classes
+        //https://www.govtrack.us/developers/data
+        //https://www.govtrack.us/data/photos/
+
+        ArrayList<Reps> repPicAndInfo = CombineRepInfoAndPhoto(stateSpecificRepData);
+
+        DisplayData(repPicAndInfo);
     }
 
-    public void DisplayData(List<String> neededRepData) {
+    public ArrayList<Reps> CombineRepInfoAndPhoto(List<String> stateSpecificRepData){
+        ArrayList<Reps> RepData = new ArrayList<Reps>();
 
-        ArrayList<Reps> listOfReps = new ArrayList<Reps>();
-        for (int i = 0; i < neededRepData.size(); i++) {
-            String currentRep = neededRepData.get(i);
-            listOfReps.add(new Reps(R.drawable.foundingfathers1, currentRep));
+        //ArrayList<Reps> listOfReps = new ArrayList<Reps>();
+        for (int i = 0; i < stateSpecificRepData.size(); i++) {
+            String currentRep = stateSpecificRepData.get(i);
+            int currentRepIdStartIndex = currentRep.indexOf("(");
+
+            String currentRepDisplayText = currentRep.substring(0, currentRepIdStartIndex);
+            String currentRepId = currentRep.substring(currentRepIdStartIndex +1, currentRep.length()-1);
+
+            Reps singleRep = new Reps(R.drawable.foundingfathers1, currentRepDisplayText);
+
+            RepData.add(singleRep);
+
+            //listOfReps.add(new Reps(R.drawable.foundingfathers1, currentRep));
         }
 
+        return RepData;
+    }
 
-        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.mylist, listOfReps);
+
+    public void DisplayData(ArrayList<Reps> repPicAndInfo) {
+
+        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.mylist, repPicAndInfo);
 
         repsListView = (ListView) findViewById(R.id.listView);
         View header = (View) getLayoutInflater().inflate(R.layout.localreps_listview_header, null);

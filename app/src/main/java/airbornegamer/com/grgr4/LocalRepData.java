@@ -81,11 +81,12 @@ import java.util.Locale;
 
                     String name = person.getString("name");
                     String nickname = person.getString("nickname"); //check if empty
+                    String id = person.getString("id");
 
                     if(nickname.isEmpty()){
-                        aList.add(name);
+                        aList.add(name + "("+ id +")");
                     }else{
-                        aList.add(name + "aka " + nickname);
+                        aList.add(name + "aka: " + nickname + "("+ id +")");
                     }
                 }
 
