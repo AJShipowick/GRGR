@@ -6,16 +6,21 @@ package airbornegamer.com.grgr4;
 //https://www.opencongress.org/
 
 import android.app.Activity;
+import android.graphics.Bitmap;
+import android.graphics.Picture;
+import android.graphics.drawable.Drawable;
+import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Adapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -30,17 +35,22 @@ public class ActivityLocalReps extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_reps);
 
+        //https://github.com/nostra13/Android-Universal-Image-Loader/wiki
+//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
+//        ImageLoader.getInstance().init(config);
+
         repData = new LocalRepData(this);
         String currentState = repData.getCurrentUsersState();
 
         if (currentState != null && repData.physicalStateIsKnown(currentState)) {
-            String repURL = repData.buildCustomAPIURL(currentState);
+            String repURL = repData.buildCustomDataAPIURL(currentState);
             AsyncTask queryReps = new QueryRepData(this, repURL).execute();
         } else {
             //State not know, do something (audit...write msg to user....for us user only at this time....Manually select state....)
         }
     }
 
+    //Callback method after AsyncTask queryReps completes!
     public void filterRepData(JSONObject allRepData) {
         stateSpecificRepData = repData.filterRepDataForUser(allRepData);
 
@@ -48,41 +58,67 @@ public class ActivityLocalReps extends Activity {
         //https://www.govtrack.us/developers/data
         //https://www.govtrack.us/data/photos/
 
-        ArrayList<Reps> repPicAndInfo = CombineRepInfoAndPhoto(stateSpecificRepData);
-
-        DisplayData(repPicAndInfo);
+        LocalRepAdapter adapter = SetupAdapter();
+        CombineRepInfoAndPhoto(repData, stateSpecificRepData, adapter);
+        DisplayData();
     }
 
-    public ArrayList<Reps> CombineRepInfoAndPhoto(List<String> stateSpecificRepData){
-        ArrayList<Reps> RepData = new ArrayList<Reps>();
+    ArrayList<Reps> RepData = new ArrayList<Reps>();
+    public LocalRepAdapter SetupAdapter(){
+        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.mylist, RepData);
+        repsListView = (ListView) findViewById(R.id.listView);
+        View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
+        repsListView.addHeaderView(header);
+        repsListView.setAdapter(adapter);
 
-        //ArrayList<Reps> listOfReps = new ArrayList<Reps>();
+        return adapter;
+    }
+
+    public void CombineRepInfoAndPhoto(LocalRepData repData, List<String> stateSpecificRepData, LocalRepAdapter adapter) {
+
         for (int i = 0; i < stateSpecificRepData.size(); i++) {
             String currentRep = stateSpecificRepData.get(i);
             int currentRepIdStartIndex = currentRep.indexOf("(");
 
             String currentRepDisplayText = currentRep.substring(0, currentRepIdStartIndex);
-            String currentRepId = currentRep.substring(currentRepIdStartIndex +1, currentRep.length()-1);
+            String currentRepId = currentRep.substring(currentRepIdStartIndex + 1, currentRep.length() - 1);
 
-            Reps singleRep = new Reps(R.drawable.foundingfathers1, currentRepDisplayText);
+            //query rep pic with current id and set it below.
+            Drawable unknownRepDrawable = getResources().getDrawable(R.drawable.unknown_representative);
+            final int w = Math.max(1, 5);
+            final int h = Math.max(1, 5);
+            Bitmap repImage = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+            //repImage.setImageDrawable(unknownRepDrawable);
 
-            RepData.add(singleRep);
+            AsyncTask queryRepPics = new QueryRepPics(this, repData, currentRepId,currentRepDisplayText, adapter, repImage).execute();
+            //ImageView defaultPic = picQuery.QueryPic(repData, currentRepId, currentRepDisplayText);
+
+
+            //RepData.add(new Reps(defaultPic, currentRepDisplayText));
 
             //listOfReps.add(new Reps(R.drawable.foundingfathers1, currentRep));
         }
+    }
 
-        return RepData;
+    public void RepPicFoundAsyncCallback(Bitmap repPic, String currentRepDisplayText, LocalRepAdapter adapter){
+
+        //Adapter myAdapter = (Adapter)findViewById(R.id.adap)
+        Reps newRepData = new Reps(repPic, currentRepDisplayText);
+
+        //RepData.add(new Reps(repPic, currentRepDisplayText));
+        adapter.addAll(newRepData);
+        adapter.notifyDataSetChanged();
     }
 
 
-    public void DisplayData(ArrayList<Reps> repPicAndInfo) {
+    public void DisplayData() { //ArrayList<Reps> repPicAndInfo
 
-        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.mylist, repPicAndInfo);
+        //LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.mylist, RepData);
 
-        repsListView = (ListView) findViewById(R.id.listView);
-        View header = (View) getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
-        repsListView.addHeaderView(header);
-        repsListView.setAdapter(adapter);
+//        repsListView = (ListView) findViewById(R.id.listView);
+//        View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
+//        repsListView.addHeaderView(header);
+//        repsListView.setAdapter(adapter);
     }
 
     //public void setStateLabel(String currentState) {

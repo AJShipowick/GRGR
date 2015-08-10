@@ -29,7 +29,6 @@ public class QueryRepData extends AsyncTask<String, String, String> {
     @Override
     protected String doInBackground(String... params) {
         HttpURLConnection urlConnection = null;
-        InputStream inStream = null;
 
         try {
             URL url = new URL(queryURL);

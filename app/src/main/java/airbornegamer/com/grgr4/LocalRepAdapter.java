@@ -2,6 +2,7 @@ package airbornegamer.com.grgr4;
 
 import android.app.Activity;
 import android.content.Context;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,7 +49,7 @@ public class LocalRepAdapter extends ArrayAdapter<Reps> {
 
         Reps reps = data.get(position);
         holder.txtTitle.setText(reps.title);
-        holder.imgIcon.setImageResource(reps.icon);
+        holder.imgIcon.setImageBitmap(reps.pic);
 
         return row;
     }
