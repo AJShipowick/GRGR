@@ -31,20 +31,17 @@ public class LocalRepAdapter extends ArrayAdapter<Reps> {
         View row = convertView;
         RepsHolder holder = null;
 
-        if(row == null)
-        {
-            LayoutInflater inflater = ((Activity)context).getLayoutInflater();
+        if (row == null) {
+            LayoutInflater inflater = ((Activity) context).getLayoutInflater();
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new RepsHolder();
-            holder.imgIcon = (ImageView)row.findViewById(R.id.imgIcon);
-            holder.txtTitle = (TextView)row.findViewById(R.id.txtTitle);
+            holder.imgIcon = (ImageView) row.findViewById(R.id.imgIcon);
+            holder.txtTitle = (TextView) row.findViewById(R.id.txtTitle);
 
             row.setTag(holder);
-        }
-        else
-        {
-            holder = (RepsHolder)row.getTag();
+        } else {
+            holder = (RepsHolder) row.getTag();
         }
 
         Reps reps = data.get(position);
@@ -54,8 +51,7 @@ public class LocalRepAdapter extends ArrayAdapter<Reps> {
         return row;
     }
 
-    static class RepsHolder
-    {
+    static class RepsHolder {
         ImageView imgIcon;
         TextView txtTitle;
     }

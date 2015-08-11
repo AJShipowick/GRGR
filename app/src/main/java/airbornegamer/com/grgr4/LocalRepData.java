@@ -68,7 +68,7 @@ class LocalRepData {
 
     public String buildCustomPicAPIURL(String repID) {
         String firstPartOfURL = "https://www.govtrack.us/data/photos/";
-        String lastParOfURL = "-100px.jpeg"; //Could also be > "-100px.jpeg" or "-200px.jpeg"
+        String lastParOfURL = "-50px.jpeg"; //Could also be > "-100px.jpeg" or "-200px.jpeg"
 
         return firstPartOfURL + repID + lastParOfURL;
     }

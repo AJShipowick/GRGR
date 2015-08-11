@@ -6,17 +6,14 @@ package airbornegamer.com.grgr4;
 //https://www.opencongress.org/
 
 import android.app.Activity;
+import android.content.Intent;
 import android.graphics.Bitmap;
-import android.graphics.Picture;
-import android.graphics.drawable.Drawable;
-import android.media.Image;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Adapter;
-import android.widget.ImageView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import org.json.JSONObject;
@@ -35,10 +32,6 @@ public class ActivityLocalReps extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_reps);
 
-        //https://github.com/nostra13/Android-Universal-Image-Loader/wiki
-//        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(this).build();
-//        ImageLoader.getInstance().init(config);
-
         repData = new LocalRepData(this);
         String currentState = repData.getCurrentUsersState();
 
@@ -50,26 +43,36 @@ public class ActivityLocalReps extends Activity {
         }
     }
 
+    public void setupBtnToChangeStatesListener(){
+        Button btnChangeStates = (Button)findViewById(R.id.btnChangeState);
+        btnChangeStates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ChangeState.class);
+                startActivity(intent);
+            }
+        });
+    }
+
+
     //Callback method after AsyncTask queryReps completes!
+    //https://www.govtrack.us/developers/data
+    //https://www.govtrack.us/data/photos/
     public void filterRepData(JSONObject allRepData) {
         stateSpecificRepData = repData.filterRepDataForUser(allRepData);
-
-        //build name and photo Reps list of classes
-        //https://www.govtrack.us/developers/data
-        //https://www.govtrack.us/data/photos/
-
         LocalRepAdapter adapter = SetupAdapter();
         CombineRepInfoAndPhoto(repData, stateSpecificRepData, adapter);
-        DisplayData();
     }
 
     ArrayList<Reps> RepData = new ArrayList<Reps>();
     public LocalRepAdapter SetupAdapter(){
-        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.mylist, RepData);
-        repsListView = (ListView) findViewById(R.id.listView);
+        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.list_reps, RepData);
+        repsListView = (ListView) findViewById(R.id.listView_Reps);
         View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
         repsListView.addHeaderView(header);
         repsListView.setAdapter(adapter);
+
+        setupBtnToChangeStatesListener();
 
         return adapter;
     }
@@ -83,42 +86,18 @@ public class ActivityLocalReps extends Activity {
             String currentRepDisplayText = currentRep.substring(0, currentRepIdStartIndex);
             String currentRepId = currentRep.substring(currentRepIdStartIndex + 1, currentRep.length() - 1);
 
-            //query rep pic with current id and set it below.
-            Drawable unknownRepDrawable = getResources().getDrawable(R.drawable.unknown_representative);
             final int w = Math.max(1, 5);
             final int h = Math.max(1, 5);
             Bitmap repImage = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-            //repImage.setImageDrawable(unknownRepDrawable);
 
             AsyncTask queryRepPics = new QueryRepPics(this, repData, currentRepId,currentRepDisplayText, adapter, repImage).execute();
-            //ImageView defaultPic = picQuery.QueryPic(repData, currentRepId, currentRepDisplayText);
-
-
-            //RepData.add(new Reps(defaultPic, currentRepDisplayText));
-
-            //listOfReps.add(new Reps(R.drawable.foundingfathers1, currentRep));
         }
     }
 
     public void RepPicFoundAsyncCallback(Bitmap repPic, String currentRepDisplayText, LocalRepAdapter adapter){
-
-        //Adapter myAdapter = (Adapter)findViewById(R.id.adap)
         Reps newRepData = new Reps(repPic, currentRepDisplayText);
-
-        //RepData.add(new Reps(repPic, currentRepDisplayText));
         adapter.addAll(newRepData);
         adapter.notifyDataSetChanged();
-    }
-
-
-    public void DisplayData() { //ArrayList<Reps> repPicAndInfo
-
-        //LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.mylist, RepData);
-
-//        repsListView = (ListView) findViewById(R.id.listView);
-//        View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
-//        repsListView.addHeaderView(header);
-//        repsListView.setAdapter(adapter);
     }
 
     //public void setStateLabel(String currentState) {

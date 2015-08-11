@@ -34,4 +34,7 @@
     <string name="txtLocationLabel">Your State:</string>
     <string name="chkSelectAllReps">Select All</string>
 
+    <string name="txtChangeState">Change Your State</string>
+
+
 </resources>

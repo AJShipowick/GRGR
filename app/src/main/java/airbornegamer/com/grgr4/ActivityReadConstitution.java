@@ -1,12 +1,13 @@
 package airbornegamer.com.grgr4;
 
+import android.app.Activity;
 import android.support.v7.app.ActionBarActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 
 
-public class ActivityReadConstitution extends ActionBarActivity {
+public class ActivityReadConstitution extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
