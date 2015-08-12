@@ -41,8 +41,8 @@ public class ChangeState extends Activity {
     public void setStatesAdapter(ArrayList<States> allStates) {
         ChangeStateAdapter adapter = new ChangeStateAdapter(this, R.layout.list_states, allStates);
         ListView statesListView = (ListView) findViewById(R.id.listView_States);
-//        View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
-//        statesListView.addHeaderView(header);
+        //View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
+        //statesListView.addHeaderView(header);
         statesListView.setAdapter(adapter);
     }
 
