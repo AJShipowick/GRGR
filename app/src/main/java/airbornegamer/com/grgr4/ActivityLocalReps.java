@@ -8,6 +8,7 @@ package airbornegamer.com.grgr4;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
@@ -25,7 +26,7 @@ public class ActivityLocalReps extends Activity {
 
     LocalRepData repData = null;
     ListView repsListView;
-    List<String> stateSpecificRepData = null;
+    //List<String> stateSpecificRepData = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,15 +37,16 @@ public class ActivityLocalReps extends Activity {
         String currentState = repData.getCurrentUsersState();
 
         if (currentState != null && repData.physicalStateIsKnown(currentState)) {
-            String repURL = repData.buildCustomDataAPIURL(currentState);
-            AsyncTask queryReps = new QueryRepData(this, repURL).execute();
+            //String repURL = repData.buildCustomDataAPIURL(currentState);
+            //AsyncTask queryReps = new QueryRepData(this, repURL).execute();
+            filterRepData(currentState);
         } else {
             //State not know, do something (audit...write msg to user....for us user only at this time....Manually select state....)
         }
     }
 
-    public void setupBtnToChangeStatesListener(){
-        Button btnChangeStates = (Button)findViewById(R.id.btnChangeState);
+    public void setupBtnToChangeStatesListener() {
+        Button btnChangeStates = (Button) findViewById(R.id.btnChangeState);
         btnChangeStates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -54,18 +56,18 @@ public class ActivityLocalReps extends Activity {
         });
     }
 
-
-    //Callback method after AsyncTask queryReps completes!
     //https://www.govtrack.us/developers/data
     //https://www.govtrack.us/data/photos/
-    public void filterRepData(JSONObject allRepData) {
-        stateSpecificRepData = repData.filterRepDataForUser(allRepData);
-        LocalRepAdapter adapter = SetupAdapter();
-        CombineRepInfoAndPhoto(repData, stateSpecificRepData, adapter);
+    public void filterRepData(String currentState) {
+        List<String> stateSpecificRepData = repData.filterRepDataForUser(currentState);
+        //build pics here based on statespecificrepdata
+        ArrayList<Reps> RepData = CombineRepInfoAndPhoto(stateSpecificRepData);
+        SetupAdapter(RepData);
+        //CombineRepInfoAndPhoto(repData, stateSpecificRepData, adapter);
     }
 
-    ArrayList<Reps> RepData = new ArrayList<Reps>();
-    public LocalRepAdapter SetupAdapter(){
+    //ArrayList<Reps> RepData = new ArrayList<Reps>();
+    public void SetupAdapter(ArrayList<Reps> RepData) {
         LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.list_reps, RepData);
         repsListView = (ListView) findViewById(R.id.listView_Reps);
         View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
@@ -74,30 +76,34 @@ public class ActivityLocalReps extends Activity {
 
         setupBtnToChangeStatesListener();
 
-        return adapter;
+        //return adapter;
     }
 
-    public void CombineRepInfoAndPhoto(LocalRepData repData, List<String> stateSpecificRepData, LocalRepAdapter adapter) {
+    public ArrayList<Reps> CombineRepInfoAndPhoto(List<String> stateSpecificRepData) {
+
+        ArrayList<Reps> repsToDisplay = new ArrayList<Reps>();
 
         for (int i = 0; i < stateSpecificRepData.size(); i++) {
-            String currentRep = stateSpecificRepData.get(i);
-            int currentRepIdStartIndex = currentRep.indexOf("(");
+            String repID = stateSpecificRepData.get(i).substring(stateSpecificRepData.get(i).length() - 7, stateSpecificRepData.get(i).length()-1);
+            String currentRep = stateSpecificRepData.get(i).substring(0, stateSpecificRepData.get(i).length() - 8);
 
-            String currentRepDisplayText = currentRep.substring(0, currentRepIdStartIndex);
-            String currentRepId = currentRep.substring(currentRepIdStartIndex + 1, currentRep.length() - 1);
+            //Bitmap repImage = BitmapFactory.decodeResource(getResources(), R.drawable.repid300002);
+            Bitmap repImage = MatchPictureToRepInfo(repID);
 
-            final int w = Math.max(1, 5);
-            final int h = Math.max(1, 5);
-            Bitmap repImage = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
-
-            AsyncTask queryRepPics = new QueryRepPics(this, repData, currentRepId,currentRepDisplayText, adapter, repImage).execute();
+            Reps newRepData = new Reps(repImage, currentRep);
+            repsToDisplay.add(newRepData);
         }
+        return repsToDisplay;
     }
 
-    public void RepPicFoundAsyncCallback(Bitmap repPic, String currentRepDisplayText, LocalRepAdapter adapter){
-        Reps newRepData = new Reps(repPic, currentRepDisplayText);
-        adapter.addAll(newRepData);
-        adapter.notifyDataSetChanged();
+    private Bitmap MatchPictureToRepInfo(String repID) {
+        int imgId = getResources().getIdentifier(getApplicationContext().getPackageName() + ":drawable/repid" + repID, null, null);
+        Bitmap repBitmap = BitmapFactory.decodeResource(getResources(), imgId);
+
+        if (repBitmap == null){
+            return BitmapFactory.decodeResource(getResources(), R.drawable.unknown_representative);
+        }
+        return repBitmap;
     }
 
     //public void setStateLabel(String currentState) {

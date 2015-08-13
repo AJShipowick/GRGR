@@ -31,11 +31,20 @@ class LocalRepData {
         try {
             Geocoder gcd = new Geocoder(mContext.getApplicationContext(), Locale.getDefault());
             List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
-            return addresses.get(0).getAdminArea();
+            String stateFullName = addresses.get(0).getAdminArea();
+
+            String[] knownStates = mContext.getResources().getStringArray(R.array.KnowStates);
+            for (int i = 0; i < knownStates.length; i++) {
+                String[] StatePair = knownStates[i].split(",");
+                //StatePair[0] is full state name (Nebraska) ; StatePair[1] is state abbreviation (NE).
+                if(stateFullName.equals(StatePair[0])){
+                    return StatePair[1];
+                }
+            }
         } catch (Exception ex) {
             return null;
         }
-
+        return "UnknownState";
     }
 
     public Boolean physicalStateIsKnown(String currentState) {
@@ -52,19 +61,20 @@ class LocalRepData {
         return false;
     }
 
-    public String buildCustomDataAPIURL(String currentState) {
-        String firstPartOfURL = "https://www.govtrack.us/api/v2/role?state=";
-        String lastPartOfURL = "&current=true";
-
-        String[] knownStates = mContext.getResources().getStringArray(R.array.KnowStates);
-        for (int i = 0; i < knownStates.length; i++) {
-            String[] StatePair = knownStates[i].split(",");
-            if (currentState.equals(StatePair[0])) {
-                return firstPartOfURL + StatePair[1] + lastPartOfURL;
-            }
-        }
-        return "";
-    }
+    //**Added buildCustomDataAPIURL as a resource with .NET tool on 8/12/2015.  This could be useful in the future.
+//    public String buildCustomDataAPIURL(String currentState) {
+//        String firstPartOfURL = "https://www.govtrack.us/api/v2/role?state=";
+//        String lastPartOfURL = "&current=true";
+//
+//        String[] knownStates = mContext.getResources().getStringArray(R.array.KnowStates);
+//        for (int i = 0; i < knownStates.length; i++) {
+//            String[] StatePair = knownStates[i].split(",");
+//            if (currentState.equals(StatePair[0])) {
+//                return firstPartOfURL + StatePair[1] + lastPartOfURL;
+//            }
+//        }
+//        return "";
+//    }
 
     public String buildCustomPicAPIURL(String repID) {
         String firstPartOfURL = "https://www.govtrack.us/data/photos/";
@@ -73,37 +83,20 @@ class LocalRepData {
         return firstPartOfURL + repID + lastParOfURL;
     }
 
-    public ArrayList<String> filterRepDataForUser(JSONObject allRepData) {
-        try {
+    //**View source control before 8/12/2015 for method to query data and use JSON results.
+    public ArrayList<String> filterRepDataForUser(String currentState) {
 
-            JSONArray allRepsResults = allRepData.getJSONArray("objects");
-            ArrayList<String> aList = new ArrayList<String>();
+        ArrayList<String> aList = new ArrayList<String>();
 
-            for (int i = 0; i < allRepsResults.length(); i++) {
-                JSONObject currentItem = allRepsResults.getJSONObject(i);
-//                String phNumber = currentItem.getString("phone");
-//                String webSite = currentItem.getString("website");
-
-                JSONObject person = currentItem.getJSONObject("person");
-
-                String name = person.getString("name");
-                String nickname = person.getString("nickname"); //check if empty
-                String id = person.getString("id");
-
-                if (nickname.isEmpty()) {
-                    aList.add(name + "(" + id + ")");
-                } else {
-                    aList.add(name + "aka: " + nickname + "(" + id + ")");
-                }
+        String[] allRepData = mContext.getResources().getStringArray(R.array.RepData);
+        for (int i = 0; i < allRepData.length; i++) {
+            String[] RepArray = allRepData[i].split(",");
+            if (currentState.equals(RepArray[1].substring(6))) {
+                aList.add(RepArray[3].substring(6) + " " + RepArray[4].substring(10) + " " + RepArray[5].substring(9) + "(" + RepArray[0].substring(3) + ")");
             }
-
-            return aList;
-
-        } catch (Exception ex) {
-            String myEx = ex.toString();
-            //trace out bad stuff
         }
-        return null;
+
+        return aList;
     }
 }
 
