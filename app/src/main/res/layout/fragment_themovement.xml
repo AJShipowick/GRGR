@@ -9,14 +9,13 @@
 
     <ImageView
 
-        android:layout_width="match_parent"
-        android:layout_height="118dp"
-        android:id="@+id/imageView"
+        android:layout_width="150dp"
+        android:layout_height="100dp"
+        android:id="@+id/imgUSFlag"
         android:nestedScrollingEnabled="false"
-        android:src="@drawable/flag_eagle_banner"
+        android:src="@drawable/goodeagle"
         android:contentDescription="picEagleFlag"
-        android:scaleType="fitStart"
-        />
+        android:scaleType="fitStart" />
 
     <TextView
         android:layout_width="wrap_content"

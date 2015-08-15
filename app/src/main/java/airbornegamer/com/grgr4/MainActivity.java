@@ -2,8 +2,8 @@ package airbornegamer.com.grgr4;
 
 import java.util.Locale;
 
-import android.app.Activity;
 import android.content.Intent;
+import android.media.Image;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -15,18 +15,10 @@ import android.support.v4.view.ViewPager;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
+import android.widget.ImageView;
 
 public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
 
-    /**
-     * The {@link android.support.v4.view.PagerAdapter} that will provide
-     * fragments for each of the sections. We use a
-     * {@link FragmentPagerAdapter} derivative, which will keep every
-     * loaded fragment in memory. If this becomes too memory intensive, it
-     * may be best to switch to a
-     * {@link android.support.v4.app.FragmentStatePagerAdapter}.
-     */
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
 
@@ -35,14 +27,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        Button btnTakeAction;
-//        btnTakeAction = (Button)findViewById(R.id.btnTakeAction);
-//        btnTakeAction.setOnClickListener(new View.OnClickListener(){
-//            @Override
-//            public void onClick(View v){
-//
-//            }
-//        });
+        //todo rotate screen text and pics randomly.
+        //todo make American flag sway in the wind!
 
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
@@ -126,6 +112,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             switch (position){
                 case 0:
                     fragment = FragmentTheMovement.newInstance(position + 1);
+
+
                 break;
                 case 1:
                     fragment = FragmentYourRights.newInstance(position +1);
@@ -160,7 +148,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         startActivity(new Intent(getApplicationContext(), ActivityLocalReps.class));
     }
 
-    // Button click even handler for btnReadConstition
+    // Button click even handler for btnReadConstitution
     public void readConstitution(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadConstitution.class));
     }

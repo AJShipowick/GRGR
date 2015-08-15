@@ -9,15 +9,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-
-import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,16 +30,42 @@ public class ActivityLocalReps extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_reps);
 
+        InternetConnectivity internet = new InternetConnectivity();
         repData = new LocalRepData(this);
-        String currentState = repData.getCurrentUsersState();
 
-        if (currentState != null && repData.physicalStateIsKnown(currentState)) {
-            //String repURL = repData.buildCustomDataAPIURL(currentState);
-            //AsyncTask queryReps = new QueryRepData(this, repURL).execute();
-            filterRepData(currentState);
-        } else {
-            //State not know, do something (audit...write msg to user....for us user only at this time....Manually select state....)
+        boolean userIsConnectedToInternet = internet.isConnected(getApplicationContext());
+
+        String currentState = "";
+        if (userIsConnectedToInternet){
+            currentState = repData.getCurrentUsersState();
+        }else{
+            currentState = "UnknownState";
         }
+
+        if (!currentState.equals("UnknownState") && repData.physicalStateIsKnown(currentState)) {
+            buildRepresentativeData(currentState);
+        } else {
+            //todo allow user to select their state and let them know we don't have a interent connection/their state is un-know (outside of the US?)
+            buildRepresentativeData("NY");
+        }
+    }
+
+    //https://www.govtrack.us/developers/data
+    //https://www.govtrack.us/data/photos/
+    public void buildRepresentativeData(String currentState) {
+        List<String> stateSpecificRepData = repData.filterRepDataForUser(currentState);
+        ArrayList<Reps> RepData = CombineRepInfoAndPhoto(stateSpecificRepData);
+        SetupAdapter(RepData);
+    }
+
+    public void SetupAdapter(ArrayList<Reps> RepData) {
+        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.list_reps, RepData);
+        repsListView = (ListView) findViewById(R.id.listView_Reps);
+        View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
+        repsListView.addHeaderView(header);
+        repsListView.setAdapter(adapter);
+
+        setupBtnToChangeStatesListener();
     }
 
     public void setupBtnToChangeStatesListener() {
@@ -54,29 +77,6 @@ public class ActivityLocalReps extends Activity {
                 startActivity(intent);
             }
         });
-    }
-
-    //https://www.govtrack.us/developers/data
-    //https://www.govtrack.us/data/photos/
-    public void filterRepData(String currentState) {
-        List<String> stateSpecificRepData = repData.filterRepDataForUser(currentState);
-        //build pics here based on statespecificrepdata
-        ArrayList<Reps> RepData = CombineRepInfoAndPhoto(stateSpecificRepData);
-        SetupAdapter(RepData);
-        //CombineRepInfoAndPhoto(repData, stateSpecificRepData, adapter);
-    }
-
-    //ArrayList<Reps> RepData = new ArrayList<Reps>();
-    public void SetupAdapter(ArrayList<Reps> RepData) {
-        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.list_reps, RepData);
-        repsListView = (ListView) findViewById(R.id.listView_Reps);
-        View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
-        repsListView.addHeaderView(header);
-        repsListView.setAdapter(adapter);
-
-        setupBtnToChangeStatesListener();
-
-        //return adapter;
     }
 
     public ArrayList<Reps> CombineRepInfoAndPhoto(List<String> stateSpecificRepData) {

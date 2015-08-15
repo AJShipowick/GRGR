@@ -6,9 +6,6 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 
-import org.json.JSONArray;
-import org.json.JSONObject;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -30,6 +27,7 @@ class LocalRepData {
 
         try {
             Geocoder gcd = new Geocoder(mContext.getApplicationContext(), Locale.getDefault());
+
             List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
             String stateFullName = addresses.get(0).getAdminArea();
 
@@ -42,7 +40,8 @@ class LocalRepData {
                 }
             }
         } catch (Exception ex) {
-            return null;
+            //bad
+            return "UnknownState";
         }
         return "UnknownState";
     }
@@ -59,28 +58,6 @@ class LocalRepData {
             }
         }
         return false;
-    }
-
-    //**Added buildCustomDataAPIURL as a resource with .NET tool on 8/12/2015.  This could be useful in the future.
-//    public String buildCustomDataAPIURL(String currentState) {
-//        String firstPartOfURL = "https://www.govtrack.us/api/v2/role?state=";
-//        String lastPartOfURL = "&current=true";
-//
-//        String[] knownStates = mContext.getResources().getStringArray(R.array.KnowStates);
-//        for (int i = 0; i < knownStates.length; i++) {
-//            String[] StatePair = knownStates[i].split(",");
-//            if (currentState.equals(StatePair[0])) {
-//                return firstPartOfURL + StatePair[1] + lastPartOfURL;
-//            }
-//        }
-//        return "";
-//    }
-
-    public String buildCustomPicAPIURL(String repID) {
-        String firstPartOfURL = "https://www.govtrack.us/data/photos/";
-        String lastParOfURL = "-50px.jpeg"; //Could also be > "-100px.jpeg" or "-200px.jpeg"
-
-        return firstPartOfURL + repID + lastParOfURL;
     }
 
     //**View source control before 8/12/2015 for method to query data and use JSON results.

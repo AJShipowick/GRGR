@@ -23,7 +23,7 @@
 //
 //    protected void onPostExecute(String result)
 //    {
-//        activity.filterRepData(allRepData);
+//        activity.buildRepresentativeData(allRepData);
 //    }
 //
 //    @Override
