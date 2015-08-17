@@ -5,6 +5,9 @@ import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +21,18 @@ class LocalRepData {
         this.mContext = mContext;
     }
 
+    public String GetStateComboFromFullStateName(String fullStateName){
+        String[] knownStates = mContext.getResources().getStringArray(R.array.KnowStates);
+        for (int i = 0; i < knownStates.length; i++) {
+            String[] StatePair = knownStates[i].split(",");
+            //StatePair[0] is full state name (Nebraska) ; StatePair[1] is state abbreviation (NE).
+            if(fullStateName.equals(StatePair[0])){
+                return StatePair[0] + "," + StatePair[1];
+            }
+        }
+        return "UnknownState";
+    }
+
     public String getCurrentUsersState() {
 
         LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
@@ -29,21 +44,14 @@ class LocalRepData {
             Geocoder gcd = new Geocoder(mContext.getApplicationContext(), Locale.getDefault());
 
             List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
-            String stateFullName = addresses.get(0).getAdminArea();
+            String fullStateName = addresses.get(0).getAdminArea();//Gets state name from GPS.
 
-            String[] knownStates = mContext.getResources().getStringArray(R.array.KnowStates);
-            for (int i = 0; i < knownStates.length; i++) {
-                String[] StatePair = knownStates[i].split(",");
-                //StatePair[0] is full state name (Nebraska) ; StatePair[1] is state abbreviation (NE).
-                if(stateFullName.equals(StatePair[0])){
-                    return StatePair[1];
-                }
-            }
+            return GetStateComboFromFullStateName(fullStateName);
+
         } catch (Exception ex) {
             //bad
             return "UnknownState";
         }
-        return "UnknownState";
     }
 
     public Boolean physicalStateIsKnown(String currentState) {
@@ -52,7 +60,7 @@ class LocalRepData {
         for (int i = 0; i < knownStates.length; i++) {
             String[] StatePair = knownStates[i].split(",");
 
-            //StatePair[0] is full state name (Nebraska) ; StatePair[1] is state abbreviation (NE).
+            //StatePair[0] is full state name (Nebraska) ; StatePair[1] is state abbreviation (nebraska_outline).
             if (StatePair[0].equals(currentState) || StatePair[1].equals(currentState)) {
                 return true;
             }
@@ -75,6 +83,40 @@ class LocalRepData {
 
         return aList;
     }
+
+    public void BuildCustomStateHeader(View header, String stateFullName){
+        //Set State Flag
+        ImageView currentStateFlag = (ImageView) header.findViewById(R.id.imgCurrentState);
+        currentStateFlag.setImageResource(findStateFlag(stateFullName));//R.drawable.new_mexico
+        //Set State Outline
+        ImageView currentStateOutline = (ImageView) header.findViewById(R.id.imgCurrentStateOutline);
+        currentStateOutline.setImageResource((findStateOutline(stateFullName)));
+        //Set State Name
+        TextView txtCurrentState = (TextView) header.findViewById(R.id.txtCurrentState);
+        txtCurrentState.setText(stateFullName);
+    }
+
+    public int findStateFlag(String stateFullName){
+        String imageStateName = stateFullName.toLowerCase();
+        if(imageStateName.contains(" ")){
+            imageStateName = imageStateName.replace(" ", "_");
+        }
+
+        return mContext.getResources().getIdentifier(mContext.getApplicationContext().getPackageName() + ":drawable/" + imageStateName, null, null);
+
+    }
+
+    public int findStateOutline(String stateFullName){
+        String imageStateName = stateFullName.toLowerCase();
+        if(imageStateName.contains(" ")){
+            imageStateName = imageStateName.replace(" ", "_");
+        }
+
+        imageStateName = imageStateName + "_outline";
+
+        return mContext.getResources().getIdentifier(mContext.getApplicationContext().getPackageName() + ":drawable/" + imageStateName, null, null);
+    }
+
 }
 
 

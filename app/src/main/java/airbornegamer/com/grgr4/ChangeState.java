@@ -1,11 +1,19 @@
 package airbornegamer.com.grgr4;
 
 import android.app.Activity;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 //todo consider adding state flag as background to each state button.
@@ -28,14 +36,39 @@ public class ChangeState extends Activity {
         ArrayList<States> allStates = new ArrayList<States>();
 
         String[] knownStates = this.getResources().getStringArray(R.array.KnowStates);
+
         for (int i = 0; i < knownStates.length; i++) {
             String[] StatePair = knownStates[i].split(",");
             String stateFullName = StatePair[0];
 
-            States newState = new States(stateFullName);
+            Bitmap stateFlag = FindStateFlag(stateFullName);
+
+            States newState = new States(stateFlag, stateFullName);
             allStates.add(newState);
+
+            //setupChangeStateEventListener();
         }
         return allStates;
+
+    }
+
+//    public void changeStateForTheUser(){
+//
+//
+//        int someint = 4;
+//
+//    }
+
+    private Bitmap FindStateFlag(String stateName) {
+
+        String imageStateName = stateName.toLowerCase();
+        if (imageStateName.contains(" ")) {
+            imageStateName = imageStateName.replace(" ", "_");
+        }
+
+        int imgID = getApplicationContext().getResources().getIdentifier(getApplicationContext().getPackageName() + ":drawable/" + imageStateName, null, null);
+
+        return BitmapFactory.decodeResource(getResources(), imgID);
     }
 
     public void setStatesAdapter(ArrayList<States> allStates) {
@@ -43,8 +76,26 @@ public class ChangeState extends Activity {
         ListView statesListView = (ListView) findViewById(R.id.listView_States);
         //View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
         //statesListView.addHeaderView(header);
+
+        statesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), ActivityLocalReps.class);
+
+                States currentState = (States) parent.getAdapter().getItem(position);
+                String stateName = currentState.StateName.toString();
+                intent.putExtra("StateName", stateName);
+
+                //todo need newtask and finish?
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(intent);
+                //finish();
+            }
+        });
+
         statesListView.setAdapter(adapter);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

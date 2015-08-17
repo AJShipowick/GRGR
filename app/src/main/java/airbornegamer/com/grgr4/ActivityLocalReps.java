@@ -13,40 +13,77 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
 
+//todo popular state facts? http://www.50states.com/
 public class ActivityLocalReps extends Activity {
 
     LocalRepData repData = null;
     ListView repsListView;
-    //List<String> stateSpecificRepData = null;
+    String stateFullName = "";
+    String stateAbbreviation = "";
+
+//    boolean userSelectedCustomState = false;
+//    String userSelectedState = "";
+//    public ActivityLocalReps(String state){
+//        userSelectedCustomState = true;
+//        userSelectedState = state;
+//    }
+//    public ActivityLocalReps(){
+//    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_reps);
 
-        InternetConnectivity internet = new InternetConnectivity();
         repData = new LocalRepData(this);
 
-        boolean userIsConnectedToInternet = internet.isConnected(getApplicationContext());
-
-        String currentState = "";
-        if (userIsConnectedToInternet){
-            currentState = repData.getCurrentUsersState();
+        String userSelectedState = getUserSelectedState(savedInstanceState);
+        if (userSelectedState.length() > 0){
+            String stateFullNameAndAbbreviation = repData.GetStateComboFromFullStateName(userSelectedState);
+            String[] stateCombo = stateFullNameAndAbbreviation.split(",");
+            stateFullName = stateCombo[0];
+            buildRepresentativeData(stateCombo[1]);
         }else{
-            currentState = "UnknownState";
-        }
+            InternetConnectivity internet = new InternetConnectivity();
+            boolean userIsConnectedToInternet = internet.isConnected(getApplicationContext());
 
-        if (!currentState.equals("UnknownState") && repData.physicalStateIsKnown(currentState)) {
-            buildRepresentativeData(currentState);
+            String currentState = "";
+            if (userIsConnectedToInternet){
+                currentState = repData.getCurrentUsersState();
+                String[] StatePair = currentState.split(",");
+                stateFullName = StatePair[0];
+                stateAbbreviation = StatePair[1];
+            }else{
+                currentState = "UnknownState";
+            }
+
+            if (!currentState.equals("UnknownState") && repData.physicalStateIsKnown(stateAbbreviation)) {
+                buildRepresentativeData(stateAbbreviation);
+            } else {
+                //todo allow user to select their state and let them know we don't have a interent connection/their state is un-know (outside of the US?)
+                Intent intent = new Intent(getApplicationContext(), ChangeState.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                getApplicationContext().startActivity(intent);
+            }
+        }
+    }
+
+    private String getUserSelectedState(Bundle savedInstanceState){
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if(extras == null) {
+                return "";
+            } else {
+                return extras.getString("StateName");
+            }
         } else {
-            //todo allow user to select their state and let them know we don't have a interent connection/their state is un-know (outside of the US?)
-            buildRepresentativeData("NY");
+            return (String) savedInstanceState.getSerializable("StateName");
         }
     }
 
@@ -54,27 +91,35 @@ public class ActivityLocalReps extends Activity {
     //https://www.govtrack.us/data/photos/
     public void buildRepresentativeData(String currentState) {
         List<String> stateSpecificRepData = repData.filterRepDataForUser(currentState);
-        ArrayList<Reps> RepData = CombineRepInfoAndPhoto(stateSpecificRepData);
-        SetupAdapter(RepData);
+        ArrayList<Reps> repInfoAndPicture = CombineRepInfoAndPhoto(stateSpecificRepData);
+        SetupAdapter(repInfoAndPicture);
     }
 
-    public void SetupAdapter(ArrayList<Reps> RepData) {
-        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.list_reps, RepData);
+    public void SetupAdapter(ArrayList<Reps> repInfoAndPicture) {
+        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
         repsListView = (ListView) findViewById(R.id.listView_Reps);
+
+        //Set the header including current state flag
         View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
+        repData.BuildCustomStateHeader(header, stateFullName);
+
         repsListView.addHeaderView(header);
         repsListView.setAdapter(adapter);
 
-        setupBtnToChangeStatesListener();
+        setupChangeStateEventListener();
     }
 
-    public void setupBtnToChangeStatesListener() {
-        Button btnChangeStates = (Button) findViewById(R.id.btnChangeState);
-        btnChangeStates.setOnClickListener(new View.OnClickListener() {
+    public void setupChangeStateEventListener() {
+        TextView txtChangeStates = (TextView) findViewById(R.id.txtChangeState);
+        txtChangeStates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ChangeState.class);
+
+                //todo need newtask and finish?
+                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                //finish();
             }
         });
     }
@@ -105,18 +150,6 @@ public class ActivityLocalReps extends Activity {
         }
         return repBitmap;
     }
-
-    //public void setStateLabel(String currentState) {
-    //TextView stateLabel = (TextView) findViewById(R.id.txtYourLocation);
-    //stateLabel.setText(currentState);
-    //}
-
-    //public void setStateFlag(String currentState) {
-//                Find image of currentState and set below.....
-//                ImageView stateImage = (ImageView)findViewById(R.id.imgYourState);
-//                stateImage.setImageBitmap(BitmapFactory.decodeResource(this.getResources(), R.drawable.flag_ne));
-    //}
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
