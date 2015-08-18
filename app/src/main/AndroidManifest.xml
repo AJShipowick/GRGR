@@ -11,19 +11,21 @@
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/AppTheme" >
+        android:theme="@style/AppTheme"
+        android:largeHeap="true">
+
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name=".ActivityLocalReps"
-            android:label="@string/title_activity_activity_local_reps" >
+            android:label="@string/title_activity_activity_local_reps"
+            android:configChanges="orientation|screenSize">
         </activity>
         <activity
             android:name=".ActivityReadConstitution"

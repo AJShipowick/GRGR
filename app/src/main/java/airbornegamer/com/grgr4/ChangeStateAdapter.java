@@ -2,25 +2,22 @@ package airbornegamer.com.grgr4;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
-import android.net.NetworkInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class ChangeStateAdapter extends ArrayAdapter<States> {
+public class ChangeStateAdapter extends ArrayAdapter<StatesRow> {
 
     Context context;
     int layoutResourceId;
-    ArrayList<States> data;
+    ArrayList<StatesRow> data;
 
-    public ChangeStateAdapter(Context context, int layoutResourceId, ArrayList<States> list) {
+    public ChangeStateAdapter(Context context, int layoutResourceId, ArrayList<StatesRow> list) {
         super(context, layoutResourceId, list);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -45,24 +42,15 @@ public class ChangeStateAdapter extends ArrayAdapter<States> {
             holder = (StatesHolder) row.getTag();
         }
 
-        States states = data.get(position);
-        holder.stateName.setText(states.StateName);
-        holder.statePic.setImageBitmap(states.StatePic);
-
-//        row.setClickable(true);
-//        row.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent(context, ActivityLocalReps.class);
-//                //intent.putExtras("StateName", v.Stat);
-//                context.startActivity(intent);
-//            }
-//        });
+        StatesRow statesRow = data.get(position);
+        holder.stateName.setText(statesRow.StateName);
+        holder.statePic.setImageDrawable(statesRow.StatePic);
 
         return row;
     }
 
     @Override
-    public States getItem(int position) {
+    public StatesRow getItem(int position) {
         return data.get(position);
     }
 

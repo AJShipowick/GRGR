@@ -2,7 +2,6 @@ package airbornegamer.com.grgr4;
 
 import android.app.Activity;
 import android.content.Context;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,13 +12,13 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 //http://www.ezzylearning.com/tutorial/customizing-android-listview-items-with-custom-arrayadapter
-public class LocalRepAdapter extends ArrayAdapter<Reps> {
+public class LocalRepAdapter extends ArrayAdapter<RepRow> {
 
     Context context;
     int layoutResourceId;
-    ArrayList<Reps> data = null;
+    ArrayList<RepRow> data = null;
 
-    public LocalRepAdapter(Context context, int layoutResourceId, ArrayList<Reps> list) {
+    public LocalRepAdapter(Context context, int layoutResourceId, ArrayList<RepRow> list) {
         super(context, layoutResourceId, list);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
@@ -36,24 +35,27 @@ public class LocalRepAdapter extends ArrayAdapter<Reps> {
             row = inflater.inflate(layoutResourceId, parent, false);
 
             holder = new RepsHolder();
-            holder.imgIcon = (ImageView) row.findViewById(R.id.imgIcon);
-            holder.txtTitle = (TextView) row.findViewById(R.id.txtTitle);
+            holder.repPic = (ImageView) row.findViewById(R.id.imgRep);
+            holder.repInfo = (TextView) row.findViewById(R.id.txtRepInfo);
+            holder.repParty = (ImageView) row.findViewById(R.id.imgRepParty);
 
             row.setTag(holder);
         } else {
             holder = (RepsHolder) row.getTag();
         }
 
-        Reps reps = data.get(position);
-        holder.txtTitle.setText(reps.title);
-        holder.imgIcon.setImageBitmap(reps.pic);
+        RepRow repRow = data.get(position);
+        holder.repPic.setImageDrawable(repRow.repPic);
+        holder.repInfo.setText(repRow.repInfo);
+        holder.repParty.setImageDrawable(repRow.repParty);
 
         return row;
     }
 
     static class RepsHolder {
-        ImageView imgIcon;
-        TextView txtTitle;
+        ImageView repPic;
+        TextView repInfo;
+        ImageView repParty;
     }
 }
 

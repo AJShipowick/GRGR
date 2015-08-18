@@ -7,17 +7,22 @@ package airbornegamer.com.grgr4;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import java.io.BufferedInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
 
 //todo popular state facts? http://www.50states.com/
 public class ActivityLocalReps extends Activity {
@@ -27,15 +32,6 @@ public class ActivityLocalReps extends Activity {
     String stateFullName = "";
     String stateAbbreviation = "";
 
-//    boolean userSelectedCustomState = false;
-//    String userSelectedState = "";
-//    public ActivityLocalReps(String state){
-//        userSelectedCustomState = true;
-//        userSelectedState = state;
-//    }
-//    public ActivityLocalReps(){
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,22 +40,22 @@ public class ActivityLocalReps extends Activity {
         repData = new LocalRepData(this);
 
         String userSelectedState = getUserSelectedState(savedInstanceState);
-        if (userSelectedState.length() > 0){
+        if (userSelectedState != null && userSelectedState.length() > 0) {
             String stateFullNameAndAbbreviation = repData.GetStateComboFromFullStateName(userSelectedState);
             String[] stateCombo = stateFullNameAndAbbreviation.split(",");
             stateFullName = stateCombo[0];
             buildRepresentativeData(stateCombo[1]);
-        }else{
+        } else {
             InternetConnectivity internet = new InternetConnectivity();
             boolean userIsConnectedToInternet = internet.isConnected(getApplicationContext());
 
             String currentState = "";
-            if (userIsConnectedToInternet){
+            if (userIsConnectedToInternet) {
                 currentState = repData.getCurrentUsersState();
                 String[] StatePair = currentState.split(",");
                 stateFullName = StatePair[0];
                 stateAbbreviation = StatePair[1];
-            }else{
+            } else {
                 currentState = "UnknownState";
             }
 
@@ -68,16 +64,15 @@ public class ActivityLocalReps extends Activity {
             } else {
                 //todo allow user to select their state and let them know we don't have a interent connection/their state is un-know (outside of the US?)
                 Intent intent = new Intent(getApplicationContext(), ChangeState.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 getApplicationContext().startActivity(intent);
             }
         }
     }
 
-    private String getUserSelectedState(Bundle savedInstanceState){
+    private String getUserSelectedState(Bundle savedInstanceState) {
         if (savedInstanceState == null) {
             Bundle extras = getIntent().getExtras();
-            if(extras == null) {
+            if (extras == null) {
                 return "";
             } else {
                 return extras.getString("StateName");
@@ -90,12 +85,15 @@ public class ActivityLocalReps extends Activity {
     //https://www.govtrack.us/developers/data
     //https://www.govtrack.us/data/photos/
     public void buildRepresentativeData(String currentState) {
-        List<String> stateSpecificRepData = repData.filterRepDataForUser(currentState);
-        ArrayList<Reps> repInfoAndPicture = CombineRepInfoAndPhoto(stateSpecificRepData);
-        SetupAdapter(repInfoAndPicture);
+        ArrayList<RepDetailInfo> stateSpecificRepData = repData.filterRepDataForUser(currentState);
+        try {
+            new getRepInfoAndPics().execute(stateSpecificRepData).get();
+        } catch (Exception ex) {
+            //todo handle this
+        }
     }
 
-    public void SetupAdapter(ArrayList<Reps> repInfoAndPicture) {
+    public void SetupAdapter(ArrayList<RepRow> repInfoAndPicture) {
         LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
         repsListView = (ListView) findViewById(R.id.listView_Reps);
 
@@ -117,38 +115,99 @@ public class ActivityLocalReps extends Activity {
                 Intent intent = new Intent(getApplicationContext(), ChangeState.class);
 
                 //todo need newtask and finish?
-                //intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
-                //finish();
+            }
+        });
+        ImageView imgCurrentStates = (ImageView) findViewById(R.id.imgCurrentState);
+        imgCurrentStates.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getApplicationContext(), ChangeState.class);
+
+                //todo need newtask and finish?
+                startActivity(intent);
             }
         });
     }
 
-    public ArrayList<Reps> CombineRepInfoAndPhoto(List<String> stateSpecificRepData) {
+    private BitmapDrawable MatchPictureToRepInfo(String repID) {
 
-        ArrayList<Reps> repsToDisplay = new ArrayList<Reps>();
+        AssetManager assets = getApplicationContext().getResources().getAssets();
+        try {
+            InputStream buffer = new BufferedInputStream((assets.open("repid" + repID + ".jpg")));
 
-        for (int i = 0; i < stateSpecificRepData.size(); i++) {
-            String repID = stateSpecificRepData.get(i).substring(stateSpecificRepData.get(i).length() - 7, stateSpecificRepData.get(i).length()-1);
-            String currentRep = stateSpecificRepData.get(i).substring(0, stateSpecificRepData.get(i).length() - 8);
-
-            //Bitmap repImage = BitmapFactory.decodeResource(getResources(), R.drawable.repid300002);
-            Bitmap repImage = MatchPictureToRepInfo(repID);
-
-            Reps newRepData = new Reps(repImage, currentRep);
-            repsToDisplay.add(newRepData);
+            Bitmap bitmap = BitmapFactory.decodeStream(buffer);
+            if (bitmap == null) {
+                InputStream unknownRepBuffer = new BufferedInputStream((assets.open("unknown_representative.png")));
+                return new BitmapDrawable(getApplicationContext().getResources(), unknownRepBuffer);
+            }
+            return new BitmapDrawable(getApplicationContext().getResources(), bitmap);
+        } catch (Exception ex1) {
+            //todo handle this
+            try {
+                InputStream unknownRepBuffer = new BufferedInputStream((assets.open("unknown_representative.png")));
+                return new BitmapDrawable(getApplicationContext().getResources(), unknownRepBuffer);
+            } catch (Exception ex2) {
+                //todo handle this
+                return null;
+            }
         }
-        return repsToDisplay;
     }
 
-    private Bitmap MatchPictureToRepInfo(String repID) {
-        int imgId = getResources().getIdentifier(getApplicationContext().getPackageName() + ":drawable/repid" + repID, null, null);
-        Bitmap repBitmap = BitmapFactory.decodeResource(getResources(), imgId);
+    private class getRepInfoAndPics extends AsyncTask<ArrayList<RepDetailInfo>, Void, ArrayList<RepRow>> {
 
-        if (repBitmap == null){
-            return BitmapFactory.decodeResource(getResources(), R.drawable.unknown_representative);
+        ArrayList<RepRow> repRowToDisplay = new ArrayList<>();
+
+        protected ArrayList<RepRow> doInBackground(ArrayList<RepDetailInfo>... params) {
+
+            String[] knownStates = getApplicationContext().getResources().getStringArray(R.array.KnowStates);
+            for (int i = 0; i < params[0].size(); i++) {
+
+                String repID = params[0].get(i).id;
+//                String repState = params[0].get(i).state;
+                String repParty = params[0].get(i).party;
+                String repTitle = params[0].get(i).title;
+                String repFirstName = params[0].get(i).firstName;
+                String repLastName = params[0].get(i).lastName;
+
+                repParty = repParty.substring(0, 1);
+                repParty = "(" + repParty + ")";
+
+                String currentRep = repTitle + " " + repFirstName + " " + repLastName + " " + repParty;
+
+                BitmapDrawable repImage = MatchPictureToRepInfo(repID);
+                BitmapDrawable repPartyImage = FindRepParty(repParty);
+
+                RepRow newRepData = new RepRow(repImage, currentRep, repPartyImage);
+                repRowToDisplay.add(newRepData);
+            }
+            return repRowToDisplay;
         }
-        return repBitmap;
+
+        BitmapDrawable FindRepParty(String repParty) {
+
+            AssetManager assets = getApplicationContext().getResources().getAssets();
+            try {
+                InputStream buffer;
+                if (repParty.contains("R")) {
+                    buffer = new BufferedInputStream((assets.open("republican_elephant" + ".jpg")));
+                } else {
+                    buffer = new BufferedInputStream((assets.open("democratic_donkey" + ".jpg")));
+                }
+
+                Bitmap bitmap = BitmapFactory.decodeStream(buffer);
+                return new BitmapDrawable(getApplicationContext().getResources(), bitmap);
+
+            } catch (Exception ex) {
+                //todo handle this
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<RepRow> repInfoAndPicture) {
+            SetupAdapter(repRowToDisplay);
+        }
     }
 
     @Override
