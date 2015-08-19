@@ -64,7 +64,8 @@ public class ActivityLocalReps extends Activity {
             } else {
                 //todo allow user to select their state and let them know we don't have a interent connection/their state is un-know (outside of the US?)
                 Intent intent = new Intent(getApplicationContext(), ChangeState.class);
-                getApplicationContext().startActivity(intent);
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
             }
         }
     }
@@ -114,7 +115,6 @@ public class ActivityLocalReps extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ChangeState.class);
 
-                //todo need newtask and finish?
                 startActivity(intent);
             }
         });
@@ -124,7 +124,6 @@ public class ActivityLocalReps extends Activity {
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ChangeState.class);
 
-                //todo need newtask and finish?
                 startActivity(intent);
             }
         });

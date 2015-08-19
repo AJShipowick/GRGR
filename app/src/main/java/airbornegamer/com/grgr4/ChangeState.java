@@ -59,6 +59,7 @@ public class ChangeState extends Activity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getApplicationContext(), ActivityLocalReps.class);
 
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 StatesRow currentState = (StatesRow) parent.getAdapter().getItem(position);
                 String stateName = currentState.StateName.toString();
                 intent.putExtra("StateName", stateName);

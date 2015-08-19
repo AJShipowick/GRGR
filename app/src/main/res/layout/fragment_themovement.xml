@@ -1,42 +1,69 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="match_parent"
+    android:layout_width="wrap_content"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:weightSum="1"
-    android:padding="10dp">
-
+    android:padding="5dp">
 
     <ImageView
-
-        android:layout_width="150dp"
-        android:layout_height="100dp"
-        android:id="@+id/imgUSFlag"
-        android:nestedScrollingEnabled="false"
-        android:src="@drawable/goodeagle"
+        android:layout_width="250dp"
+        android:layout_height="150dp"
+        android:id="@+id/imgHeader"
+        android:src="@drawable/eagleshieldarrows"
         android:contentDescription="picEagleFlag"
-        android:scaleType="fitStart" />
+        android:gravity="center"
+        android:paddingTop="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/MovementIntroMsg_1"
-        android:id="@+id/txtTheMovementHeader"
-        android:paddingTop="5dp"
-        android:textSize="25sp"
+        android:id="@+id/txtTheMovement"
+        android:textSize="15sp"
+        android:padding="5dp"
         style="?android:attr/listSeparatorTextViewStyle"
-        android:textColor="@color/primary_material_dark" />
+        android:textColor="@color/primary_material_dark"
+        android:layout_marginTop="26dp"
+        android:layout_below="@+id/imgHeader"
+        android:layout_alignRight="@+id/imgRightBorder"
+        android:layout_alignEnd="@+id/imgRightBorder" />
 
     <Button
-        android:layout_width="234dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Take Action Now!"
         android:id="@+id/btnTakeAction"
         android:layout_gravity="center_horizontal"
-        android:layout_marginTop="50dp"
         android:layout_weight="0.17"
         android:onClick="takeAction"
-        />
+        android:background="@drawable/usflagwaving2"
+        android:textStyle="bold|italic"
+        android:textSize="17dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imgLeftBorder"
+        android:src="@drawable/rightheader"
+        android:layout_alignBottom="@+id/imgHeader"
+        android:layout_alignLeft="@+id/txtTheMovement"
+        android:layout_alignStart="@+id/txtTheMovement" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:gravity="right"
+        android:id="@+id/imgRightBorder"
+        android:src="@drawable/rightheader"
+        android:layout_alignBottom="@+id/imgHeader"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
 
-</LinearLayout>
+</RelativeLayout>

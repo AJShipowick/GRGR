@@ -145,7 +145,9 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     // Button click even handler for btnTakeAction
     public void takeAction(View view) {
-        startActivity(new Intent(getApplicationContext(), ActivityLocalReps.class));
+        Intent takeAction = new Intent(getApplicationContext(), ActivityLocalReps.class);
+        takeAction.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(takeAction);
     }
 
     // Button click even handler for btnReadConstitution

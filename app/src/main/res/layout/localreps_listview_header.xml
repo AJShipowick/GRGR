@@ -16,9 +16,7 @@
             <ImageView
                 android:id="@+id/imgCurrentState"
                 android:layout_width="140sp"
-                android:layout_height="85sp"
-                android:background="#ffffff"
-                android:src="@drawable/flag_allstates" />
+                android:layout_height="85sp"/>
 
             <TextView
                 android:id="@+id/txtChangeState"
@@ -42,8 +40,7 @@
                 android:id="@+id/imgCurrentStateOutline"
                 android:layout_width="85sp"
                 android:layout_height="85sp"
-                android:layout_alignParentRight="true"
-                android:src="@drawable/flag_allstates" />
+                android:layout_alignParentRight="true" />
 
             <TextView
                 android:id="@+id/txtCurrentState"
