@@ -44,6 +44,10 @@ class LocalRepData {
 
         LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        //Location locationNet = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
+        if (location == null){return "UnknownState";}
+
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
 

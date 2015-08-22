@@ -1,23 +1,27 @@
 package airbornegamer.com.grgr4;
 
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 
 public class FragmentTheMovement extends Fragment {
-    /**
-     * The fragment argument representing the section number for this
-     * fragment.
-     */
+
+    public FragmentTheMovement() {}
+
     private static final String ARG_SECTION_NUMBER = "section_number";
 
-    /**
-     * Returns a new instance of this fragment for the given section
-     * number.
-     */
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_themovement, container, false);
+        //setRandomHeaderImages();
+        return view;
+    }
+
     public static FragmentTheMovement newInstance(int sectionNumber) {
         FragmentTheMovement fragment = new FragmentTheMovement();
         Bundle args = new Bundle();
@@ -26,13 +30,8 @@ public class FragmentTheMovement extends Fragment {
         return fragment;
     }
 
-    public FragmentTheMovement() {
-    }
 
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_themovement, container, false);
-    }
+
+
 }
 

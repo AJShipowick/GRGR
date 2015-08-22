@@ -52,9 +52,11 @@ public class ActivityLocalReps extends Activity {
             String currentState = "";
             if (userIsConnectedToInternet) {
                 currentState = repData.getCurrentUsersState();
-                String[] StatePair = currentState.split(",");
-                stateFullName = StatePair[0];
-                stateAbbreviation = StatePair[1];
+                if(currentState != "UnknownState"){
+                    String[] StatePair = currentState.split(",");
+                    stateFullName = StatePair[0];
+                    stateAbbreviation = StatePair[1];
+                }
             } else {
                 currentState = "UnknownState";
             }
@@ -62,10 +64,10 @@ public class ActivityLocalReps extends Activity {
             if (!currentState.equals("UnknownState") && repData.physicalStateIsKnown(stateAbbreviation)) {
                 buildRepresentativeData(stateAbbreviation);
             } else {
-                //todo allow user to select their state and let them know we don't have a interent connection/their state is un-know (outside of the US?)
                 Intent intent = new Intent(getApplicationContext(), ChangeState.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
             }
         }
     }

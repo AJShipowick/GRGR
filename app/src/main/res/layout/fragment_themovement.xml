@@ -1,22 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:weightSum="1"
-    android:padding="5dp">
+    android:padding="5dp"
+    android:layout_centerHorizontal="true"
+   >
 
     <ImageView
-        android:layout_width="250dp"
+        android:layout_width="fill_parent"
         android:layout_height="150dp"
         android:id="@+id/imgHeader"
-        android:src="@drawable/eagleshieldarrows"
-        android:contentDescription="picEagleFlag"
-        android:gravity="center"
-        android:paddingTop="5dp"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true" />
+        android:src="@drawable/home_header_1"
+        android:contentDescription="picEagleFlag" />
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imgLeftBorder"
+        android:gravity="left"
+        android:layout_alignBottom="@+id/imgHeader"
+        android:layout_alignParentLeft="true"
+        android:src="@drawable/home_header_side_1"/>
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:id="@+id/imgRightBorder"
+        android:gravity="right"
+        android:layout_alignBottom="@+id/imgHeader"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:src="@drawable/home_header_side_1"/>
 
     <TextView
         android:layout_width="wrap_content"
@@ -27,43 +42,21 @@
         android:padding="5dp"
         style="?android:attr/listSeparatorTextViewStyle"
         android:textColor="@color/primary_material_dark"
-        android:layout_marginTop="26dp"
         android:layout_below="@+id/imgHeader"
-        android:layout_alignRight="@+id/imgRightBorder"
-        android:layout_alignEnd="@+id/imgRightBorder" />
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="26dp" />
 
     <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Take Action Now!"
+        android:layout_width="250dp"
+        android:layout_height="125dp"
         android:id="@+id/btnTakeAction"
-        android:layout_gravity="center_horizontal"
         android:layout_weight="0.17"
         android:onClick="takeAction"
-        android:background="@drawable/usflagwaving2"
-        android:textStyle="bold|italic"
-        android:textSize="17dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true" />
-
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:id="@+id/imgLeftBorder"
-        android:src="@drawable/rightheader"
-        android:layout_alignBottom="@+id/imgHeader"
-        android:layout_alignLeft="@+id/txtTheMovement"
-        android:layout_alignStart="@+id/txtTheMovement" />
-
-    <ImageView
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:gravity="right"
-        android:id="@+id/imgRightBorder"
-        android:src="@drawable/rightheader"
-        android:layout_alignBottom="@+id/imgHeader"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true" />
-
-
+        android:background="@drawable/takeaction"
+        android:layout_below="@+id/txtTheMovement"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="99dp"
+        android:paddingTop="75dp"
+        android:paddingLeft="75dp"/>
 </RelativeLayout>

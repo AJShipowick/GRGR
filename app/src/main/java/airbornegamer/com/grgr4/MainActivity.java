@@ -1,9 +1,10 @@
 package airbornegamer.com.grgr4;
 
 import java.util.Locale;
+import java.util.Random;
 
 import android.content.Intent;
-import android.media.Image;
+import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -64,12 +65,49 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                                     //.setIcon()
                             .setTabListener(this));
         }
+
+
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        setRandomHeaderImages();
         return true;
+    }
+
+    public void setRandomHeaderImages(){
+        Random randomNumber = new Random();
+        setLeftAndRightHeaderImages(randomNumber);
+        setMainHeaderImage(randomNumber);
+    }
+    public void setMainHeaderImage(Random randomNumber){
+        String imgMainHeaderConstant = "@drawable/home_header_";
+        ImageView mainHeaderImage = (ImageView) findViewById(R.id.imgHeader);
+
+        int i = randomNumber.nextInt(4) + 1;
+        String randomImage = Integer.toString(i);
+        String imageURI = imgMainHeaderConstant + randomImage ;
+
+        int imageResource = getResources().getIdentifier(imageURI, null, getPackageName());
+        Drawable res = getResources().getDrawable(imageResource);
+        mainHeaderImage.setImageDrawable(res);
+    }
+
+    public void setLeftAndRightHeaderImages(Random randomNumber){
+        String imgMainHeaderSideConstant = "@drawable/home_header_side_";
+        ImageView leftHeaderImages = (ImageView) findViewById(R.id.imgLeftBorder);
+        ImageView rightHeaderImages = (ImageView) findViewById(R.id.imgRightBorder);
+
+        int i = randomNumber.nextInt(4) + 1;
+        String randomImage = Integer.toString(i);
+        String imageName = imgMainHeaderSideConstant + randomImage;
+
+        int imageResource = getResources().getIdentifier(imageName, null, getPackageName());
+        Drawable res = getResources().getDrawable(imageResource);
+        leftHeaderImages.setImageDrawable(res);
+        rightHeaderImages.setImageDrawable(res);
     }
 
     @Override
@@ -98,6 +136,8 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
+
+
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -109,19 +149,18 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             // getItem is called to instantiate the fragment for the given page.
 
             Fragment fragment = new Fragment();
-            switch (position){
+            switch (position) {
                 case 0:
                     fragment = FragmentTheMovement.newInstance(position + 1);
 
-
-                break;
+                    break;
                 case 1:
-                    fragment = FragmentYourRights.newInstance(position +1);
-                break;
+                    fragment = FragmentYourRights.newInstance(position + 1);
+                    break;
                 default:
                     break;
             }
-                 return fragment;
+            return fragment;
         }
 
         @Override
