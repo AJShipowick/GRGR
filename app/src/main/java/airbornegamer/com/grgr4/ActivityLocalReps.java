@@ -20,9 +20,15 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Map;
 
 //todo popular state facts? http://www.50states.com/
 public class ActivityLocalReps extends Activity {
@@ -31,6 +37,8 @@ public class ActivityLocalReps extends Activity {
     ListView repsListView;
     String stateFullName = "";
     String stateAbbreviation = "";
+    String zipCode = "";
+    ArrayList<RepDetailInfo> stateSpecificRepData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,13 +54,17 @@ public class ActivityLocalReps extends Activity {
             stateFullName = stateCombo[0];
             buildRepresentativeData(stateCombo[1]);
         } else {
+
             InternetConnectivity internet = new InternetConnectivity();
             boolean userIsConnectedToInternet = internet.isConnected(getApplicationContext());
-
             String currentState = "";
             if (userIsConnectedToInternet) {
-                currentState = repData.getCurrentUsersState();
-                if(currentState != "UnknownState"){
+
+                Map<String, String> StateData = repData.getCurrentUserLocation();
+                currentState = StateData.get("State");
+                zipCode = StateData.get("ZipCode");
+
+                if (currentState != "UnknownState") {
                     String[] StatePair = currentState.split(",");
                     stateFullName = StatePair[0];
                     stateAbbreviation = StatePair[1];
@@ -88,13 +100,52 @@ public class ActivityLocalReps extends Activity {
     //https://www.govtrack.us/developers/data
     //https://www.govtrack.us/data/photos/
     public void buildRepresentativeData(String currentState) {
-        ArrayList<RepDetailInfo> stateSpecificRepData = repData.filterRepDataForUser(currentState);
+
+        stateSpecificRepData = repData.filterRepDataForUser(currentState);
+        try {
+            new specificRepresentativesBasedOnZipCode().execute(zipCode).get();
+        } catch (Exception ex) {
+
+        }
+
+//        for(RepDetailInfo stateRepresentative : stateSpecificRepData){
+//
+//            String stateRepFullName = stateRepresentative.firstName + " " + stateRepresentative.lastName;
+//            for(String localRepFullName : specificReps){
+//                if (localRepFullName.equals(stateRepFullName)){
+//                    stateRepresentative.isUserRepresentative = true;
+//                }
+//            }
+//
+//        }
+
+//        try {
+//            new getRepInfoAndPics().execute(stateSpecificRepData).get();
+//        } catch (Exception ex) {
+//            //todo handle this
+//        }
+    }
+
+    public void setupRepInfoAndPics(ArrayList<String> specificReps) {
+
+        for (RepDetailInfo stateRepresentative : stateSpecificRepData) {
+
+            String stateRepFullName = stateRepresentative.firstName + " " + stateRepresentative.lastName;
+            for (String localRepFullName : specificReps) {
+                if (localRepFullName.equals(stateRepFullName) || (localRepFullName.contains(stateRepresentative.lastName))) {
+                    stateRepresentative.isUserRepresentative = true;
+                }
+            }
+
+        }
+
         try {
             new getRepInfoAndPics().execute(stateSpecificRepData).get();
         } catch (Exception ex) {
             //todo handle this
         }
     }
+
 
     public void SetupAdapter(ArrayList<RepRow> repInfoAndPicture) {
         LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
@@ -208,6 +259,38 @@ public class ActivityLocalReps extends Activity {
         @Override
         protected void onPostExecute(ArrayList<RepRow> repInfoAndPicture) {
             SetupAdapter(repRowToDisplay);
+        }
+    }
+
+    //using Jsoup to parse HTML.
+    //http://jsoup.org/apidocs/org/jsoup/nodes/Element.html#getElementsByClass-java.lang.String-
+    private class specificRepresentativesBasedOnZipCode extends AsyncTask<String, Void, ArrayList<String>> {
+
+        protected ArrayList<String> doInBackground(String... params) {
+            ArrayList<String> UserRepsBasedOnZip = new ArrayList<>();
+
+            String firstPartOfURL = "https://www.opencongress.org/search/result?q=";
+            String lastPartOfURL = "&search_people=1";
+            String urlToParse = firstPartOfURL + params[0] + lastPartOfURL;
+
+            try {
+                Document doc = Jsoup.connect(urlToParse).get();
+                Elements content = doc.getElementsByClass("name");
+
+                for (Element name : content) {
+                    UserRepsBasedOnZip.add(name.childNode(0).toString().trim());
+                }
+
+            } catch (Exception ex) {
+                Exception myEx = ex;
+            }
+
+            return UserRepsBasedOnZip;
+        }
+
+        @Override
+        protected void onPostExecute(ArrayList<String> UserRepsBasedOnZip) {
+            setupRepInfoAndPics(UserRepsBasedOnZip);
         }
     }
 

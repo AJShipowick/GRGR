@@ -15,15 +15,25 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
+
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.lang.reflect.Array;
+import java.util.AbstractSequentialList;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 class LocalRepData {
 
     Context mContext;
+
     public LocalRepData(Context mContext) {
         this.mContext = mContext;
     }
@@ -40,13 +50,18 @@ class LocalRepData {
         return "UnknownState";
     }
 
-    public String getCurrentUsersState() {
+    public Map<String, String> getCurrentUserLocation() {
+
+        Map<String, String> UserLocationInfo = new HashMap<String, String>();
+        UserLocationInfo.put("State", "UnknownState");
 
         LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
         Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
         //Location locationNet = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
-        if (location == null){return "UnknownState";}
+        if (location == null) {
+            return UserLocationInfo;
+        }
 
         double longitude = location.getLongitude();
         double latitude = location.getLatitude();
@@ -56,12 +71,19 @@ class LocalRepData {
 
             List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
             String fullStateName = addresses.get(0).getAdminArea();//Gets state name from GPS.
+            String zipCode = addresses.get(0).getPostalCode();
 
-            return GetStateComboFromFullStateName(fullStateName);
+            //UserLocationInfo.clear();
+            String StateValues = GetStateComboFromFullStateName(fullStateName);
+
+            UserLocationInfo.put("State", StateValues);
+            UserLocationInfo.put("ZipCode", zipCode);
+
+            return UserLocationInfo;
 
         } catch (Exception ex) {
             //todo handle this
-            return "UnknownState";
+            return UserLocationInfo;
         }
     }
 
@@ -96,10 +118,12 @@ class LocalRepData {
                 String repTitle = RepArray[3].substring(6);
                 String repFirstName = RepArray[4].substring(10);
                 String repLastName = RepArray[5].substring(9);
+                boolean isUserRepresentative = false;
 
                 //todo sort here?
 
-                RepDetailInfo currentRepInfo = new RepDetailInfo(repID, repState, repParty, repTitle, repFirstName, repLastName);
+                RepDetailInfo currentRepInfo = new RepDetailInfo(repID, repState, repParty, repTitle, repFirstName, repLastName, isUserRepresentative);
+
                 allRepInfo.add(currentRepInfo);
             }
         }
@@ -108,6 +132,7 @@ class LocalRepData {
     }
 
     View myHeader;
+
     public void BuildCustomStateHeader(View header, String stateFullName) {
         //Set State Flag
         myHeader = header;
@@ -234,5 +259,6 @@ class LocalRepData {
         }
     }
 }
+
 
 
