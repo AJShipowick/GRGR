@@ -1,38 +1,33 @@
 <resources>
     <string name="app_name">Grassroots Gun Rights</string>
     <string name="action_settings">Settings</string>
-    <!-- Tab 1 -->
+    <!-- Tab 1 (Take Action) -->
     <string name="tab1_theMovement">The Movement</string>
     <string name="Movement_Fragment">Movement Fragment</string>
-    <!-- Tab 2 -->
-    <string name="tab2_yourRights">Your Rights</string>
-    <string name="Rights_Fragment">Your Rights Fragment</string>
-
-    <!-- The Movement Introduction strings (top header) -->
     <string name="MovementIntroMsg_1">Preserve your natural born right to keep and bear arms</string>
     <string name="MovementIntroMsg_2">It is your Right</string>
     <string name="MovementIntroMsg_3">Those before us have given everything, take a stand</string>
     <string name="MovementIntroMsg_4">Ensure your local representatives uphold their oath of office</string>
     <string name="MovementIntroMsg_5">Hold your elected officials accountable</string>
     <string name="MovementIntroMsg_6">Take action today.</string>
-
-    <!-- Your Rights Introduction strings (top header) -->
+    <!-- Tab 2 (Learn History) -->
+    <string name="tab2_yourRights">Your Rights</string>
+    <string name="Rights_Fragment">Your Rights Fragment</string>
     <string name="YourRights_1">Explore your natural born rights</string>
     <string name="YourRights_2">Time to learn some history</string>
     <string name="YourRights_3">It\'s reading time</string>
-    <string name="title_activity_activity_local_reps">Your Local Representatives</string>
-
-    <string name="YourLocalReps">Your Local Representatives</string>
     <string name="title_activity_activity_read_constitution">The US Constitution</string>
     <string name="title_activity_activity_read_declaration_of_independence">
         The Declaration Of Independence</string>
-
     <!-- Your Local Representatives -->
+    <string name="title_activity_activity_local_reps">Your Local Representatives</string>
+    <string name="YourLocalReps">Your Local Representatives</string>
     <string name="txtyourLocation">Change Location</string>
     <string name="txtActualLocation">the world</string>
     <string name="txtLocationLabel">Your State:</string>
     <string name="chkSelectAllReps">Select All</string>
-
     <string name="txtChangeState">Select Your State</string>
+    <!-- Why get involved? -->
+    <string name="title_activity_why_take_action">Why should you get involved?</string>
 
 </resources>

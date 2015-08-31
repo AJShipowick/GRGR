@@ -4,8 +4,7 @@
     android:layout_height="match_parent"
     android:weightSum="1"
     android:padding="5dp"
-    android:layout_centerHorizontal="true"
-   >
+    android:layout_centerHorizontal="true">
 
     <ImageView
         android:layout_width="fill_parent"
@@ -39,7 +38,7 @@
         android:text="@string/MovementIntroMsg_1"
         android:id="@+id/txtTheMovement"
         android:textSize="15sp"
-        android:padding="5dp"
+        android:padding="15dp"
         style="?android:attr/listSeparatorTextViewStyle"
         android:textColor="@color/primary_material_dark"
         android:layout_below="@+id/imgHeader"
@@ -47,16 +46,24 @@
         android:layout_alignParentStart="true"
         android:layout_marginTop="26dp" />
 
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnTakeAction"
+            android:onClick="takeAction"
+            android:text="Take Action Now!"
+            android:layout_below="@+id/txtTheMovement"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
     <Button
-        android:layout_width="250dp"
-        android:layout_height="125dp"
-        android:id="@+id/btnTakeAction"
-        android:layout_weight="0.17"
-        android:onClick="takeAction"
-        android:background="@drawable/takeaction"
-        android:layout_below="@+id/txtTheMovement"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="99dp"
-        android:paddingTop="75dp"
-        android:paddingLeft="75dp"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Why?"
+            android:id="@+id/bthWhy"
+            android:onClick="whyTakeAction"
+        android:layout_below="@+id/btnTakeAction"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
 </RelativeLayout>

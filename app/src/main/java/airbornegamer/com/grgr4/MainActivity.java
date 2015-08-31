@@ -72,8 +72,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
+        //No menu/action bar currently...
+        //getMenuInflater().inflate(R.menu.menu_main, menu);
         setRandomHeaderImages();
+        //setRandomHeaderQuotes();
         return true;
     }
 
@@ -136,8 +138,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
     public void onTabReselected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
     }
 
-
-
     public class SectionsPagerAdapter extends FragmentPagerAdapter {
 
         public SectionsPagerAdapter(FragmentManager fm) {
@@ -189,7 +189,10 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         startActivity(takeAction);
     }
 
-    // Button click even handler for btnReadConstitution
+    public void whyTakeAction(View view){
+        startActivity(new Intent(getApplicationContext(), WhyTakeAction.class));
+    }
+
     public void readConstitution(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadConstitution.class));
     }

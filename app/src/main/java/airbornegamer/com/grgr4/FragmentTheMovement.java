@@ -1,12 +1,10 @@
 package airbornegamer.com.grgr4;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
 
 public class FragmentTheMovement extends Fragment {
@@ -18,7 +16,6 @@ public class FragmentTheMovement extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_themovement, container, false);
-        //setRandomHeaderImages();
         return view;
     }
 
@@ -29,9 +26,5 @@ public class FragmentTheMovement extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-
-
-
-
 }
 
