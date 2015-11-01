@@ -12,7 +12,7 @@
         android:nestedScrollingEnabled="false"
         android:src="@drawable/declaration_of_independence"
         android:contentDescription="picTheConstitution"
-        android:scaleType="fitStart"
+        android:scaleType="fitCenter"
         android:layout_alignParentTop="false" />
 
     <ScrollView

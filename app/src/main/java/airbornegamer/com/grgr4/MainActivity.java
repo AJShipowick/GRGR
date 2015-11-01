@@ -28,9 +28,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //todo rotate screen text and pics randomly.
-        //todo make American flag sway in the wind!
-
         // Set up the action bar.
         final ActionBar actionBar = getSupportActionBar();
         actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -152,7 +149,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
             switch (position) {
                 case 0:
                     fragment = FragmentTheMovement.newInstance(position + 1);
-
                     break;
                 case 1:
                     fragment = FragmentYourRights.newInstance(position + 1);

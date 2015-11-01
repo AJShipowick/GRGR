@@ -16,6 +16,8 @@
     <string name="YourRights_1">Explore your natural born rights</string>
     <string name="YourRights_2">Time to learn some history</string>
     <string name="YourRights_3">It\'s reading time</string>
+    <string name="YourRights_4">A well regulated Militia, being necessary to the security of a free State, the
+right of the people to keep and bear Arms, shall not be infringed.</string>
     <string name="title_activity_activity_read_constitution">The US Constitution</string>
     <string name="title_activity_activity_read_declaration_of_independence">
         The Declaration Of Independence</string>
