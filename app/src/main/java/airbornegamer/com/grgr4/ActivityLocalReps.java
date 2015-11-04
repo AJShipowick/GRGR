@@ -57,7 +57,7 @@ public class ActivityLocalReps extends Activity {
 
             InternetConnectivity internet = new InternetConnectivity();
             boolean userIsConnectedToInternet = internet.isConnected(getApplicationContext());
-            String currentState = "";
+            String currentState;
             if (userIsConnectedToInternet) {
 
                 Map<String, String> StateData = repData.getCurrentUserLocation();
@@ -128,6 +128,7 @@ public class ActivityLocalReps extends Activity {
 
     public void setupRepInfoAndPics(ArrayList<String> specificReps) {
 
+        //Compares all reps in state reps for user's specific zip code.
         for (RepDetailInfo stateRepresentative : stateSpecificRepData) {
 
             String stateRepFullName = stateRepresentative.firstName + " " + stateRepresentative.lastName;
@@ -212,11 +213,11 @@ public class ActivityLocalReps extends Activity {
 
         protected ArrayList<RepRow> doInBackground(ArrayList<RepDetailInfo>... params) {
 
-            String[] knownStates = getApplicationContext().getResources().getStringArray(R.array.KnowStates);
+            //String[] knownStates = getApplicationContext().getResources().getStringArray(R.array.KnowStates);
             for (int i = 0; i < params[0].size(); i++) {
 
                 String repID = params[0].get(i).id;
-//                String repState = params[0].get(i).state;
+                //String repState = params[0].get(i).state;
                 String repParty = params[0].get(i).party;
                 String repTitle = params[0].get(i).title;
                 String repFirstName = params[0].get(i).firstName;
@@ -264,6 +265,11 @@ public class ActivityLocalReps extends Activity {
 
     //using Jsoup to parse HTML.
     //http://jsoup.org/apidocs/org/jsoup/nodes/Element.html#getElementsByClass-java.lang.String-
+
+    //todo - use landing page : https://www.opencongress.org/search/result?q=68512&search_people=1
+    //http://www.41post.com/4650/programming/android-coding-a-loading-screen-part-3
+    //or figure out a better way to async this shit.
+
     private class specificRepresentativesBasedOnZipCode extends AsyncTask<String, Void, ArrayList<String>> {
 
         protected ArrayList<String> doInBackground(String... params) {
@@ -282,7 +288,7 @@ public class ActivityLocalReps extends Activity {
                 }
 
             } catch (Exception ex) {
-                Exception myEx = ex;
+                //todo handle ex here
             }
 
             return UserRepsBasedOnZip;

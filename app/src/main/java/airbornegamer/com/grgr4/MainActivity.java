@@ -189,11 +189,37 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         startActivity(new Intent(getApplicationContext(), WhyTakeAction.class));
     }
 
-    public void readConstitution(View view) {
-        startActivity(new Intent(getApplicationContext(), ActivityReadConstitution.class));
-    }
-
     public void readDeclarationOfIndependence(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadDeclarationOfIndependence.class));
     }
+
+    public void readArticle1(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
+    }
+
+    public void readArticle2(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle2.class));
+    }
+
+    public void readArticle3(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
+    }
+
+    public void readArticle4(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
+    }
+
+    public void readArticle5(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
+    }
+
+    public void readArticle6(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
+    }
+
+    public void readArticle7(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
+    }
+
+
 }

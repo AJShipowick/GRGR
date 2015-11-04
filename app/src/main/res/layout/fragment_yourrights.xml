@@ -63,7 +63,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="1"
-                android:text="The Constitution:"
+                android:text="The Constitution"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <TextView
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="2"
-                android:text="Article 1"
+                android:text="-- Article 1 + Preamble"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -82,7 +82,7 @@
                 android:layout_alignParentRight="true"
                 android:layout_column="2"
                 android:layout_row="2"
-                android:onClick="readConstitution"
+                android:onClick="readArticle1"
                 android:text="Read" />
 
             <TextView
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="3"
-                android:text="Article 2"
+                android:text="-- Article 2"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -100,6 +100,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="2"
                 android:layout_row="3"
+                android:onClick="readArticle2"
                 android:text="Read" />
 
             <TextView
@@ -108,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="4"
-                android:text="The Constitution - Article 3"
+                android:text="-- Article 3"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -125,7 +126,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="5"
-                android:text="The Constitution - Article 4"
+                android:text="-- Article 4"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -142,7 +143,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="6"
-                android:text="The Constitution - Article 5"
+                android:text="-- Article 5"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -159,7 +160,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="7"
-                android:text="The Constitution - Article 6"
+                android:text="-- Article 6"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -175,8 +176,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:layout_row="7"
-                android:text="The Constitution - Article 7"
+                android:layout_row="8"
+                android:text="-- Article 7"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -184,7 +185,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="2"
-                android:layout_row="7"
+                android:layout_row="8"
                 android:text="Read" />
         </GridLayout>
     </ScrollView>

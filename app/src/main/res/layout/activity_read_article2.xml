@@ -1,0 +1,36 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="airbornegamer.com.grgr4.ActivityReadArticle1"
+    android:padding="10dp">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="125dp"
+        android:id="@+id/picTheConstition"
+        android:nestedScrollingEnabled="false"
+        android:src="@drawable/constituion"
+        android:contentDescription="picTheConstitution"
+        android:scaleType="fitStart"
+        />
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scrollView"
+        android:layout_below="@+id/picTheConstition"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="@string/article2"
+            android:id="@+id/txtReadArticle2" />
+    </ScrollView>
+
+
+
+</RelativeLayout>
