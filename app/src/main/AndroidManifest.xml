@@ -28,10 +28,6 @@
             android:label="@string/title_activity_activity_local_reps" >
         </activity>
         <activity
-            android:name=".ActivityReadConstitution"
-            android:label="@string/title_activity_activity_read_constitution" >
-        </activity>
-        <activity
             android:name=".ActivityReadDeclarationOfIndependence"
             android:label="@string/title_activity_activity_read_declaration_of_independence" >
         </activity>
@@ -44,6 +40,42 @@
         <activity
             android:name=".WhyTakeAction"
             android:label="@string/title_activity_why_take_action" >
+        </activity>
+        <activity
+            android:name=".ActivityReadArticle1"
+            android:label="@string/title_activity_read_article1" >
+        </activity>
+        <activity
+            android:name=".ActivityReadArticle2"
+            android:label="@string/title_activity_read_article2" >
+        </activity>
+        <activity
+            android:name=".ActivityReadArticle3"
+            android:label="@string/title_activity_read_article3" >
+        </activity>
+        <activity
+            android:name=".ActivityReadArticle4"
+            android:label="@string/title_activity_read_article4" >
+        </activity>
+        <activity
+            android:name=".ActivityReadArticle5"
+            android:label="@string/title_activity_read_article5" >
+        </activity>
+        <activity
+            android:name=".ActivityReadArticle6"
+            android:label="@string/title_activity_read_article6" >
+        </activity>
+        <activity
+            android:name=".ActivityReadArticle7"
+            android:label="@string/title_activity_read_article7" >
+        </activity>
+        <activity
+            android:name=".ActivityReadBillOfRights"
+            android:label="@string/title_activity_read_billOfRights" >
+        </activity>
+        <activity
+            android:name=".ActivityReadOtherAmendments"
+            android:label="@string/title_activity_read_otherAmendments" >
         </activity>
     </application>
 
