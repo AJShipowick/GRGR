@@ -18,15 +18,16 @@
     <string name="YourRights_3">It\'s reading time</string>
     <string name="YourRights_4">A well regulated Militia, being necessary to the security of a free State, the
 right of the people to keep and bear Arms, shall not be infringed.\n</string>
-    <string name="title_activity_read_article1">(US Constitution) Article 1</string>
-    <string name="title_activity_read_article2">(US Constitution) Article 2</string>
-    <string name="title_activity_read_article3">(US Constitution) Article 3</string>
-    <string name="title_activity_read_article4">(US Constitution) Article 4</string>
-    <string name="title_activity_read_article5">(US Constitution) Article 5</string>
-    <string name="title_activity_read_article6">(US Constitution) Article 6</string>
-    <string name="title_activity_read_article7">(US Constitution) Article 7</string>
-    <string name="title_activity_activity_read_declaration_of_independence">
-        The Declaration Of Independence</string>
+    <string name="title_activity_activity_read_declaration_of_independence">The Declaration Of Independence</string>
+    <string name="title_activity_read_article1">US Constitution - Article I</string>
+    <string name="title_activity_read_article2">US Constitution - Article II</string>
+    <string name="title_activity_read_article3">US Constitution - Article III</string>
+    <string name="title_activity_read_article4">US Constitution - Article IV</string>
+    <string name="title_activity_read_article5">US Constitution - Article V</string>
+    <string name="title_activity_read_article6">US Constitution - Article VI</string>
+    <string name="title_activity_read_article7">US Constitution - Article VII</string>
+    <string name="title_activity_read_billOfRights">Amendments I - X (Bill of Rights)</string>
+    <string name="title_activity_read_otherAmendments">Amendments XI - XXVII</string>
     <!-- Your Local Representatives -->
     <string name="title_activity_activity_local_reps">Your Local Representatives</string>
     <string name="YourLocalReps">Your Local Representatives</string>

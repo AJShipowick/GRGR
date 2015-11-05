@@ -193,33 +193,32 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         startActivity(new Intent(getApplicationContext(), ActivityReadDeclarationOfIndependence.class));
     }
 
+    //http://www.usconstitution.net/const.txt
     public void readArticle1(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
     }
-
     public void readArticle2(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadArticle2.class));
     }
-
     public void readArticle3(View view) {
-        startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle3.class));
     }
-
     public void readArticle4(View view) {
-        startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle4.class));
     }
-
     public void readArticle5(View view) {
-        startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle5.class));
     }
-
     public void readArticle6(View view) {
-        startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle6.class));
     }
-
     public void readArticle7(View view) {
-        startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticle7.class));
     }
-
-
+    public void readBillOfRights(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadBillOfRights.class));
+    }
+    public void readOtherAmendments(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadOtherAmendments.class));
+    }
 }

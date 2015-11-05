@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="airbornegamer.com.grgr4.ActivityReadArticle2"
+    tools:context="airbornegamer.com.grgr4.ActivityReadOtherAmendments"
     android:padding="10dp">
 
     <ScrollView
@@ -16,10 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceMedium"
-            android:text="@string/article2"
-            android:id="@+id/txtReadArticle2" />
+            android:text="@string/otherAmendments"
+            android:id="@+id/txtReadOtherAmendments" />
     </ScrollView>
-
-
-
 </RelativeLayout>

@@ -1,13 +1,13 @@
 package airbornegamer.com.grgr4;
 
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 
-public class ActivityReadDeclarationOfIndependence extends AppCompatActivity {
+public class ActivityReadArticle3 extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_read_declaration_of_independence);
+        setContentView(R.layout.activity_read_article3);
     }
 }

@@ -64,7 +64,7 @@
                 android:layout_column="0"
                 android:layout_row="1"
                 android:text="The Constitution"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:textAppearance="?android:attr/textAppearanceLarge" />
 
             <TextView
                 android:id="@+id/txtOurConstitution"
@@ -72,7 +72,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="2"
-                android:text="-- Article 1 + Preamble"
+                android:text="-- Article I + Preamble"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -91,7 +91,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="3"
-                android:text="-- Article 2"
+                android:text="-- Article II"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -109,7 +109,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="4"
-                android:text="-- Article 3"
+                android:text="-- Article III"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -118,6 +118,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="2"
                 android:layout_row="4"
+                android:onClick="readArticle3"
                 android:text="Read" />
 
             <TextView
@@ -126,7 +127,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="5"
-                android:text="-- Article 4"
+                android:text="-- Article IV"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -135,6 +136,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="2"
                 android:layout_row="5"
+                android:onClick="readArticle4"
                 android:text="Read" />
 
             <TextView
@@ -143,7 +145,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="6"
-                android:text="-- Article 5"
+                android:text="-- Article V"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -152,6 +154,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="2"
                 android:layout_row="6"
+                android:onClick="readArticle5"
                 android:text="Read" />
 
             <TextView
@@ -160,7 +163,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="7"
-                android:text="-- Article 6"
+                android:text="-- Article VI"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -169,6 +172,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="2"
                 android:layout_row="7"
+                android:onClick="readArticle6"
                 android:text="Read" />
 
             <TextView
@@ -177,7 +181,7 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_row="8"
-                android:text="-- Article 7"
+                android:text="-- Article VII"
                 android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
@@ -186,6 +190,54 @@
                 android:layout_height="wrap_content"
                 android:layout_column="2"
                 android:layout_row="8"
+                android:onClick="readArticle7"
+                android:text="Read" />
+
+            <TextView
+                android:id="@+id/txtAmendments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="9"
+                android:text="Amendments"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/txtBillOfRights"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="10"
+                android:text="-- The Bill of Rights"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Button
+                android:id="@+id/btnReadBillOfRights"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_column="2"
+                android:layout_row="10"
+                android:onClick="readBillOfRights"
+                android:text="Read" />
+
+            <TextView
+                android:id="@+id/txtOtherAmendments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_column="0"
+                android:layout_row="11"
+                android:text="-- Amendments XI - XXVII"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+            <Button
+                android:id="@+id/btnReadOtherAmendments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_column="2"
+                android:layout_row="11"
+                android:onClick="readOtherAmendments"
                 android:text="Read" />
         </GridLayout>
     </ScrollView>
