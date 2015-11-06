@@ -6,6 +6,7 @@ package airbornegamer.com.grgr4;
 //https://www.opencongress.org/
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -39,6 +40,7 @@ public class ActivityLocalReps extends Activity {
     String stateAbbreviation = "";
     String zipCode = "";
     ArrayList<RepDetailInfo> stateSpecificRepData;
+    Context context = this;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,24 +49,28 @@ public class ActivityLocalReps extends Activity {
 
         repData = new LocalRepData(this);
 
+        //User has selected the state manually
         String userSelectedState = getUserSelectedState(savedInstanceState);
         if (userSelectedState != null && userSelectedState.length() > 0) {
-            String stateFullNameAndAbbreviation = repData.GetStateComboFromFullStateName(userSelectedState);
-            String[] stateCombo = stateFullNameAndAbbreviation.split(",");
-            stateFullName = stateCombo[0];
-            buildRepresentativeData(stateCombo[1]);
-        } else {
+            String stateFullNameAndAbbreviation = repData.getStateAbbreviationAndFullName(userSelectedState);
+            String[] StatePair = stateFullNameAndAbbreviation.split(",");
+            stateFullName = StatePair[0];
+            stateAbbreviation = StatePair[1];
 
+            start_Main_UI_Flow();
+
+        //Program selects state based off GPS
+        } else {
             InternetConnectivity internet = new InternetConnectivity();
             boolean userIsConnectedToInternet = internet.isConnected(getApplicationContext());
             String currentState;
             if (userIsConnectedToInternet) {
 
-                Map<String, String> StateData = repData.getCurrentUserLocation();
+                Map<String, String> StateData = internet.getCurrentUserLocation(this, repData);
                 currentState = StateData.get("State");
                 zipCode = StateData.get("ZipCode");
 
-                if (currentState != "UnknownState") {
+                if (!currentState.equals("UnknownState")) {
                     String[] StatePair = currentState.split(",");
                     stateFullName = StatePair[0];
                     stateAbbreviation = StatePair[1];
@@ -73,8 +79,16 @@ public class ActivityLocalReps extends Activity {
                 currentState = "UnknownState";
             }
 
-            if (!currentState.equals("UnknownState") && repData.physicalStateIsKnown(stateAbbreviation)) {
-                buildRepresentativeData(stateAbbreviation);
+            if (!currentState.equals("UnknownState") && repData.stateIsKnown(stateAbbreviation)) {
+
+                start_Main_UI_Flow();
+
+                try{
+                    new selectRepsBasedOnZipCode().execute(zipCode);
+                }catch (Exception ex){
+                    //todo handle this
+                }
+
             } else {
                 Intent intent = new Intent(getApplicationContext(), ChangeState.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
@@ -84,82 +98,42 @@ public class ActivityLocalReps extends Activity {
         }
     }
 
-    private String getUserSelectedState(Bundle savedInstanceState) {
-        if (savedInstanceState == null) {
-            Bundle extras = getIntent().getExtras();
-            if (extras == null) {
-                return "";
-            } else {
-                return extras.getString("StateName");
-            }
-        } else {
-            return (String) savedInstanceState.getSerializable("StateName");
+    public void start_Main_UI_Flow(){
+        try{
+            stateSpecificRepData = repData.buildStateSpecificData(stateAbbreviation);
+            setupAdapter();
+            new getRepInfoAndPictures().execute(stateSpecificRepData);
+
+        }catch (Exception ex){
+           //todo handle this
         }
     }
 
-    //https://www.govtrack.us/developers/data
-    //https://www.govtrack.us/data/photos/
-    public void buildRepresentativeData(String currentState) {
-
-        stateSpecificRepData = repData.filterRepDataForUser(currentState);
-        try {
-            new specificRepresentativesBasedOnZipCode().execute(zipCode).get();
-        } catch (Exception ex) {
-
-        }
-
-//        for(RepDetailInfo stateRepresentative : stateSpecificRepData){
-//
-//            String stateRepFullName = stateRepresentative.firstName + " " + stateRepresentative.lastName;
-//            for(String localRepFullName : specificReps){
-//                if (localRepFullName.equals(stateRepFullName)){
-//                    stateRepresentative.isUserRepresentative = true;
-//                }
-//            }
-//
-//        }
-
-//        try {
-//            new getRepInfoAndPics().execute(stateSpecificRepData).get();
-//        } catch (Exception ex) {
-//            //todo handle this
-//        }
-    }
-
-    public void setupRepInfoAndPics(ArrayList<String> specificReps) {
-
-        //Compares all reps in state reps for user's specific zip code.
-        for (RepDetailInfo stateRepresentative : stateSpecificRepData) {
-
-            String stateRepFullName = stateRepresentative.firstName + " " + stateRepresentative.lastName;
-            for (String localRepFullName : specificReps) {
-                if (localRepFullName.equals(stateRepFullName) || (localRepFullName.contains(stateRepresentative.lastName))) {
-                    stateRepresentative.isUserRepresentative = true;
-                }
-            }
-
-        }
-
-        try {
-            new getRepInfoAndPics().execute(stateSpecificRepData).get();
-        } catch (Exception ex) {
-            //todo handle this
-        }
-    }
-
-
-    public void SetupAdapter(ArrayList<RepRow> repInfoAndPicture) {
-        LocalRepAdapter adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
+    LocalRepAdapter adapter = null;
+    public void setupAdapter() {
+        //ArrayList<RepRow> blankRepRows = new  ArrayList<>();
+        adapter = new LocalRepAdapter(this, R.layout.list_reps, new ArrayList<RepRow>());
         repsListView = (ListView) findViewById(R.id.listView_Reps);
 
         //Set the header including current state flag
         View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
-        repData.BuildCustomStateHeader(header, stateFullName);
+        repData.buildCustomStateHeader(header, stateFullName);
 
         repsListView.addHeaderView(header);
         repsListView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
 
         setupChangeStateEventListener();
+    }
+
+    public void addRepRowsToView(ArrayList<RepRow> repInfoAndPicture){
+        //ListView currentRepListView = (ListView) findViewById(R.id.listView_Reps);
+
+        adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
+
+        repsListView = (ListView) findViewById(R.id.listView_Reps);
+        repsListView.setAdapter(adapter);
+        adapter.notifyDataSetChanged();
     }
 
     public void setupChangeStateEventListener() {
@@ -183,6 +157,39 @@ public class ActivityLocalReps extends Activity {
         });
     }
 
+    private String getUserSelectedState(Bundle savedInstanceState) {
+        if (savedInstanceState == null) {
+            Bundle extras = getIntent().getExtras();
+            if (extras == null) {
+                return "";
+            } else {
+                return extras.getString("StateName");
+            }
+        } else {
+            return (String) savedInstanceState.getSerializable("StateName");
+        }
+    }
+
+    //https://www.govtrack.us/developers/data
+    //https://www.govtrack.us/data/photos/
+
+    public void setRepAsLocalRep(ArrayList<String> specificReps) {
+
+        //Compares all reps in state reps for user's specific zip code.
+        for (RepDetailInfo stateRepresentative : stateSpecificRepData) {
+
+            String stateRepFullName = stateRepresentative.firstName + " " + stateRepresentative.lastName;
+            for (String localRepFullName : specificReps) {
+                if (localRepFullName.equals(stateRepFullName) || (localRepFullName.contains(stateRepresentative.lastName))) {
+                    stateRepresentative.isUserRepresentative = true;
+                }
+            }
+        }
+
+        //now do something with stateSpecificRepData to show user that this rep is their rep...also move these reps to the top of the list.....
+
+    }
+
     private BitmapDrawable MatchPictureToRepInfo(String repID) {
 
         AssetManager assets = getApplicationContext().getResources().getAssets();
@@ -191,15 +198,15 @@ public class ActivityLocalReps extends Activity {
 
             Bitmap bitmap = BitmapFactory.decodeStream(buffer);
             if (bitmap == null) {
-                InputStream unknownRepBuffer = new BufferedInputStream((assets.open("unknown_representative.png")));
-                return new BitmapDrawable(getApplicationContext().getResources(), unknownRepBuffer);
+                return new BitmapDrawable( getResources(), BitmapFactory.decodeResource(context.getResources() , R.drawable.unknownrep));
             }
+            //GOOD!
             return new BitmapDrawable(getApplicationContext().getResources(), bitmap);
+
         } catch (Exception ex1) {
             //todo handle this
             try {
-                InputStream unknownRepBuffer = new BufferedInputStream((assets.open("unknown_representative.png")));
-                return new BitmapDrawable(getApplicationContext().getResources(), unknownRepBuffer);
+                return new BitmapDrawable( getResources(), BitmapFactory.decodeResource(context.getResources() , R.drawable.unknownrep));
             } catch (Exception ex2) {
                 //todo handle this
                 return null;
@@ -207,13 +214,12 @@ public class ActivityLocalReps extends Activity {
         }
     }
 
-    private class getRepInfoAndPics extends AsyncTask<ArrayList<RepDetailInfo>, Void, ArrayList<RepRow>> {
+    private class getRepInfoAndPictures extends AsyncTask<ArrayList<RepDetailInfo>, Void, ArrayList<RepRow>> {
 
         ArrayList<RepRow> repRowToDisplay = new ArrayList<>();
 
         protected ArrayList<RepRow> doInBackground(ArrayList<RepDetailInfo>... params) {
 
-            //String[] knownStates = getApplicationContext().getResources().getStringArray(R.array.KnowStates);
             for (int i = 0; i < params[0].size(); i++) {
 
                 String repID = params[0].get(i).id;
@@ -231,7 +237,7 @@ public class ActivityLocalReps extends Activity {
                 BitmapDrawable repImage = MatchPictureToRepInfo(repID);
                 BitmapDrawable repPartyImage = FindRepParty(repParty);
 
-                RepRow newRepData = new RepRow(repImage, currentRep, repPartyImage);
+                RepRow newRepData = new RepRow(repImage, currentRep, repID, repPartyImage);
                 repRowToDisplay.add(newRepData);
             }
             return repRowToDisplay;
@@ -259,7 +265,7 @@ public class ActivityLocalReps extends Activity {
 
         @Override
         protected void onPostExecute(ArrayList<RepRow> repInfoAndPicture) {
-            SetupAdapter(repRowToDisplay);
+            addRepRowsToView(repInfoAndPicture);
         }
     }
 
@@ -270,7 +276,7 @@ public class ActivityLocalReps extends Activity {
     //http://www.41post.com/4650/programming/android-coding-a-loading-screen-part-3
     //or figure out a better way to async this shit.
 
-    private class specificRepresentativesBasedOnZipCode extends AsyncTask<String, Void, ArrayList<String>> {
+    private class selectRepsBasedOnZipCode extends AsyncTask<String, Void, ArrayList<String>> {
 
         protected ArrayList<String> doInBackground(String... params) {
             ArrayList<String> UserRepsBasedOnZip = new ArrayList<>();
@@ -296,7 +302,7 @@ public class ActivityLocalReps extends Activity {
 
         @Override
         protected void onPostExecute(ArrayList<String> UserRepsBasedOnZip) {
-            setupRepInfoAndPics(UserRepsBasedOnZip);
+            setRepAsLocalRep(UserRepsBasedOnZip);
         }
     }
 

@@ -16,7 +16,6 @@ import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 
-//todo consider adding state flag as background to each state button.
 public class ChangeState extends Activity {
 
     @Override
@@ -61,7 +60,7 @@ public class ChangeState extends Activity {
 
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 StatesRow currentState = (StatesRow) parent.getAdapter().getItem(position);
-                String stateName = currentState.StateName.toString();
+                String stateName = currentState.StateName;
                 intent.putExtra("StateName", stateName);
                 startActivity(intent);
                 finish();
@@ -85,7 +84,6 @@ public class ChangeState extends Activity {
 
                 StatesRow newState = new StatesRow(stateFlag, stateFullName);
                 allStates.add(newState);
-
             }
             return allStates;
         }
@@ -95,25 +93,6 @@ public class ChangeState extends Activity {
             setStatesAdapter(allStates);
         }
     }
-
-    //http://developer.android.com/intl/ko/guide/topics/ui/menus.html
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.menu_change_state, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        int id = item.getItemId();
-//        if (id == R.id.action_settings) {
-//            //return new thing here...
-//
-//            return true;
-//        }
-//        return super.onOptionsItemSelected(item);
-//    }
 }
 
 
