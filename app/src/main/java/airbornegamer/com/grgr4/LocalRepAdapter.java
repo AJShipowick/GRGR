@@ -28,7 +28,7 @@ public class LocalRepAdapter extends ArrayAdapter<RepRow> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        RepsHolder holder = null;
+        RepsHolder holder;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();

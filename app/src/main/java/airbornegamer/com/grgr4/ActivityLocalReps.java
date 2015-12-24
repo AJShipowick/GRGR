@@ -29,6 +29,8 @@ import org.jsoup.select.Elements;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 
 //todo popular state facts? http://www.50states.com/
@@ -46,66 +48,75 @@ public class ActivityLocalReps extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_reps);
-
         repData = new LocalRepData(this);
 
-        //User has selected the state manually
+        if (userHasSelectedStateManually(savedInstanceState)) {
+            start_Main_UI_Flow();
+        } else {
+            buildPageBasedOnGPS();
+        }
+    }
+
+    public boolean userHasSelectedStateManually(Bundle savedInstanceState) {
         String userSelectedState = getUserSelectedState(savedInstanceState);
+
         if (userSelectedState != null && userSelectedState.length() > 0) {
             String stateFullNameAndAbbreviation = repData.getStateAbbreviationAndFullName(userSelectedState);
             String[] StatePair = stateFullNameAndAbbreviation.split(",");
             stateFullName = StatePair[0];
             stateAbbreviation = StatePair[1];
+            return true;
+        }
+        return false;
+    }
 
-            start_Main_UI_Flow();
+    public void buildPageBasedOnGPS() {
+        InternetConnectivity internet = new InternetConnectivity();
+        boolean userIsConnectedToInternet = internet.isConnected(getApplicationContext());
+        String currentState;
 
-        //Program selects state based off GPS
+        if (userIsConnectedToInternet) {
+
+            Map<String, String> StateData = internet.getCurrentUserLocation(this, repData);
+            currentState = StateData.get("State");
+            zipCode = StateData.get("ZipCode");
+
+            if (!currentState.equals("UnknownState")) {
+                String[] StatePair = currentState.split(",");
+                stateFullName = StatePair[0];
+                stateAbbreviation = StatePair[1];
+            }
         } else {
-            InternetConnectivity internet = new InternetConnectivity();
-            boolean userIsConnectedToInternet = internet.isConnected(getApplicationContext());
-            String currentState;
-            if (userIsConnectedToInternet) {
+            currentState = "UnknownState";
+        }
 
-                Map<String, String> StateData = internet.getCurrentUserLocation(this, repData);
-                currentState = StateData.get("State");
-                zipCode = StateData.get("ZipCode");
+        if (!currentState.equals("UnknownState") && repData.stateIsKnown(stateAbbreviation)) {
 
-                if (!currentState.equals("UnknownState")) {
-                    String[] StatePair = currentState.split(",");
-                    stateFullName = StatePair[0];
-                    stateAbbreviation = StatePair[1];
-                }
-            } else {
-                currentState = "UnknownState";
+            //Best case scenario to here.
+            start_Main_UI_Flow();
+            try {
+                new selectRepsBasedOnZipCode().execute(zipCode);
+                //addRepRowsToView(stateSpecificRepData);
+            } catch (Exception ex) {
+                //todo handle this
             }
 
-            if (!currentState.equals("UnknownState") && repData.stateIsKnown(stateAbbreviation)) {
-
-                start_Main_UI_Flow();
-
-                try{
-                    new selectRepsBasedOnZipCode().execute(zipCode);
-                }catch (Exception ex){
-                    //todo handle this
-                }
-
-            } else {
-                Intent intent = new Intent(getApplicationContext(), ChangeState.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
-                finish();
-            }
+        } else {
+            Intent intent = new Intent(getApplicationContext(), ChangeState.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         }
     }
 
-    public void start_Main_UI_Flow(){
-        try{
+    public void start_Main_UI_Flow() {
+        try {
             stateSpecificRepData = repData.buildStateSpecificData(stateAbbreviation);
             setupAdapter();
             new getRepInfoAndPictures().execute(stateSpecificRepData);
 
-        }catch (Exception ex){
-           //todo handle this
+        } catch (Exception ex) {
+            //todo handle this
         }
     }
 
@@ -126,7 +137,7 @@ public class ActivityLocalReps extends Activity {
         setupChangeStateEventListener();
     }
 
-    public void addRepRowsToView(ArrayList<RepRow> repInfoAndPicture){
+    public void addRepRowsToView(ArrayList<RepRow> repInfoAndPicture) {
         //ListView currentRepListView = (ListView) findViewById(R.id.listView_Reps);
 
         adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
@@ -172,10 +183,10 @@ public class ActivityLocalReps extends Activity {
 
     //https://www.govtrack.us/developers/data
     //https://www.govtrack.us/data/photos/
-
     public void setRepAsLocalRep(ArrayList<String> specificReps) {
 
         //Compares all reps in state reps for user's specific zip code.
+
         for (RepDetailInfo stateRepresentative : stateSpecificRepData) {
 
             String stateRepFullName = stateRepresentative.firstName + " " + stateRepresentative.lastName;
@@ -186,8 +197,12 @@ public class ActivityLocalReps extends Activity {
             }
         }
 
-        //now do something with stateSpecificRepData to show user that this rep is their rep...also move these reps to the top of the list.....
-
+        Collections.sort(stateSpecificRepData, new Comparator<RepDetailInfo>() {
+            @Override
+            public int compare(RepDetailInfo abc1, RepDetailInfo abc2) {
+                return Boolean.compare(abc2.isUserRepresentative, abc1.isUserRepresentative);
+            }
+        });
     }
 
     private BitmapDrawable MatchPictureToRepInfo(String repID) {
@@ -198,7 +213,7 @@ public class ActivityLocalReps extends Activity {
 
             Bitmap bitmap = BitmapFactory.decodeStream(buffer);
             if (bitmap == null) {
-                return new BitmapDrawable( getResources(), BitmapFactory.decodeResource(context.getResources() , R.drawable.unknownrep));
+                return new BitmapDrawable(getResources(), BitmapFactory.decodeResource(context.getResources(), R.drawable.unknownrep));
             }
             //GOOD!
             return new BitmapDrawable(getApplicationContext().getResources(), bitmap);
@@ -206,7 +221,7 @@ public class ActivityLocalReps extends Activity {
         } catch (Exception ex1) {
             //todo handle this
             try {
-                return new BitmapDrawable( getResources(), BitmapFactory.decodeResource(context.getResources() , R.drawable.unknownrep));
+                return new BitmapDrawable(getResources(), BitmapFactory.decodeResource(context.getResources(), R.drawable.unknownrep));
             } catch (Exception ex2) {
                 //todo handle this
                 return null;
@@ -271,11 +286,6 @@ public class ActivityLocalReps extends Activity {
 
     //using Jsoup to parse HTML.
     //http://jsoup.org/apidocs/org/jsoup/nodes/Element.html#getElementsByClass-java.lang.String-
-
-    //todo - use landing page : https://www.opencongress.org/search/result?q=68512&search_people=1
-    //http://www.41post.com/4650/programming/android-coding-a-loading-screen-part-3
-    //or figure out a better way to async this shit.
-
     private class selectRepsBasedOnZipCode extends AsyncTask<String, Void, ArrayList<String>> {
 
         protected ArrayList<String> doInBackground(String... params) {

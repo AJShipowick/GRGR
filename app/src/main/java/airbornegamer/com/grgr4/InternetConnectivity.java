@@ -23,18 +23,19 @@ public class InternetConnectivity {
     public Map<String, String> getCurrentUserLocation(Context mContext, LocalRepData repData) {
 
         Map<String, String> UserLocationInfo = new HashMap<>();
-        UserLocationInfo.put("State", "UnknownState");
 
         LocationManager lm = (LocationManager) mContext.getSystemService(Context.LOCATION_SERVICE);
-        Location location = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        //Location locationNet = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Location gpsLocation = lm.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        Location networkLocation = lm.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        Location availableLocation = (gpsLocation != null) ? gpsLocation : networkLocation;
 
-        if (location == null) {
+        if (availableLocation == null) {
+            UserLocationInfo.put("State", "UnknownState");
             return UserLocationInfo;
         }
 
-        double longitude = location.getLongitude();
-        double latitude = location.getLatitude();
+        double longitude = availableLocation.getLongitude();
+        double latitude = availableLocation.getLatitude();
 
         try {
             Geocoder gcd = new Geocoder(mContext.getApplicationContext(), Locale.getDefault());
@@ -42,8 +43,6 @@ public class InternetConnectivity {
             List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
             String fullStateName = addresses.get(0).getAdminArea();//Gets state name from GPS.
             String zipCode = addresses.get(0).getPostalCode();
-
-            //UserLocationInfo.clear();
             String StateValues = repData.getStateAbbreviationAndFullName(fullStateName);
 
             UserLocationInfo.put("State", StateValues);
