@@ -162,7 +162,6 @@ public class ActivityLocalReps extends Activity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ChangeState.class);
-
                 startActivity(intent);
             }
         });
@@ -314,6 +313,10 @@ public class ActivityLocalReps extends Activity {
         protected void onPostExecute(ArrayList<String> UserRepsBasedOnZip) {
             setRepAsLocalRep(UserRepsBasedOnZip);
         }
+    }
+
+    public void buildCustomEmail(View view){
+        startActivity(new Intent(getApplicationContext(), BuildCustomEmailActivity.class));
     }
 
     @Override

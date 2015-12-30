@@ -38,5 +38,6 @@ right of the people to keep and bear Arms, shall not be infringed.\n</string>
     <string name="txtChangeState">Select Your State</string>
     <!-- Why get involved? -->
     <string name="title_activity_why_take_action">Why should you get involved?</string>
+    <string name="title_activity_build_custom_email">Build Custom Email</string>
 
 </resources>

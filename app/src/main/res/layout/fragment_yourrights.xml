@@ -5,25 +5,15 @@
     android:layout_centerHorizontal="true"
     android:padding="5dp">
 
-    <ImageView
-        android:id="@+id/imageView"
-        android:layout_width="fill_parent"
-        android:layout_height="105dp"
-        android:scaleType="fitStart"
-        android:src="@drawable/american_revolution_banner" />
-
     <TextView
         android:id="@+id/txtYourRightsHeader"
         style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView"
         android:text="@string/YourRights_4"
         android:textAppearance="?android:attr/textAppearanceLarge"
-        android:textColor="@color/primary_material_dark"
-        android:textSize="12sp" />
+        android:textColor="@color/primary_material_dark"/>
 
     <ScrollView
         android:layout_width="match_parent"
@@ -38,207 +28,130 @@
             android:layout_alignParentStart="true"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/txtdeclarationofindependence"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="0"
-                android:text="Declaration Of Independence"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
 
             <Button
                 android:id="@+id/btnDeclarationOfIndependence"
-                android:layout_width="wrap_content"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_column="2"
+                android:layout_column="0"
                 android:layout_row="0"
                 android:onClick="readDeclarationOfIndependence"
-                android:text="Read" />
+                android:text="Declaration Of Independence"
+                android:backgroundTint="@android:color/holo_blue_light" />
+
 
             <TextView
                 android:id="@+id/txtOurConstitutionText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:layout_height="37dp"
                 android:layout_column="0"
                 android:layout_row="1"
                 android:text="The Constitution"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <TextView
-                android:id="@+id/txtOurConstitution"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="2"
-                android:text="-- Article I + Preamble"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
             <Button
                 android:id="@+id/btnReadConstitution"
-                android:layout_width="wrap_content"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_column="2"
+                android:layout_column="0"
                 android:layout_row="2"
                 android:onClick="readArticle1"
-                android:text="Read" />
-
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="3"
-                android:text="-- Article II"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:text="Article I + Preamble"
+                android:backgroundTint="@android:color/holo_red_light" />
 
             <Button
                 android:id="@+id/button"
-                android:layout_width="wrap_content"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="3"
+                android:layout_column="1"
+                android:layout_row="2"
                 android:onClick="readArticle2"
-                android:text="Read" />
-
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="4"
-                android:text="-- Article III"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:text="Article II"
+                android:backgroundTint="@android:color/holo_red_light" />
 
             <Button
                 android:id="@+id/button2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="4"
-                android:onClick="readArticle3"
-                android:text="Read" />
-
-            <TextView
-                android:id="@+id/textView4"
-                android:layout_width="wrap_content"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:layout_row="5"
-                android:text="-- Article IV"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:layout_row="4"
+                android:onClick="readArticle3"
+                android:text="Article III"
+                android:backgroundTint="@android:color/holo_red_light" />
 
             <Button
                 android:id="@+id/button3"
-                android:layout_width="wrap_content"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="5"
+                android:layout_column="1"
+                android:layout_row="4"
                 android:onClick="readArticle4"
-                android:text="Read" />
-
-            <TextView
-                android:id="@+id/textView6"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="6"
-                android:text="-- Article V"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:text="Article IV"
+                android:backgroundTint="@android:color/holo_red_light" />
 
             <Button
                 android:id="@+id/button4"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="6"
-                android:onClick="readArticle5"
-                android:text="Read" />
-
-            <TextView
-                android:id="@+id/textView5"
-                android:layout_width="wrap_content"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:layout_row="7"
-                android:text="-- Article VI"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:layout_row="5"
+                android:onClick="readArticle5"
+                android:text="Article V"
+                android:backgroundTint="@android:color/holo_red_light" />
 
             <Button
                 android:id="@+id/button5"
-                android:layout_width="wrap_content"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="7"
+                android:layout_column="1"
+                android:layout_row="5"
                 android:onClick="readArticle6"
-                android:text="Read" />
-
-            <TextView
-                android:id="@+id/textView7"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="8"
-                android:text="-- Article VII"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:text="Article VI"
+                android:backgroundTint="@android:color/holo_red_light" />
 
             <Button
                 android:id="@+id/button6"
-                android:layout_width="wrap_content"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
-                android:layout_column="2"
-                android:layout_row="8"
+                android:layout_column="0"
+                android:layout_row="6"
                 android:onClick="readArticle7"
-                android:text="Read" />
+                android:text="Article VII"
+                android:backgroundTint="@android:color/holo_red_light" />
 
             <TextView
                 android:id="@+id/txtAmendments"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:gravity="bottom"
+                android:layout_height="37dp"
                 android:layout_column="0"
-                android:layout_row="9"
+                android:layout_row="7"
                 android:text="Amendments"
                 android:textAppearance="?android:attr/textAppearanceLarge" />
 
-            <TextView
-                android:id="@+id/txtBillOfRights"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_column="0"
-                android:layout_row="10"
-                android:text="-- The Bill of Rights"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
-
             <Button
                 android:id="@+id/btnReadBillOfRights"
-                android:layout_width="wrap_content"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_column="2"
-                android:layout_row="10"
-                android:onClick="readBillOfRights"
-                android:text="Read" />
-
-            <TextView
-                android:id="@+id/txtOtherAmendments"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:layout_row="11"
-                android:text="-- Amendments XI - XXVII"
-                android:textAppearance="?android:attr/textAppearanceMedium" />
+                android:layout_row="8"
+                android:onClick="readBillOfRights"
+                android:text="Bill of Rights I-X"
+                android:backgroundTint="@android:color/background_light" />
 
             <Button
                 android:id="@+id/btnReadOtherAmendments"
-                android:layout_width="wrap_content"
+                android:layout_width="175dp"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_column="2"
-                android:layout_row="11"
+                android:layout_column="1"
+                android:layout_row="8"
                 android:onClick="readOtherAmendments"
-                android:text="Read" />
+                android:text="XI-XXVII"
+                android:backgroundTint="@android:color/background_light" />
         </GridLayout>
     </ScrollView>
 </RelativeLayout>

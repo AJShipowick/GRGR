@@ -2,68 +2,68 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
-    android:weightSum="1"
+    android:layout_centerHorizontal="true"
     android:padding="5dp"
-    android:layout_centerHorizontal="true">
+    android:weightSum="1">
 
     <ImageView
-        android:layout_width="fill_parent"
-        android:layout_height="150dp"
         android:id="@+id/imgHeader"
-        android:src="@drawable/home_header_1"
-        android:contentDescription="picEagleFlag" />
+        android:layout_width="fill_parent"
+        android:layout_height="130dp"
+        android:contentDescription="picEagleFlag"
+        android:src="@drawable/home_header_1" />
 
     <ImageView
+        android:id="@+id/imgLeftBorder"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/imgLeftBorder"
-        android:gravity="left"
         android:layout_alignBottom="@+id/imgHeader"
         android:layout_alignParentLeft="true"
-        android:src="@drawable/home_header_side_1"/>
+        android:gravity="left"
+        android:src="@drawable/home_header_side_1" />
 
     <ImageView
+        android:id="@+id/imgRightBorder"
         android:layout_width="50dp"
         android:layout_height="50dp"
-        android:id="@+id/imgRightBorder"
-        android:gravity="right"
         android:layout_alignBottom="@+id/imgHeader"
-        android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true"
-        android:src="@drawable/home_header_side_1"/>
+        android:layout_alignParentRight="true"
+        android:gravity="right"
+        android:src="@drawable/home_header_side_1" />
 
     <TextView
+        android:id="@+id/txtTheMovement"
+        style="?android:attr/listSeparatorTextViewStyle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/MovementIntroMsg_1"
-        android:id="@+id/txtTheMovement"
-        android:textSize="15sp"
         android:padding="15dp"
-        style="?android:attr/listSeparatorTextViewStyle"
+        android:text="@string/MovementIntroMsg_1"
         android:textColor="@color/primary_material_dark"
+        android:textSize="15sp"
         android:layout_below="@+id/imgHeader"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="26dp" />
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/btnTakeAction"
-            android:onClick="takeAction"
-            android:text="Take Action Now!"
-            android:layout_below="@+id/txtTheMovement"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true" />
+        android:layout_alignParentEnd="true" />
 
     <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Why?"
-            android:id="@+id/bthWhy"
-            android:onClick="whyTakeAction"
+        android:id="@+id/btnTakeAction"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="takeAction"
+        android:text="Take Action Now!"
+        android:layout_below="@+id/txtTheMovement"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/txtTheMovement"
+        android:backgroundTint="@android:color/holo_blue_light" />
+
+    <Button
+        android:id="@+id/bthWhy"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:onClick="whyTakeAction"
+        android:text="Why?"
         android:layout_below="@+id/btnTakeAction"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true" />
+        android:layout_alignParentStart="true"
+        android:backgroundTint="@android:color/holo_blue_light" />
 
 </RelativeLayout>
