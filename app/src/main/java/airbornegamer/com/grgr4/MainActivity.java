@@ -5,7 +5,6 @@ import java.util.Random;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -13,12 +12,13 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.os.Bundle;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-public class MainActivity extends ActionBarActivity implements ActionBar.TabListener {
+public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
@@ -62,9 +62,6 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
                                     //.setIcon()
                             .setTabListener(this));
         }
-
-
-
     }
 
     @Override
@@ -85,7 +82,7 @@ public class MainActivity extends ActionBarActivity implements ActionBar.TabList
         String imgMainHeaderConstant = "@drawable/home_header_";
         ImageView mainHeaderImage = (ImageView) findViewById(R.id.imgHeader);
 
-        int i = randomNumber.nextInt(4) + 1;
+        int i = randomNumber.nextInt(3) + 1;
         String randomImage = Integer.toString(i);
         String imageURI = imgMainHeaderConstant + randomImage ;
 

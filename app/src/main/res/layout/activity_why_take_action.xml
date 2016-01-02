@@ -6,11 +6,10 @@
 
     <ImageView
         android:layout_width="wrap_content"
-        android:layout_height="200dp"
+        android:layout_height="150dp"
         android:id="@+id/imgcrossingdelaware"
-        android:src="@drawable/crossingthedelaware"
+        android:src="@drawable/gadsenflag"
         android:layout_alignParentTop="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
     <ScrollView
@@ -24,9 +23,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/whyTakeActionHeader"
-        android:id="@+id/txtWhyTakeAction"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imgcrossingdelaware" />
+        android:id="@+id/txtWhyTakeAction" />
     </ScrollView>
 </RelativeLayout>

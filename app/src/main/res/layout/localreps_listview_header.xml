@@ -62,8 +62,18 @@
         android:text="Build Email!"
         android:id="@+id/button7"
         android:onClick="buildCustomEmail"
-        android:backgroundTint="@android:color/holo_red_light"
+        android:backgroundTint="#E0162B"
         android:layout_alignBottom="@+id/txtChangeState"
         android:layout_alignParentEnd="true" />
+
+    <Button
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="help"
+        android:id="@+id/button8"
+        android:layout_above="@+id/button7"
+        android:layout_alignParentEnd="true"
+        android:backgroundTint="#FFFFFF"/>
 
 </RelativeLayout>

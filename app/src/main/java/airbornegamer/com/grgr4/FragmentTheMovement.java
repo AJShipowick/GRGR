@@ -19,6 +19,8 @@ public class FragmentTheMovement extends Fragment {
         return view;
     }
 
+    //American Flag HEX Colors
+    //http://www.colourlovers.com/palette/3263/American_Flag
     public static FragmentTheMovement newInstance(int sectionNumber) {
         FragmentTheMovement fragment = new FragmentTheMovement();
         Bundle args = new Bundle();
