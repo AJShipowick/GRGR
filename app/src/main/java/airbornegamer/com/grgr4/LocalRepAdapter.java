@@ -25,6 +25,9 @@ public class LocalRepAdapter extends ArrayAdapter<RepRow> {
         this.data = list;
     }
 
+    //todo Fix check box problem:
+    //http://stackoverflow.com/questions/11190390/checking-a-checkbox-in-listview-makes-other-random-checkboxes-checked-too
+
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
@@ -38,6 +41,7 @@ public class LocalRepAdapter extends ArrayAdapter<RepRow> {
             holder.repPic = (ImageView) row.findViewById(R.id.imgRep);
             holder.repInfo = (TextView) row.findViewById(R.id.txtRepInfo);
             holder.repParty = (ImageView) row.findViewById(R.id.imgRepParty);
+            holder.yourRep = (TextView) row.findViewById(R.id.txtYourRep);
 
             row.setTag(holder);
         } else {
@@ -48,6 +52,7 @@ public class LocalRepAdapter extends ArrayAdapter<RepRow> {
         holder.repPic.setImageDrawable(repRow.repPic);
         holder.repInfo.setText(repRow.repInfo);
         holder.repParty.setImageDrawable(repRow.repParty);
+        holder.yourRep.setText(repRow.yourRep);
 
         return row;
     }
@@ -56,6 +61,7 @@ public class LocalRepAdapter extends ArrayAdapter<RepRow> {
         ImageView repPic;
         TextView repInfo;
         ImageView repParty;
+        TextView yourRep;
     }
 }
 

@@ -51,6 +51,7 @@ public class ActivityLocalReps extends Activity {
         repData = new LocalRepData(this);
 
         if (userHasSelectedStateManually(savedInstanceState)) {
+            stateSpecificRepData = repData.buildStateSpecificData(stateAbbreviation);
             start_Main_UI_Flow();
         } else {
             buildPageBasedOnGPS();
@@ -91,10 +92,10 @@ public class ActivityLocalReps extends Activity {
         }
 
         if (!currentState.equals("UnknownState") && repData.stateIsKnown(stateAbbreviation)) {
-
-            //Best case scenario to here.
-            start_Main_UI_Flow();
             try {
+                //Best case scenario to here.
+                //todo put spinner or waiter on screen waiting for the below actions to complete....
+                stateSpecificRepData = repData.buildStateSpecificData(stateAbbreviation);
                 new selectRepsBasedOnZipCode().execute(zipCode);
                 //addRepRowsToView(stateSpecificRepData);
             } catch (Exception ex) {
@@ -111,7 +112,6 @@ public class ActivityLocalReps extends Activity {
 
     public void start_Main_UI_Flow() {
         try {
-            stateSpecificRepData = repData.buildStateSpecificData(stateAbbreviation);
             setupAdapter();
             new getRepInfoAndPictures().execute(stateSpecificRepData);
 
@@ -122,7 +122,6 @@ public class ActivityLocalReps extends Activity {
 
     LocalRepAdapter adapter = null;
     public void setupAdapter() {
-        //ArrayList<RepRow> blankRepRows = new  ArrayList<>();
         adapter = new LocalRepAdapter(this, R.layout.list_reps, new ArrayList<RepRow>());
         repsListView = (ListView) findViewById(R.id.listView_Reps);
 
@@ -134,26 +133,22 @@ public class ActivityLocalReps extends Activity {
         repsListView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
 
-        setupChangeStateEventListener();
+        setupChangeStateEventListeners();
     }
 
     public void addRepRowsToView(ArrayList<RepRow> repInfoAndPicture) {
-        //ListView currentRepListView = (ListView) findViewById(R.id.listView_Reps);
-
         adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
-
         repsListView = (ListView) findViewById(R.id.listView_Reps);
         repsListView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
     }
 
-    public void setupChangeStateEventListener() {
+    public void setupChangeStateEventListeners() {
         TextView txtChangeStates = (TextView) findViewById(R.id.txtChangeState);
         txtChangeStates.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getApplicationContext(), ChangeState.class);
-
                 startActivity(intent);
             }
         });
@@ -185,7 +180,6 @@ public class ActivityLocalReps extends Activity {
     public void setRepAsLocalRep(ArrayList<String> specificReps) {
 
         //Compares all reps in state reps for user's specific zip code.
-
         for (RepDetailInfo stateRepresentative : stateSpecificRepData) {
 
             String stateRepFullName = stateRepresentative.firstName + " " + stateRepresentative.lastName;
@@ -195,7 +189,6 @@ public class ActivityLocalReps extends Activity {
                 }
             }
         }
-
         Collections.sort(stateSpecificRepData, new Comparator<RepDetailInfo>() {
             @Override
             public int compare(RepDetailInfo abc1, RepDetailInfo abc2) {
@@ -204,7 +197,7 @@ public class ActivityLocalReps extends Activity {
         });
     }
 
-    private BitmapDrawable MatchPictureToRepInfo(String repID) {
+    private BitmapDrawable matchPictureToRepInfo(String repID) {
 
         AssetManager assets = getApplicationContext().getResources().getAssets();
         try {
@@ -248,16 +241,17 @@ public class ActivityLocalReps extends Activity {
 
                 String currentRep = repTitle + " " + repFirstName + " " + repLastName + " " + repParty;
 
-                BitmapDrawable repImage = MatchPictureToRepInfo(repID);
-                BitmapDrawable repPartyImage = FindRepParty(repParty);
+                BitmapDrawable repImage = matchPictureToRepInfo(repID);
+                BitmapDrawable repPartyImage = findRepParty(repParty);
+                String yourRepresentative = getMyRepresentativeText(params[0].get(i).isUserRepresentative, repTitle);
 
-                RepRow newRepData = new RepRow(repImage, currentRep, repID, repPartyImage);
+                RepRow newRepData = new RepRow(repImage, currentRep, repID, repPartyImage, yourRepresentative);
                 repRowToDisplay.add(newRepData);
             }
             return repRowToDisplay;
         }
 
-        BitmapDrawable FindRepParty(String repParty) {
+        BitmapDrawable findRepParty(String repParty) {
 
             AssetManager assets = getApplicationContext().getResources().getAssets();
             try {
@@ -283,6 +277,15 @@ public class ActivityLocalReps extends Activity {
         }
     }
 
+    String getMyRepresentativeText(boolean isUserRepresentative, String repTitle){
+
+        if (isUserRepresentative) {
+            return (repTitle == "Sen")? "Your Senator!" : "Your Representative!";
+        }else{
+            return "";
+        }
+    }
+
     //using Jsoup to parse HTML.
     //http://jsoup.org/apidocs/org/jsoup/nodes/Element.html#getElementsByClass-java.lang.String-
     private class selectRepsBasedOnZipCode extends AsyncTask<String, Void, ArrayList<String>> {
@@ -301,17 +304,16 @@ public class ActivityLocalReps extends Activity {
                 for (Element name : content) {
                     UserRepsBasedOnZip.add(name.childNode(0).toString().trim());
                 }
-
             } catch (Exception ex) {
                 //todo handle ex here
             }
-
             return UserRepsBasedOnZip;
         }
 
         @Override
         protected void onPostExecute(ArrayList<String> UserRepsBasedOnZip) {
             setRepAsLocalRep(UserRepsBasedOnZip);
+            start_Main_UI_Flow();
         }
     }
 
