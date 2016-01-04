@@ -62,11 +62,8 @@ class LocalRepData {
                 String repTitle = RepArray[3].substring(6);
                 String repFirstName = RepArray[4].substring(10);
                 String repLastName = RepArray[5].substring(9);
-                boolean isUserRepresentative = false; //always false to start, being set later.
 
-                //todo sort here?
-
-                RepDetailInfo currentRepInfo = new RepDetailInfo(repID, repState, repParty, repTitle, repFirstName, repLastName, isUserRepresentative);
+                RepDetailInfo currentRepInfo = new RepDetailInfo(repID, repState, repParty, repTitle, repFirstName, repLastName, false);
 
                 allRepInfo.add(currentRepInfo);
             }

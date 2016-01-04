@@ -3,6 +3,7 @@ package airbornegamer.com.grgr4;
 import java.util.Locale;
 import java.util.Random;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;

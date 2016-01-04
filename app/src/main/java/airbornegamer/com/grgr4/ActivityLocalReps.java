@@ -6,6 +6,7 @@ package airbornegamer.com.grgr4;
 //https://www.opencongress.org/
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.AssetManager;
@@ -43,11 +44,14 @@ public class ActivityLocalReps extends Activity {
     String zipCode = "";
     ArrayList<RepDetailInfo> stateSpecificRepData;
     Context context = this;
+    ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_reps);
+
+        dialog = ProgressDialog.show(context, "Finding Representatives", "Freedom loading...", true);
         repData = new LocalRepData(this);
 
         if (userHasSelectedStateManually(savedInstanceState)) {
@@ -77,7 +81,6 @@ public class ActivityLocalReps extends Activity {
         String currentState;
 
         if (userIsConnectedToInternet) {
-
             Map<String, String> StateData = internet.getCurrentUserLocation(this, repData);
             currentState = StateData.get("State");
             zipCode = StateData.get("ZipCode");
@@ -114,6 +117,7 @@ public class ActivityLocalReps extends Activity {
         try {
             setupAdapter();
             new getRepInfoAndPictures().execute(stateSpecificRepData);
+            dialog.dismiss();
 
         } catch (Exception ex) {
             //todo handle this
@@ -280,7 +284,7 @@ public class ActivityLocalReps extends Activity {
     String getMyRepresentativeText(boolean isUserRepresentative, String repTitle){
 
         if (isUserRepresentative) {
-            return (repTitle == "Sen")? "Your Senator!" : "Your Representative!";
+            return (repTitle.toUpperCase().equals("SEN")? "Your Senator!" : "Your Representative!");
         }else{
             return "";
         }
