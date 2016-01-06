@@ -6,10 +6,10 @@
     android:padding="5dp">
 
     <ImageView android:id="@+id/imgRep"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="85dp"
+        android:layout_height="85dp"
         android:gravity="center_vertical"
-        android:layout_marginEnd="15dp"
+        android:layout_marginEnd="10dp"
         android:layout_marginTop="5dp"
         android:src="@drawable/unknownrep"
         android:clickable="true" />
@@ -17,8 +17,7 @@
     <TextView android:id="@+id/txtRepInfo"
         android:layout_width="200dp"
         android:layout_height="40dp"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:gravity="center|left"
+        android:gravity="start|center"
         android:textStyle="bold"
         android:textColor="#000000"
         android:text="Rep Name"
@@ -48,6 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Contact"
+        android:focusable="false"
         android:id="@+id/chkContactRepresentative"
         android:layout_below="@+id/txtYourRep"
         android:layout_alignEnd="@+id/imgRepParty" />

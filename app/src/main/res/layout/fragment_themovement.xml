@@ -13,17 +13,9 @@
         android:layout_height="50dp"
         android:gravity="left"
         android:src="@drawable/home_header_side_1"
-        android:layout_alignTop="@+id/imgRightBorder"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
-    <ImageView
-        android:id="@+id/imgRightBorder"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:gravity="right"
-        android:src="@drawable/home_header_side_1"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -34,12 +26,12 @@
 
     <ImageView
         android:id="@+id/imgHeader"
-        android:layout_width="170dp"
-        android:layout_height="130dp"
+        android:layout_width="180dp"
+        android:layout_height="140dp"
         android:contentDescription="picEagleFlag"
         android:src="@drawable/home_header_1"
         android:longClickable="false"
-        android:layout_alignParentTop="true"
+        android:layout_alignTop="@+id/imageView"
         android:layout_alignParentStart="true" />
 
     <Button
@@ -48,6 +40,7 @@
         android:layout_height="wrap_content"
         android:onClick="takeAction"
         android:text="Take Action Now!"
+        android:textColor="#FFFFFF"
         android:backgroundTint="#0052A5"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"

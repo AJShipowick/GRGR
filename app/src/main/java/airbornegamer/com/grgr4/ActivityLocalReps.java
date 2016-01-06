@@ -18,6 +18,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -97,10 +99,8 @@ public class ActivityLocalReps extends Activity {
         if (!currentState.equals("UnknownState") && repData.stateIsKnown(stateAbbreviation)) {
             try {
                 //Best case scenario to here.
-                //todo put spinner or waiter on screen waiting for the below actions to complete....
                 stateSpecificRepData = repData.buildStateSpecificData(stateAbbreviation);
                 new selectRepsBasedOnZipCode().execute(zipCode);
-                //addRepRowsToView(stateSpecificRepData);
             } catch (Exception ex) {
                 //todo handle this
             }
@@ -125,6 +125,7 @@ public class ActivityLocalReps extends Activity {
     }
 
     LocalRepAdapter adapter = null;
+
     public void setupAdapter() {
         adapter = new LocalRepAdapter(this, R.layout.list_reps, new ArrayList<RepRow>());
         repsListView = (ListView) findViewById(R.id.listView_Reps);
@@ -148,6 +149,7 @@ public class ActivityLocalReps extends Activity {
     }
 
     public void setupChangeStateEventListeners() {
+
         TextView txtChangeStates = (TextView) findViewById(R.id.txtChangeState);
         txtChangeStates.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -248,8 +250,9 @@ public class ActivityLocalReps extends Activity {
                 BitmapDrawable repImage = matchPictureToRepInfo(repID);
                 BitmapDrawable repPartyImage = findRepParty(repParty);
                 String yourRepresentative = getMyRepresentativeText(params[0].get(i).isUserRepresentative, repTitle);
+                Boolean repSelected = (yourRepresentative.equals(""))? false : true;
 
-                RepRow newRepData = new RepRow(repImage, currentRep, repID, repPartyImage, yourRepresentative);
+                RepRow newRepData = new RepRow(repImage, currentRep, repID, repPartyImage, yourRepresentative, repSelected);
                 repRowToDisplay.add(newRepData);
             }
             return repRowToDisplay;
@@ -281,11 +284,11 @@ public class ActivityLocalReps extends Activity {
         }
     }
 
-    String getMyRepresentativeText(boolean isUserRepresentative, String repTitle){
+    String getMyRepresentativeText(boolean isUserRepresentative, String repTitle) {
 
         if (isUserRepresentative) {
-            return (repTitle.toUpperCase().equals("SEN")? "Your Senator!" : "Your Representative!");
-        }else{
+            return (repTitle.toUpperCase().equals("SEN") ? "Your Senator!" : "Your Representative!");
+        } else {
             return "";
         }
     }
@@ -321,7 +324,7 @@ public class ActivityLocalReps extends Activity {
         }
     }
 
-    public void buildCustomEmail(View view){
+    public void buildCustomEmail(View view) {
         startActivity(new Intent(getApplicationContext(), BuildCustomEmailActivity.class));
     }
 

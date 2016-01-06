@@ -8,13 +8,15 @@ public class RepRow {
     public String repID;
     public BitmapDrawable repParty;
     public String yourRep;
+    public Boolean isRepSelected;
 
-    public RepRow(BitmapDrawable repPic, String repInfo, String repID, BitmapDrawable repParty, String yourRep) {
+    public RepRow(BitmapDrawable repPic, String repInfo, String repID, BitmapDrawable repParty, String yourRep, Boolean isRepSelected) {
         super();
         this.repPic = repPic;
         this.repInfo = repInfo;
         this.repID = repID;
         this.repParty = repParty;
         this.yourRep = yourRep;
+        this.isRepSelected = isRepSelected;
     }
 }

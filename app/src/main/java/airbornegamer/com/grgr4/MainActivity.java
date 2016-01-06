@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     public void setLeftAndRightHeaderImages(Random randomNumber){
         String imgMainHeaderSideConstant = "@drawable/home_header_side_";
         ImageView leftHeaderImages = (ImageView) findViewById(R.id.imgLeftBorder);
-        ImageView rightHeaderImages = (ImageView) findViewById(R.id.imgRightBorder);
+        //ImageView rightHeaderImages = (ImageView) findViewById(R.id.imgRightBorder);
 
         int i = randomNumber.nextInt(4) + 1;
         String randomImage = Integer.toString(i);
@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         int imageResource = getResources().getIdentifier(imageName, null, getPackageName());
         Drawable res = getResources().getDrawable(imageResource);
         leftHeaderImages.setImageDrawable(res);
-        rightHeaderImages.setImageDrawable(res);
+        //rightHeaderImages.setImageDrawable(res);
     }
 
     @Override
