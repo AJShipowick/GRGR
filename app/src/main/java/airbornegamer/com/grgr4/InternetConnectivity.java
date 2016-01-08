@@ -20,7 +20,7 @@ public class InternetConnectivity {
         return cm.getActiveNetworkInfo().isConnected();
     }
 
-    public Map<String, String> getCurrentUserLocation(Context mContext, LocalRepData repData) {
+    public Map<String, String> getCurrentUserLocation(Context mContext, LocalRepDataHelper repData) {
 
         Map<String, String> UserLocationInfo = new HashMap<>();
 

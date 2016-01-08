@@ -18,23 +18,18 @@ public class LocalRepAdapter extends ArrayAdapter<RepRow> {
     Context context;
     int layoutResourceId;
     ArrayList<RepRow> data = null;
-    private ArrayList<Boolean> itemChecked = new ArrayList<>();
 
     public LocalRepAdapter(Context context, int layoutResourceId, ArrayList<RepRow> list) {
         super(context, layoutResourceId, list);
         this.layoutResourceId = layoutResourceId;
         this.context = context;
         this.data = list;
-
-        for (int i = 0; i < this.getCount(); i++) {
-            itemChecked.add(i, this.data.get(i).isRepSelected); // checks items if they are user's rep
-        }
     }
 
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         View row = convertView;
-         final RepsHolder holder;//final
+        RepsHolder holder;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();
@@ -51,29 +46,12 @@ public class LocalRepAdapter extends ArrayAdapter<RepRow> {
             holder = (RepsHolder) row.getTag();
         }
 
-        RepRow repRow = data.get(position); //final
+        RepRow repRow = data.get(position);
         holder.repPic.setImageDrawable(repRow.repPic);
         holder.repInfo.setText(repRow.repInfo);
         holder.repParty.setImageDrawable(repRow.repParty);
         holder.yourRep.setText(repRow.yourRep);
-        holder.isRepSelected = false;
 
-        final CheckBox cBox = (CheckBox) row.findViewById(R.id.chkContactRepresentative);
-        cBox.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                CheckBox cb = (CheckBox) view.findViewById(R.id.chkContactRepresentative);
-                if (cb.isChecked()) {
-                    itemChecked.set(position, true);
-                    holder.isRepSelected = true;
-                } else {
-                    itemChecked.set(position, false);
-                    holder.isRepSelected = false;
-                }
-            }
-        });
-
-        cBox.setChecked(itemChecked.get(position));
         return row;
     }
 
@@ -82,7 +60,6 @@ public class LocalRepAdapter extends ArrayAdapter<RepRow> {
         TextView repInfo;
         ImageView repParty;
         TextView yourRep;
-        Boolean isRepSelected;
     }
 }
 

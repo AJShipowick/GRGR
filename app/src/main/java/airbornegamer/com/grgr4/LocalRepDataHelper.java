@@ -9,18 +9,43 @@ import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-class LocalRepData {
+class LocalRepDataHelper {
 
     Context mContext;
 
-    public LocalRepData(Context mContext) {
+    public LocalRepDataHelper(Context mContext) {
         this.mContext = mContext;
+    }
+
+    BitmapDrawable matchPictureToRepInfo(String repID) {
+
+        AssetManager assets = mContext.getResources().getAssets();
+        try {
+            InputStream buffer = new BufferedInputStream((assets.open("repid" + repID + ".jpg")));
+
+            Bitmap bitmap = BitmapFactory.decodeStream(buffer);
+            if (bitmap == null) {
+                return new BitmapDrawable(mContext.getResources(), BitmapFactory.decodeResource(mContext.getResources(), R.drawable.unknownrep));
+            }
+            //GOOD!
+            return new BitmapDrawable(mContext.getResources(), bitmap);
+
+        } catch (Exception ex1) {
+            //todo handle this
+            try {
+                return new BitmapDrawable(mContext.getResources(), BitmapFactory.decodeResource(mContext.getResources(), R.drawable.unknownrep));
+            } catch (Exception ex2) {
+                //todo handle this
+                return null;
+            }
+        }
     }
 
     public String getStateAbbreviationAndFullName(String fullStateName) {
@@ -46,6 +71,33 @@ class LocalRepData {
         return false;
     }
 
+    public RepDetailInfo buildSelectedRepInfo(String repID) {
+
+        String[] allRepData = mContext.getResources().getStringArray(R.array.RepData);
+        for (int i = 0; i < allRepData.length; i++) {
+            String[] RepArray = allRepData[i].split(",");
+            String id = RepArray[0].substring(3);
+
+            if (repID.equals(id)) {
+                //String repID = RepArray[0].substring(3);
+                String repState = RepArray[1].substring(7);
+                String repParty = RepArray[2].substring(7);
+                String repTitle = RepArray[3].substring(7);
+                String repFirstName = RepArray[4].substring(11);
+                String repLastName = RepArray[5].substring(10);
+                String repAddress = RepArray[6].substring(9);
+                String repPhone = RepArray[7].substring(7);
+                String repWebiste = RepArray[8].substring(9);
+                String repTwitter = RepArray[9].substring(9);
+                String repYouTube = RepArray[10].substring(9);
+                String repEmail = RepArray[11].substring(14);
+
+                return new RepDetailInfo(repID, repState, repParty, repTitle, repFirstName, repLastName, false, repAddress, repPhone, repWebiste, repTwitter, repYouTube, repEmail);
+            }
+        }
+        return null;
+    }
+
     public ArrayList<RepDetailInfo> buildStateSpecificData(String currentState) {
 
         ArrayList<RepDetailInfo> allRepInfo = new ArrayList<>();
@@ -53,17 +105,23 @@ class LocalRepData {
         String[] allRepData = mContext.getResources().getStringArray(R.array.RepData);
         for (int i = 0; i < allRepData.length; i++) {
             String[] RepArray = allRepData[i].split(",");
-            String state = RepArray[1].substring(6);
+            String state = RepArray[1].substring(7);
             if (currentState.equals(state)) {
 
                 String repID = RepArray[0].substring(3);
-                String repState = RepArray[1].substring(6);
-                String repParty = RepArray[2].substring(6);
-                String repTitle = RepArray[3].substring(6);
-                String repFirstName = RepArray[4].substring(10);
-                String repLastName = RepArray[5].substring(9);
+                String repState = RepArray[1].substring(7);
+                String repParty = RepArray[2].substring(7);
+                String repTitle = RepArray[3].substring(7);
+                String repFirstName = RepArray[4].substring(11);
+                String repLastName = RepArray[5].substring(10);
+                String repAddress = RepArray[6].substring(9);
+                String repPhone = RepArray[7].substring(7);
+                String repWebiste = RepArray[8].substring(9);
+                String repTwitter = RepArray[9].substring(9);
+                String repYouTube = RepArray[10].substring(9);
+                String repEmail = RepArray[11].substring(14);
 
-                RepDetailInfo currentRepInfo = new RepDetailInfo(repID, repState, repParty, repTitle, repFirstName, repLastName, false);
+                RepDetailInfo currentRepInfo = new RepDetailInfo(repID, repState, repParty, repTitle, repFirstName, repLastName, false, repAddress, repPhone, repWebiste, repTwitter, repYouTube, repEmail);
 
                 allRepInfo.add(currentRepInfo);
             }
@@ -81,6 +139,7 @@ class LocalRepData {
     }
 
     View myHeader;
+
     public void buildCustomStateHeader(View header, String stateFullName) {
 
         //Set State Flag
@@ -128,6 +187,7 @@ class LocalRepData {
             asyncCallbackSetStateFlag(currentFlag);
         }
     }
+
     public void asyncCallbackSetStateFlag(Bitmap stateFlag) {
         ImageView currentStateFlag = (ImageView) myHeader.findViewById(R.id.imgCurrentState);
         currentStateFlag.setImageBitmap(stateFlag);
@@ -160,6 +220,7 @@ class LocalRepData {
             asyncCallbackSetStateOutline(currentFlag);
         }
     }
+
     public void asyncCallbackSetStateOutline(Bitmap stateOutline) {
         ImageView currentStateOutline = (ImageView) myHeader.findViewById(R.id.imgCurrentStateOutline);
         currentStateOutline.setImageBitmap(stateOutline);

@@ -78,9 +78,8 @@
             android:label="@string/title_activity_read_otherAmendments" >
         </activity>
         <activity
-            android:name=".BuildCustomEmailActivity"
-            android:label="@string/title_activity_build_custom_email"
-            android:theme="@style/AppTheme.NoActionBar" >
+            android:name=".LocalRepDetailedInformation"
+            android:label="@string/contact_rep">
         </activity>
     </application>
 

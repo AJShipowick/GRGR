@@ -2,79 +2,40 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="240dp"
-        android:layout_height="wrap_content"
-        android:id="@+id/linearLayout">
-
-        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-            android:layout_width="125dp"
-            android:layout_height="wrap_content"
-            android:gravity="start">
-
-            <ImageView
-                android:id="@+id/imgCurrentState"
-                android:layout_width="125sp"
-                android:layout_height="75sp"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentStart="true" />
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="end">
-
-            <TextView
-                android:id="@+id/txtCurrentState"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="State"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true" />
-
-            <ImageView
-                android:id="@+id/imgCurrentStateOutline"
-                android:layout_width="60sp"
-                android:layout_height="50sp"
-                android:layout_below="@+id/txtCurrentState"
-                android:layout_alignParentStart="true" />
-
-        </RelativeLayout>
-    </LinearLayout>
+    <ImageView
+        android:id="@+id/imgCurrentState"
+        android:layout_width="125sp"
+        android:layout_height="95sp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true" />
 
     <TextView
-    android:id="@+id/txtChangeState"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:clickable="true"
-    android:text="Change State?"
-    android:textAppearance="?android:attr/textAppearanceSmall"
-    android:paddingStart="5dp"
-    android:layout_below="@+id/linearLayout"
-    android:layout_alignParentStart="true" />
-
-    <Button
+        android:id="@+id/txtChangeState"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Build Email!"
-        android:textColor="#FFFFFF"
-        android:id="@+id/button7"
-        android:onClick="buildCustomEmail"
-        android:backgroundTint="#E0162B"
-        android:layout_alignBottom="@+id/txtChangeState"
-        android:layout_alignParentEnd="true" />
+        android:clickable="true"
+        android:paddingStart="5dp"
+        android:text="Change State?"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_below="@+id/imgCurrentState"
+        android:layout_alignParentStart="true"
+        android:layout_alignEnd="@+id/imgCurrentState" />
 
-    <Button
-        style="?android:attr/buttonStyleSmall"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="help"
-        android:id="@+id/button8"
-        android:layout_above="@+id/button7"
+    <ImageView
+        android:id="@+id/imgCurrentStateOutline"
+        android:layout_width="120sp"
+        android:layout_height="95sp"
+        android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
-        android:backgroundTint="#FFFFFF"/>
+        android:layout_above="@+id/txtChangeState" />
 
+    <TextView
+        android:id="@+id/txtCurrentState"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="State"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:layout_alignTop="@+id/txtChangeState"
+        android:layout_alignEnd="@+id/imgCurrentStateOutline"
+        android:layout_alignStart="@+id/imgCurrentStateOutline" />
 </RelativeLayout>

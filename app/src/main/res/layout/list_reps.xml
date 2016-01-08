@@ -14,15 +14,25 @@
         android:src="@drawable/unknownrep"
         android:clickable="true" />
 
+    <ImageView android:id="@+id/imgRepParty"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_gravity="right"
+        android:src="@drawable/usflagwaving2"
+        android:padding="5dp"
+        android:layout_alignBottom="@+id/imgRep"
+        android:layout_alignParentEnd="true"
+        android:layout_marginBottom="25dp" />
+
     <TextView android:id="@+id/txtRepInfo"
-        android:layout_width="200dp"
-        android:layout_height="40dp"
-        android:gravity="start|center"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:textStyle="bold"
         android:textColor="#000000"
+        android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Rep Name"
-        android:layout_toEndOf="@+id/imgRep"
-        android:layout_alignTop="@+id/imgRepParty" />
+        android:layout_above="@+id/imgRepParty"
+        android:layout_toEndOf="@+id/imgRep" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -34,21 +44,4 @@
         android:layout_below="@+id/txtRepInfo"
         android:layout_alignStart="@+id/txtRepInfo" />
 
-    <ImageView android:id="@+id/imgRepParty"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
-        android:layout_gravity="right"
-        android:src="@drawable/usflagwaving2"
-        android:padding="5dp"
-        android:layout_alignTop="@+id/imgRep"
-        android:layout_alignParentEnd="true" />
-
-    <CheckBox
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Contact"
-        android:focusable="false"
-        android:id="@+id/chkContactRepresentative"
-        android:layout_below="@+id/txtYourRep"
-        android:layout_alignEnd="@+id/imgRepParty" />
 </RelativeLayout>

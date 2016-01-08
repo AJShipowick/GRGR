@@ -19,7 +19,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.CheckBox;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -31,6 +30,7 @@ import org.jsoup.select.Elements;
 
 import java.io.BufferedInputStream;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -39,7 +39,7 @@ import java.util.Map;
 //todo popular state facts? http://www.50states.com/
 public class ActivityLocalReps extends Activity {
 
-    LocalRepData repData = null;
+    LocalRepDataHelper repDataHelper = null;
     ListView repsListView;
     String stateFullName = "";
     String stateAbbreviation = "";
@@ -54,10 +54,10 @@ public class ActivityLocalReps extends Activity {
         setContentView(R.layout.activity_local_reps);
 
         dialog = ProgressDialog.show(context, "Finding Representatives", "Freedom loading...", true);
-        repData = new LocalRepData(this);
+        repDataHelper = new LocalRepDataHelper(this);
 
         if (userHasSelectedStateManually(savedInstanceState)) {
-            stateSpecificRepData = repData.buildStateSpecificData(stateAbbreviation);
+            stateSpecificRepData = repDataHelper.buildStateSpecificData(stateAbbreviation);
             start_Main_UI_Flow();
         } else {
             buildPageBasedOnGPS();
@@ -68,7 +68,7 @@ public class ActivityLocalReps extends Activity {
         String userSelectedState = getUserSelectedState(savedInstanceState);
 
         if (userSelectedState != null && userSelectedState.length() > 0) {
-            String stateFullNameAndAbbreviation = repData.getStateAbbreviationAndFullName(userSelectedState);
+            String stateFullNameAndAbbreviation = repDataHelper.getStateAbbreviationAndFullName(userSelectedState);
             String[] StatePair = stateFullNameAndAbbreviation.split(",");
             stateFullName = StatePair[0];
             stateAbbreviation = StatePair[1];
@@ -83,7 +83,7 @@ public class ActivityLocalReps extends Activity {
         String currentState;
 
         if (userIsConnectedToInternet) {
-            Map<String, String> StateData = internet.getCurrentUserLocation(this, repData);
+            Map<String, String> StateData = internet.getCurrentUserLocation(this, repDataHelper);
             currentState = StateData.get("State");
             zipCode = StateData.get("ZipCode");
 
@@ -96,10 +96,10 @@ public class ActivityLocalReps extends Activity {
             currentState = "UnknownState";
         }
 
-        if (!currentState.equals("UnknownState") && repData.stateIsKnown(stateAbbreviation)) {
+        if (!currentState.equals("UnknownState") && repDataHelper.stateIsKnown(stateAbbreviation)) {
             try {
                 //Best case scenario to here.
-                stateSpecificRepData = repData.buildStateSpecificData(stateAbbreviation);
+                stateSpecificRepData = repDataHelper.buildStateSpecificData(stateAbbreviation);
                 new selectRepsBasedOnZipCode().execute(zipCode);
             } catch (Exception ex) {
                 //todo handle this
@@ -132,7 +132,7 @@ public class ActivityLocalReps extends Activity {
 
         //Set the header including current state flag
         View header = getLayoutInflater().inflate(R.layout.localreps_listview_header, null);
-        repData.buildCustomStateHeader(header, stateFullName);
+        repDataHelper.buildCustomStateHeader(header, stateFullName);
 
         repsListView.addHeaderView(header);
         repsListView.setAdapter(adapter);
@@ -141,11 +141,26 @@ public class ActivityLocalReps extends Activity {
         setupChangeStateEventListeners();
     }
 
-    public void addRepRowsToView(ArrayList<RepRow> repInfoAndPicture) {
+    public void addRepRowsToView(final ArrayList<RepRow> repInfoAndPicture) {
         adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
         repsListView = (ListView) findViewById(R.id.listView_Reps);
         repsListView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
+
+        repsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
+                Intent intent = new Intent(getApplicationContext(), LocalRepDetailedInformation.class);
+
+                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                RepRow currentRep = (RepRow) adapterView.getAdapter().getItem(position);
+                String selectedRepID = currentRep.repID;
+
+                intent.putExtra("RepID", selectedRepID);
+                startActivity(intent);
+                //finish();
+            }
+        });
     }
 
     public void setupChangeStateEventListeners() {
@@ -203,7 +218,7 @@ public class ActivityLocalReps extends Activity {
         });
     }
 
-    private BitmapDrawable matchPictureToRepInfo(String repID) {
+/*    BitmapDrawable matchPictureToRepInfo(String repID) {
 
         AssetManager assets = getApplicationContext().getResources().getAssets();
         try {
@@ -225,7 +240,7 @@ public class ActivityLocalReps extends Activity {
                 return null;
             }
         }
-    }
+    }*/
 
     private class getRepInfoAndPictures extends AsyncTask<ArrayList<RepDetailInfo>, Void, ArrayList<RepRow>> {
 
@@ -247,12 +262,11 @@ public class ActivityLocalReps extends Activity {
 
                 String currentRep = repTitle + " " + repFirstName + " " + repLastName + " " + repParty;
 
-                BitmapDrawable repImage = matchPictureToRepInfo(repID);
+                BitmapDrawable repImage = repDataHelper.matchPictureToRepInfo(repID);
                 BitmapDrawable repPartyImage = findRepParty(repParty);
                 String yourRepresentative = getMyRepresentativeText(params[0].get(i).isUserRepresentative, repTitle);
-                Boolean repSelected = (yourRepresentative.equals(""))? false : true;
 
-                RepRow newRepData = new RepRow(repImage, currentRep, repID, repPartyImage, yourRepresentative, repSelected);
+                RepRow newRepData = new RepRow(repImage, currentRep, repID, repPartyImage, yourRepresentative);
                 repRowToDisplay.add(newRepData);
             }
             return repRowToDisplay;
@@ -322,10 +336,6 @@ public class ActivityLocalReps extends Activity {
             setRepAsLocalRep(UserRepsBasedOnZip);
             start_Main_UI_Flow();
         }
-    }
-
-    public void buildCustomEmail(View view) {
-        startActivity(new Intent(getApplicationContext(), BuildCustomEmailActivity.class));
     }
 
     @Override
