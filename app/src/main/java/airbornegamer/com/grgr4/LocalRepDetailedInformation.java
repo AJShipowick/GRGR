@@ -16,6 +16,7 @@ public class LocalRepDetailedInformation extends AppCompatActivity {
         setContentView(R.layout.activity_local_rep_detailed_information);
 
         RepHelper = new LocalRepDataHelper(this);
+        RepHelper.localRepActivityHeader = false;
 
         Bundle extras = getIntent().getExtras();
         String repID = extras.getString("RepID");
@@ -29,40 +30,50 @@ public class LocalRepDetailedInformation extends AppCompatActivity {
 
     void buildRepProfile(String repID){
 
+
         ImageView repImage = (ImageView) findViewById(R.id.largeDetailedRepPic);
         repImage.setImageDrawable(RepHelper.matchPictureToRepInfo(repID));
 
         repDetailedInfo = RepHelper.buildSelectedRepInfo(repID);
-    }
 
-    public void callRep(View v){
+        ImageView repStateView = (ImageView) findViewById(R.id.imgRepSelectedState);
+        ImageView repStateOutlineView = (ImageView) findViewById(R.id.imgRepSelectedStateOutline);
+        String fullStateName = RepHelper.getStateFullNameFromAbbreivation(repDetailedInfo.state);
+        //repStateView.setImageDrawable(RepHelper.getCurrentStateFlagForDetailedRepInfo(fullStateName));
 
-        String phoneNumber = repDetailedInfo.phone;
-
-
-    }
-
-    public void emailRep(View v){
-        String email = repDetailedInfo.email;
-
+        //RepHelper.getFlag(fullStateName);
+        RepHelper.getDetailedStateFlagAndOutline(fullStateName, repStateView, repStateOutlineView);
 
     }
 
-    public void twitterRep(View v){
-        String twitter = repDetailedInfo.twitter;
-
-
-    }
-
-    public void youTubeRep(View v){
-        String youTube = repDetailedInfo.youTube;
-
-
-    }
-
-    public void websiteRep(View v){
-        String website = repDetailedInfo.website;
-
-
-    }
+//    public void callRep(View v) {
+//
+//        String phoneNumber = repDetailedInfo.phone;
+//
+//
+//    }
+//
+//    public void emailRep(View v) {
+//        String email = repDetailedInfo.email;
+//
+//
+//    }
+//
+//    public void twitterRep(View v) {
+//        String twitter = repDetailedInfo.twitter;
+//
+//
+//    }
+//
+//    public void youTubeRep(View v) {
+//        String youTube = repDetailedInfo.youTube;
+//
+//
+//    }
+//
+//    public void websiteRep(View v) {
+//        String website = repDetailedInfo.website;
+//
+//
+//    }
 }

@@ -19,6 +19,7 @@ import java.util.Comparator;
 class LocalRepDataHelper {
 
     Context mContext;
+    boolean localRepActivityHeader = false;
 
     public LocalRepDataHelper(Context mContext) {
         this.mContext = mContext;
@@ -46,6 +47,17 @@ class LocalRepDataHelper {
                 return null;
             }
         }
+    }
+
+    public String getStateFullNameFromAbbreivation(String stateAbbreviation) {
+        String[] knownStates = mContext.getResources().getStringArray(R.array.KnowStates);
+        for (int i = 0; i < knownStates.length; i++) {
+            String[] StatePair = knownStates[i].split(",");
+            //StatePair[0] is full state name (Nebraska) ; StatePair[1] is state abbreviation (NE).
+            if (stateAbbreviation.equals(StatePair[1]))
+                return StatePair[0];
+        }
+        return "UnknownState";
     }
 
     public String getStateAbbreviationAndFullName(String fullStateName) {
@@ -139,13 +151,13 @@ class LocalRepDataHelper {
     }
 
     View myHeader;
-
     public void buildCustomStateHeader(View header, String stateFullName) {
 
         //Set State Flag
         myHeader = header;
+        localRepActivityHeader = true;
         try {
-            new getCurrentStateFlag().execute(stateFullName).get();
+            new getCurrentStateFlagForHeader().execute(stateFullName).get();
         } catch (Exception ex) {
             //todo handle this
         }
@@ -162,7 +174,43 @@ class LocalRepDataHelper {
         txtCurrentState.setText(stateFullName);
     }
 
-    private class getCurrentStateFlag extends AsyncTask<String, Void, Bitmap> {
+    View repStateView;
+    View repStateOutlineView;
+    public void getDetailedStateFlagAndOutline(String fullStateName, View repStateView, View repStateOutlineView) {
+        try {
+            this.repStateView = repStateView;
+            this.repStateOutlineView = repStateOutlineView;
+            new getCurrentStateOutline().execute(fullStateName).get();
+            new getCurrentStateFlagForHeader().execute(fullStateName).get();
+        } catch (Exception ex) {
+
+        }
+    }
+/*    public BitmapDrawable getCurrentStateFlagForDetailedRepInfo(String state) {
+
+        state = state.toLowerCase();
+        if (state.contains(" "))
+            state = state.replace(" ", "_");
+
+        AssetManager assets = mContext.getApplicationContext().getResources().getAssets();
+
+        try {
+            InputStream buffer = new BufferedInputStream((assets.open(state + ".jpg")));
+            Bitmap bitmap = BitmapFactory.decodeStream(buffer);
+            BitmapDrawable bmDrawable = new BitmapDrawable(mContext.getApplicationContext().getResources(), bitmap);
+
+            if (bmDrawable == null) {
+                return null;
+            }
+
+            return bmDrawable;
+
+        } catch (Exception ex) {
+            return null;
+        }
+    }*/
+
+    private class getCurrentStateFlagForHeader extends AsyncTask<String, Void, Bitmap> {
 
         protected Bitmap doInBackground(String... params) {
 
@@ -189,11 +237,17 @@ class LocalRepDataHelper {
     }
 
     public void asyncCallbackSetStateFlag(Bitmap stateFlag) {
-        ImageView currentStateFlag = (ImageView) myHeader.findViewById(R.id.imgCurrentState);
-        currentStateFlag.setImageBitmap(stateFlag);
+        if (localRepActivityHeader) {
+            ImageView currentStateFlag = (ImageView) myHeader.findViewById(R.id.imgCurrentState);
+            currentStateFlag.setImageBitmap(stateFlag);
+        } else {
+            ImageView currentStateFlag = (ImageView) repStateView.findViewById(R.id.imgRepSelectedState);
+            currentStateFlag.setImageBitmap(stateFlag);
+        }
     }
 
-    private class getCurrentStateOutline extends AsyncTask<String, Void, Bitmap> {
+
+    public class getCurrentStateOutline extends AsyncTask<String, Void, Bitmap> {
 
         protected Bitmap doInBackground(String... params) {
             String imageStateName = params[0].toLowerCase();
@@ -222,8 +276,13 @@ class LocalRepDataHelper {
     }
 
     public void asyncCallbackSetStateOutline(Bitmap stateOutline) {
-        ImageView currentStateOutline = (ImageView) myHeader.findViewById(R.id.imgCurrentStateOutline);
-        currentStateOutline.setImageBitmap(stateOutline);
+        if (localRepActivityHeader) {
+            ImageView currentStateOutline = (ImageView) myHeader.findViewById(R.id.imgCurrentStateOutline);
+            currentStateOutline.setImageBitmap(stateOutline);
+        } else {
+            ImageView currentStateOutline = (ImageView) repStateOutlineView.findViewById(R.id.imgRepSelectedStateOutline);
+            currentStateOutline.setImageBitmap(stateOutline);
+        }
     }
 }
 

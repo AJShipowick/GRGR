@@ -7,14 +7,20 @@ package airbornegamer.com.grgr4;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.Image;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -22,6 +28,7 @@ import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -141,6 +148,12 @@ public class ActivityLocalReps extends Activity {
         setupChangeStateEventListeners();
     }
 
+    String phoneNumber;
+    String email;
+    String twitter;
+    String youTube;
+    String website;
+
     public void addRepRowsToView(final ArrayList<RepRow> repInfoAndPicture) {
         adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
         repsListView = (ListView) findViewById(R.id.listView_Reps);
@@ -150,17 +163,105 @@ public class ActivityLocalReps extends Activity {
         repsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                Intent intent = new Intent(getApplicationContext(), LocalRepDetailedInformation.class);
+                //Intent intent = new Intent(getApplicationContext(), LocalRepDetailedInformation.class);
 
-                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 RepRow currentRep = (RepRow) adapterView.getAdapter().getItem(position);
-                String selectedRepID = currentRep.repID;
 
-                intent.putExtra("RepID", selectedRepID);
-                startActivity(intent);
-                //finish();
+                //String selectedRepID = currentRep.repID;
+                LayoutInflater factory = LayoutInflater.from(context);
+                final View msgBoxView = factory.inflate(R.layout.detailed_rep_popup_info, null);
+
+                for (RepDetailInfo stateRepresentative : stateSpecificRepData) {
+                    if (stateRepresentative.id.equals(currentRep.repID)) {
+                        phoneNumber = stateRepresentative.phone;
+                        email = stateRepresentative.email;
+                        twitter = stateRepresentative.twitter;
+                        youTube = stateRepresentative.youTube;
+                        website = stateRepresentative.website;
+
+                        break;
+                        //RepDetailInfo currentSelectedRep = stateRepresentative;
+
+                    }
+                }
+
+
+                final AlertDialog.Builder alertAdd = new AlertDialog.Builder(context);
+                final AlertDialog alert = alertAdd.create();
+
+                ImageView currentRepImage = (ImageView) msgBoxView.findViewById(R.id.currentRepPopupImage);
+                currentRepImage.setImageDrawable(currentRep.repPic);
+
+                alertAdd.setView(msgBoxView);
+
+                alertAdd.setTitle(currentRep.repInfo);
+                alertAdd.setMessage("Contact your representative today!");
+                alertAdd.setNeutralButton("done", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        // continue with closing
+                        alert.cancel();
+                    }
+                });
+                alertAdd.show();
+
+
+/*                RepRow currentRep = (RepRow) adapterView.getAdapter().getItem(position);
+                String selectedRepID = currentRep.repID;*/
+//
+//                intent.putExtra("RepID", selectedRepID);
+//                startActivity(intent);
             }
         });
+    }
+
+    public void callRep(View v) {
+        if (phoneNumber.equals("")) {
+            Toast.makeText(getApplicationContext(), "Unable to find get phone number :(",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
+        startActivity(callIntent);
+    }
+
+    public void emailRep(View v) {
+        if (email.equals("")) {
+            Toast.makeText(getApplicationContext(), "Unable to find get email :(",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent emailIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(email));
+        startActivity(emailIntent);
+    }
+
+    public void twitterRep(View v) {
+        if (twitter.equals("")) {
+            Toast.makeText(getApplicationContext(), "Unable to find get Twitter :(",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + twitter));
+        startActivity(twitterIntent);
+    }
+
+    public void youTubeRep(View v) {
+        if (youTube.equals("")) {
+            Toast.makeText(getApplicationContext(), "Unable to find get YouTube :(",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent youTubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(youTube));
+        startActivity(youTubeIntent);
+    }
+
+    public void websiteRep(View v) {
+        if (website.equals("")) {
+            Toast.makeText(getApplicationContext(), "Unable to find get website :(",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+        Intent websiteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
+        startActivity(websiteIntent);
     }
 
     public void setupChangeStateEventListeners() {
@@ -251,7 +352,7 @@ public class ActivityLocalReps extends Activity {
             for (int i = 0; i < params[0].size(); i++) {
 
                 String repID = params[0].get(i).id;
-                //String repState = params[0].get(i).state;
+                //String repStateView = params[0].get(i).state;
                 String repParty = params[0].get(i).party;
                 String repTitle = params[0].get(i).title;
                 String repFirstName = params[0].get(i).firstName;

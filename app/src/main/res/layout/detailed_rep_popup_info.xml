@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:layout_width="75dp"
+        android:layout_height="75dp"
+        android:padding="3dp"
+        android:id="@+id/currentRepPopupImage"
+        android:src="@drawable/unknownrep"/>
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:id="@+id/imgPhone"
+        android:padding="2dp"
+        android:src="@drawable/phone"
+        android:clickable="true"
+        android:onClick="callRep"
+        android:layout_alignBottom="@+id/currentRepPopupImage"
+        android:layout_toEndOf="@+id/currentRepPopupImage" />
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:id="@+id/imgEmail"
+        android:src="@drawable/gmail"
+        android:padding="2dp"
+        android:onClick="emailRep"
+        android:layout_alignTop="@+id/imgPhone"
+        android:layout_toEndOf="@+id/imgPhone" />
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:id="@+id/imgTwitter"
+        android:src="@drawable/twitter"
+        android:padding="2dp"
+        android:onClick="twitterRep"
+        android:layout_alignTop="@+id/imgEmail"
+        android:layout_toEndOf="@+id/imgEmail" />
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:id="@+id/imgYouTube"
+        android:src="@drawable/youtube"
+        android:padding="4dp"
+        android:onClick="youTubeRep"
+        android:layout_alignTop="@+id/imgWebsite"
+        android:layout_toEndOf="@+id/imgWebsite" />
+
+    <ImageView
+        android:layout_width="35dp"
+        android:layout_height="35dp"
+        android:id="@+id/imgWebsite"
+        android:src="@drawable/website"
+        android:padding="2dp"
+        android:onClick="websiteRep"
+        android:layout_alignTop="@+id/imgTwitter"
+        android:layout_toEndOf="@+id/imgTwitter" />
+
+</RelativeLayout>
