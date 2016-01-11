@@ -24,6 +24,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     SectionsPagerAdapter mSectionsPagerAdapter;
     ViewPager mViewPager;
 
+    //todo implement TabLayout instead of this actionbar stuff...
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -76,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     public void setRandomHeaderImages(){
         Random randomNumber = new Random();
-        setLeftAndRightHeaderImages(randomNumber);
+        //setLeftAndRightHeaderImages(randomNumber);
         setMainHeaderImage(randomNumber);
     }
     public void setMainHeaderImage(Random randomNumber){
@@ -92,20 +93,20 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         mainHeaderImage.setImageDrawable(res);
     }
 
-    public void setLeftAndRightHeaderImages(Random randomNumber){
-        String imgMainHeaderSideConstant = "@drawable/home_header_side_";
-        ImageView leftHeaderImages = (ImageView) findViewById(R.id.imgLeftBorder);
-        //ImageView rightHeaderImages = (ImageView) findViewById(R.id.imgRightBorder);
-
-        int i = randomNumber.nextInt(4) + 1;
-        String randomImage = Integer.toString(i);
-        String imageName = imgMainHeaderSideConstant + randomImage;
-
-        int imageResource = getResources().getIdentifier(imageName, null, getPackageName());
-        Drawable res = getResources().getDrawable(imageResource);
-        leftHeaderImages.setImageDrawable(res);
-        //rightHeaderImages.setImageDrawable(res);
-    }
+//    public void setLeftAndRightHeaderImages(Random randomNumber){
+//        String imgMainHeaderSideConstant = "@drawable/home_header_side_";
+//        ImageView leftHeaderImages = (ImageView) findViewById(R.id.imgLeftBorder);
+//        //ImageView rightHeaderImages = (ImageView) findViewById(R.id.imgRightBorder);
+//
+//        int i = randomNumber.nextInt(4) + 1;
+//        String randomImage = Integer.toString(i);
+//        String imageName = imgMainHeaderSideConstant + randomImage;
+//
+//        int imageResource = getResources().getIdentifier(imageName, null, getPackageName());
+//        Drawable res = getResources().getDrawable(imageResource);
+//        leftHeaderImages.setImageDrawable(res);
+//        //rightHeaderImages.setImageDrawable(res);
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -32,10 +32,7 @@
             android:label="@string/title_activity_activity_read_declaration_of_independence" >
         </activity>
         <activity
-            android:name=".ChangeState"
-            android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/txtChangeState"
-            android:theme="@style/FullscreenTheme" >
+            android:name=".ChangeState">
         </activity>
         <activity
             android:name=".WhyTakeAction"
@@ -77,11 +74,5 @@
             android:name=".ActivityReadOtherAmendments"
             android:label="@string/title_activity_read_otherAmendments" >
         </activity>
-        <activity
-            android:name=".LocalRepDetailedInformation"
-            android:label="@string/contact_rep"
-            android:screenOrientation="portrait">
-        </activity>
     </application>
-
 </manifest>

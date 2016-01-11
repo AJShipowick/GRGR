@@ -41,6 +41,9 @@ public class ChangeState extends Activity {
         try {
             InputStream buffer = new BufferedInputStream((assets.open(imageStateName + ".jpg")));
             Bitmap bitmap = BitmapFactory.decodeStream(buffer);
+
+            //Bitmap resizedBitmap = Bitmap.createScaledBitmap(bitmap, 500, 300, false);
+
             return new BitmapDrawable(getApplicationContext().getResources(), bitmap);
 
         } catch (Exception ex) {
@@ -50,7 +53,7 @@ public class ChangeState extends Activity {
     }
 
     public void setStatesAdapter(ArrayList<StatesRow> allStates) {
-        ChangeStateAdapter adapter = new ChangeStateAdapter(this, R.layout.list_states, allStates);
+        ChangeStateAdapter adapter = new ChangeStateAdapter(this, R.layout.list_all_states, allStates);
         ListView statesListView = (ListView) findViewById(R.id.listView_States);
 
         statesListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -72,7 +75,7 @@ public class ChangeState extends Activity {
 
     private class getAllStatesTask extends AsyncTask<Void, Void, ArrayList<StatesRow>> {
 
-        ArrayList<StatesRow> allStates = new ArrayList<StatesRow>();
+        ArrayList<StatesRow> allStates = new ArrayList<>();
         protected ArrayList<StatesRow> doInBackground(Void... params) {
 
             String[] knownStates = getApplicationContext().getResources().getStringArray(R.array.KnowStates);

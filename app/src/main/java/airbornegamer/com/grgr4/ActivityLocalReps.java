@@ -36,6 +36,7 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -153,22 +154,23 @@ public class ActivityLocalReps extends Activity {
     String twitter;
     String youTube;
     String website;
-
+    String address;
     public void addRepRowsToView(final ArrayList<RepRow> repInfoAndPicture) {
         adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
         repsListView = (ListView) findViewById(R.id.listView_Reps);
         repsListView.setAdapter(adapter);
         adapter.notifyDataSetChanged();
-
         repsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long id) {
-                //Intent intent = new Intent(getApplicationContext(), LocalRepDetailedInformation.class);
 
                 RepRow currentRep = (RepRow) adapterView.getAdapter().getItem(position);
 
-                //String selectedRepID = currentRep.repID;
+                if (currentRep == null){return;}
+
                 LayoutInflater factory = LayoutInflater.from(context);
+
                 final View msgBoxView = factory.inflate(R.layout.detailed_rep_popup_info, null);
 
                 for (RepDetailInfo stateRepresentative : stateSpecificRepData) {
@@ -178,13 +180,10 @@ public class ActivityLocalReps extends Activity {
                         twitter = stateRepresentative.twitter;
                         youTube = stateRepresentative.youTube;
                         website = stateRepresentative.website;
-
+                        address = stateRepresentative.address;
                         break;
-                        //RepDetailInfo currentSelectedRep = stateRepresentative;
-
                     }
                 }
-
 
                 final AlertDialog.Builder alertAdd = new AlertDialog.Builder(context);
                 final AlertDialog alert = alertAdd.create();
@@ -192,74 +191,101 @@ public class ActivityLocalReps extends Activity {
                 ImageView currentRepImage = (ImageView) msgBoxView.findViewById(R.id.currentRepPopupImage);
                 currentRepImage.setImageDrawable(currentRep.repPic);
 
-                alertAdd.setView(msgBoxView);
+//                TextView currentRepAddress = (TextView) msgBoxView.findViewById(R.id.txtAddress);
+//                currentRepAddress.setText(address);
 
+                alertAdd.setView(msgBoxView);
                 alertAdd.setTitle(currentRep.repInfo);
-                alertAdd.setMessage("Contact your representative today!");
+                //alertAdd.setMessage("Contact your representative today!");
                 alertAdd.setNeutralButton("done", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
-                        // continue with closing
                         alert.cancel();
                     }
                 });
                 alertAdd.show();
-
-
-/*                RepRow currentRep = (RepRow) adapterView.getAdapter().getItem(position);
-                String selectedRepID = currentRep.repID;*/
-//
-//                intent.putExtra("RepID", selectedRepID);
-//                startActivity(intent);
             }
         });
     }
 
     public void callRep(View v) {
-        if (phoneNumber.equals("")) {
-            Toast.makeText(getApplicationContext(), "Unable to find get phone number :(",
+        if (phoneNumber.equals("null")) {
+            Toast.makeText(getApplicationContext(), "Unable to find phone number :(",
                     Toast.LENGTH_LONG).show();
             return;
         }
+
         Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
         startActivity(callIntent);
     }
 
     public void emailRep(View v) {
-        if (email.equals("")) {
-            Toast.makeText(getApplicationContext(), "Unable to find get email :(",
+        if (email.equals("null")) {
+            Toast.makeText(getApplicationContext(), "Unable to find an email address :(",
                     Toast.LENGTH_LONG).show();
             return;
         }
+
+        InternetConnectivity internet = new InternetConnectivity();
+        if(!internet.isConnected(getApplicationContext())){
+            Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Intent emailIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(email));
         startActivity(emailIntent);
     }
 
     public void twitterRep(View v) {
-        if (twitter.equals("")) {
-            Toast.makeText(getApplicationContext(), "Unable to find get Twitter :(",
+        if (twitter.equals("null")) {
+            Toast.makeText(getApplicationContext(), "Unable to find a Twitter account :(",
                     Toast.LENGTH_LONG).show();
             return;
         }
-        Intent twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://" + twitter));
+
+        InternetConnectivity internet = new InternetConnectivity();
+        if(!internet.isConnected(getApplicationContext())){
+            Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        Intent twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitter));
         startActivity(twitterIntent);
     }
 
     public void youTubeRep(View v) {
-        if (youTube.equals("")) {
-            Toast.makeText(getApplicationContext(), "Unable to find get YouTube :(",
+        if (youTube.equals("null")) {
+            Toast.makeText(getApplicationContext(), "Unable to find a YouTube account :(",
                     Toast.LENGTH_LONG).show();
             return;
         }
+
+        InternetConnectivity internet = new InternetConnectivity();
+        if(!internet.isConnected(getApplicationContext())){
+            Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Intent youTubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(youTube));
         startActivity(youTubeIntent);
     }
 
     public void websiteRep(View v) {
-        if (website.equals("")) {
-            Toast.makeText(getApplicationContext(), "Unable to find get website :(",
+        if (website.equals("null")) {
+            Toast.makeText(getApplicationContext(), "Unable to find the website :(",
                     Toast.LENGTH_LONG).show();
             return;
         }
+
+        InternetConnectivity internet = new InternetConnectivity();
+        if(!internet.isConnected(getApplicationContext())){
+            Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
+                    Toast.LENGTH_LONG).show();
+            return;
+        }
+
         Intent websiteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
         startActivity(websiteIntent);
     }
@@ -319,30 +345,6 @@ public class ActivityLocalReps extends Activity {
         });
     }
 
-/*    BitmapDrawable matchPictureToRepInfo(String repID) {
-
-        AssetManager assets = getApplicationContext().getResources().getAssets();
-        try {
-            InputStream buffer = new BufferedInputStream((assets.open("repid" + repID + ".jpg")));
-
-            Bitmap bitmap = BitmapFactory.decodeStream(buffer);
-            if (bitmap == null) {
-                return new BitmapDrawable(getResources(), BitmapFactory.decodeResource(context.getResources(), R.drawable.unknownrep));
-            }
-            //GOOD!
-            return new BitmapDrawable(getApplicationContext().getResources(), bitmap);
-
-        } catch (Exception ex1) {
-            //todo handle this
-            try {
-                return new BitmapDrawable(getResources(), BitmapFactory.decodeResource(context.getResources(), R.drawable.unknownrep));
-            } catch (Exception ex2) {
-                //todo handle this
-                return null;
-            }
-        }
-    }*/
-
     private class getRepInfoAndPictures extends AsyncTask<ArrayList<RepDetailInfo>, Void, ArrayList<RepRow>> {
 
         ArrayList<RepRow> repRowToDisplay = new ArrayList<>();
@@ -378,10 +380,12 @@ public class ActivityLocalReps extends Activity {
             AssetManager assets = getApplicationContext().getResources().getAssets();
             try {
                 InputStream buffer;
-                if (repParty.contains("R")) {
-                    buffer = new BufferedInputStream((assets.open("republican_elephant" + ".jpg")));
-                } else {
-                    buffer = new BufferedInputStream((assets.open("democratic_donkey" + ".jpg")));
+                if (repParty.equals("(R)")) {
+                    buffer = new BufferedInputStream((assets.open("republican_elephant.jpg")));
+                } else if(repParty.equals("(D)")) {
+                    buffer = new BufferedInputStream((assets.open("democratic_donkey.jpg")));
+                } else{
+                    buffer = new BufferedInputStream((assets.open("unknown_representative.png")));
                 }
 
                 Bitmap bitmap = BitmapFactory.decodeStream(buffer);

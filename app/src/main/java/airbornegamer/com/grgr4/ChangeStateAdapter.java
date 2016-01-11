@@ -27,7 +27,7 @@ public class ChangeStateAdapter extends ArrayAdapter<StatesRow> {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View row = convertView;
-        StatesHolder holder = null;
+        StatesHolder holder;
 
         if (row == null) {
             LayoutInflater inflater = ((Activity) context).getLayoutInflater();

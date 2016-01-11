@@ -20,18 +20,17 @@
         android:layout_gravity="right"
         android:src="@drawable/usflagwaving2"
         android:padding="5dp"
-        android:layout_alignBottom="@+id/imgRep"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="25dp" />
+        android:layout_alignTop="@+id/imgRep"
+        android:layout_alignParentEnd="true" />
 
     <TextView android:id="@+id/txtRepInfo"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:textStyle="bold"
         android:textColor="#000000"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Rep Name"
-        android:layout_above="@+id/imgRepParty"
+        android:layout_below="@+id/imgRepParty"
         android:layout_toEndOf="@+id/imgRep" />
 
     <TextView
@@ -41,7 +40,7 @@
         android:id="@+id/txtYourRep"
         android:textColor="#E0162B"
         android:text="Your Rep"
-        android:layout_below="@+id/txtRepInfo"
-        android:layout_alignStart="@+id/txtRepInfo" />
+        android:layout_alignTop="@+id/imgRep"
+        android:layout_toEndOf="@+id/imgRep" />
 
 </RelativeLayout>
