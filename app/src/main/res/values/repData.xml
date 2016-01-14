@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-<string-array name="RepData">
+<string-array name="repData">
 <item>id=300089,state=AL,party=Republican,title=Sen,firstname=Richard,lastname=Shelby,address=304 Russell Senate Office Building Washington DC 20510,phone=202-224-5744,website=http://www.shelby.senate.gov,twitter=https://twitter.com/SenShelby,youtube=https://www.youtube.com/user/SenatorRichardShelby,contactEmail=http://www.shelby.senate.gov/public/index.cfm/emailsenatorshelby</item>
 <item>id=300088,state=AL,party=Republican,title=Sen,firstname=Jefferson,lastname=Sessions,address=326 Russell Senate Office Building Washington DC 20510,phone=202-224-4124,website=http://www.sessions.senate.gov,twitter=https://twitter.com/SenatorSessions,youtube=https://www.youtube.com/user/SenatorSessions,contactEmail=http://www.sessions.senate.gov/public/index.cfm/contact-jeff</item>
 <item>id=400004,state=AL,party=Republican,title=Rep,firstname=Robert,lastname=Aderholt,address=235 Cannon HOB; Washington DC 20515-0104,phone=202-225-4876,website=https://aderholt.house.gov,twitter=https://twitter.com/Robert_Aderholt,youtube=https://www.youtube.com/user/RobertAderholt,contactEmail=null</item>
