@@ -32,10 +32,10 @@
         android:onClick="takeAction"
         android:text="Contact Representatives!"
         android:textColor="#FFFFFF"
-        android:backgroundTint="#0052A5"
         android:layout_centerVertical="true"
         android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/imageView" />
+        android:layout_toStartOf="@+id/imageView"
+        android:background="#0052A5" />
 
     <Button
         android:id="@+id/bthWhy"

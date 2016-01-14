@@ -75,7 +75,7 @@ class LocalRepDataHelper {
 
         ArrayList<RepDetailInfo> allRepInfo = new ArrayList<>();
 
-        String[] allRepData = mContext.getResources().getStringArray(R.array.RepData);
+        String[] allRepData = mContext.getResources().getStringArray(R.array.repData);
         for (int i = 0; i < allRepData.length; i++) {
             String[] RepArray = allRepData[i].split(",");
             String state = RepArray[1].substring(6);
@@ -88,12 +88,12 @@ class LocalRepDataHelper {
                 String repLastName = RepArray[5].substring(9);
                 String repAddress = RepArray[6].substring(8);
                 String repPhone = RepArray[7].substring(6);
-                String repWebiste = RepArray[8].substring(8);
+                String repWebsite = RepArray[8].substring(8);
                 String repTwitter = RepArray[9].substring(8);
                 String repYouTube = RepArray[10].substring(8);
                 String repEmail = RepArray[11].substring(13);
 
-                RepDetailInfo currentRepInfo = new RepDetailInfo(repID, state, repParty, repTitle, repFirstName, repLastName, false, repAddress, repPhone, repWebiste, repTwitter, repYouTube, repEmail);
+                RepDetailInfo currentRepInfo = new RepDetailInfo(repID, state, repParty, repTitle, repFirstName, repLastName, false, repAddress, repPhone, repWebsite, repTwitter, repYouTube, repEmail);
 
                 allRepInfo.add(currentRepInfo);
             }

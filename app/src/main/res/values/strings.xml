@@ -2,7 +2,7 @@
     <string name="app_name">Social Minutemen</string>
     <string name="action_settings">Settings</string>
     <!-- Tab 1 (Take Action) -->
-    <string name="tab1_theMovement">The Movement</string>
+    <string name="tab1_contactReps">Take Action</string>
     <string name="Movement_Fragment">Movement Fragment</string>
     <string name="MovementIntroMsg_1">Preserve your natural born right to keep and bear arms</string>
     <string name="MovementIntroMsg_2">It is your Right</string>

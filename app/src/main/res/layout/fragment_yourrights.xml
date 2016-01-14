@@ -47,7 +47,7 @@
                 android:backgroundTint="#0052A5"
                 android:textColor="#FFFFFF"
                 android:onClick="readArticle1"
-                android:text="Article I + Preamble" />
+                android:text="Preamble + Article I" />
 
             <Button
                 android:id="@+id/button"

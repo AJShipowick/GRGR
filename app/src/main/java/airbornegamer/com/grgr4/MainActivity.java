@@ -5,6 +5,8 @@ import java.util.Random;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
@@ -17,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
@@ -71,6 +74,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         //No menu/action bar currently...
         //getMenuInflater().inflate(R.menu.menu_main, menu);
         setRandomHeaderImages();
+
+
+
         //setRandomHeaderQuotes();
         return true;
     }
@@ -124,6 +130,9 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         mViewPager.setCurrentItem(tab.getPosition());
+
+
+
     }
 
     @Override
@@ -169,7 +178,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
             Locale l = Locale.getDefault();
             switch (position) {
                 case 0:
-                    return getString(R.string.tab1_theMovement).toUpperCase(l);
+                    return getString(R.string.tab1_contactReps).toUpperCase(l);
                 case 1:
                     return getString(R.string.tab2_yourRights).toUpperCase(l);
             }
@@ -179,6 +188,16 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
 
     // Button click even handler for btnTakeAction
     public void takeAction(View view) {
+        Button btnTakeAction = (Button) findViewById(R.id.btnTakeAction);
+        ColorDrawable buttonColor = (ColorDrawable) btnTakeAction.getBackground();
+
+        //Change the button color between Red and Blue each time it is clicked.
+        if (buttonColor.getColor() == Color.parseColor("#E0162B")){
+            btnTakeAction.setBackgroundColor(Color.parseColor("#0052A5"));
+        }else{
+            btnTakeAction.setBackgroundColor(Color.parseColor("#E0162B"));
+        }
+
         Intent takeAction = new Intent(getApplicationContext(), ActivityLocalReps.class);
         takeAction.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(takeAction);

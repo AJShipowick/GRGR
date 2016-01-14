@@ -167,7 +167,9 @@ public class ActivityLocalReps extends Activity {
 
                 RepRow currentRep = (RepRow) adapterView.getAdapter().getItem(position);
 
-                if (currentRep == null){return;}
+                if (currentRep == null) {
+                    return;
+                }
 
                 LayoutInflater factory = LayoutInflater.from(context);
 
@@ -191,8 +193,7 @@ public class ActivityLocalReps extends Activity {
                 ImageView currentRepImage = (ImageView) msgBoxView.findViewById(R.id.currentRepPopupImage);
                 currentRepImage.setImageDrawable(currentRep.repPic);
 
-//                TextView currentRepAddress = (TextView) msgBoxView.findViewById(R.id.txtAddress);
-//                currentRepAddress.setText(address);
+                removeUnknownContactMethods(msgBoxView);
 
                 alertAdd.setView(msgBoxView);
                 alertAdd.setTitle(currentRep.repInfo);
@@ -207,24 +208,32 @@ public class ActivityLocalReps extends Activity {
         });
     }
 
-    public void callRep(View v) {
-        if (phoneNumber.equals("null")) {
-            Toast.makeText(getApplicationContext(), "Unable to find phone number :(",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
+    public void removeUnknownContactMethods(View msgBoxView){
 
+        if (email.equals("null") || email.equals("")){
+            ImageView imgEmail = (ImageView) msgBoxView.findViewById(R.id.imgEmail);
+            imgEmail.setVisibility(View.GONE);
+        }
+        if (twitter.equals("null") || twitter.equals("")){
+            ImageView imgTwitter = (ImageView) msgBoxView.findViewById(R.id.imgTwitter);
+            imgTwitter.setVisibility(View.GONE);
+        }
+        if (website.equals("null") || website.equals("")){
+            ImageView imgWebsite = (ImageView) msgBoxView.findViewById(R.id.imgWebsite);
+            imgWebsite.setVisibility(View.GONE);
+        }
+        if (youTube.equals("null") || youTube.equals("")){
+            ImageView imgYouTube = (ImageView) msgBoxView.findViewById(R.id.imgYouTube);
+            imgYouTube.setVisibility(View.GONE);
+        }
+    }
+
+    public void callRep(View v) {
         Intent callIntent = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:" + phoneNumber));
         startActivity(callIntent);
     }
 
     public void emailRep(View v) {
-        if (email.equals("null")) {
-            Toast.makeText(getApplicationContext(), "Unable to find an email address :(",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-
         InternetConnectivity internet = new InternetConnectivity();
         if(!internet.isConnected(getApplicationContext())){
             Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
@@ -237,12 +246,6 @@ public class ActivityLocalReps extends Activity {
     }
 
     public void twitterRep(View v) {
-        if (twitter.equals("null")) {
-            Toast.makeText(getApplicationContext(), "Unable to find a Twitter account :(",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-
         InternetConnectivity internet = new InternetConnectivity();
         if(!internet.isConnected(getApplicationContext())){
             Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
@@ -255,12 +258,6 @@ public class ActivityLocalReps extends Activity {
     }
 
     public void youTubeRep(View v) {
-        if (youTube.equals("null")) {
-            Toast.makeText(getApplicationContext(), "Unable to find a YouTube account :(",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-
         InternetConnectivity internet = new InternetConnectivity();
         if(!internet.isConnected(getApplicationContext())){
             Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
@@ -273,12 +270,6 @@ public class ActivityLocalReps extends Activity {
     }
 
     public void websiteRep(View v) {
-        if (website.equals("null")) {
-            Toast.makeText(getApplicationContext(), "Unable to find the website :(",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
-
         InternetConnectivity internet = new InternetConnectivity();
         if(!internet.isConnected(getApplicationContext())){
             Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
