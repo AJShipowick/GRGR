@@ -1,11 +1,18 @@
 apply plugin: 'com.android.application'
 
 android {
+    signingConfigs {
+        MobileMinutemen {
+            keyAlias 'MobileMinutemen'
+            keyPassword 'Airborne11$'
+            storeFile file('D:/Android/Keystore/MobileMinutemen.jks')
+            storePassword 'Airborne11$'
+        }
+    }
     compileSdkVersion 23
     buildToolsVersion "22.0.1"
-
     defaultConfig {
-        applicationId "airbornegamer.com.grgr4"
+        applicationId "com.airborne.grgr4"
         minSdkVersion 19
         targetSdkVersion 23
         versionCode 1
@@ -16,6 +23,7 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             debuggable true
+            signingConfig signingConfigs.MobileMinutemen
         }
     }
 }

@@ -1,4 +1,4 @@
-package airbornegamer.com.grgr4;
+package com.airborne.grgr4;
 
 import android.app.Activity;
 import android.content.Context;

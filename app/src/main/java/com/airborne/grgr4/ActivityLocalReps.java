@@ -1,4 +1,4 @@
-package airbornegamer.com.grgr4;
+package com.airborne.grgr4;
 
 //https://www.govtrack.us/
 //https://www.govtrack.us/developers/api
@@ -7,7 +7,6 @@ package airbornegamer.com.grgr4;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -15,7 +14,6 @@ import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
-import android.media.Image;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,22 +34,21 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedInputStream;
-import java.io.IOException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Map;
 
 //todo popular state facts? http://www.50states.com/
-public class ActivityLocalReps extends Activity {
+public class ActivityLocalReps extends Activity implements CallBackListener {
 
     LocalRepDataHelper repDataHelper = null;
     ListView repsListView;
     String stateFullName = "";
     String stateAbbreviation = "";
     String zipCode = "";
+    String currentState = "";
     ArrayList<RepDetailInfo> stateSpecificRepData;
     Context context = this;
     ProgressDialog dialog;
@@ -61,7 +58,7 @@ public class ActivityLocalReps extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_reps);
 
-        dialog = ProgressDialog.show(context, "Finding Representatives", "Freedom loading...", true);
+        dialog = ProgressDialog.show(context, "Looking up State Data", "Freedom loading...", true);
         repDataHelper = new LocalRepDataHelper(this);
 
         if (userHasSelectedStateManually(savedInstanceState)) {
@@ -85,25 +82,19 @@ public class ActivityLocalReps extends Activity {
         return false;
     }
 
-    public void buildPageBasedOnGPS() {
-        InternetConnectivity internet = new InternetConnectivity();
-        boolean userIsConnectedToInternet = internet.isConnected(getApplicationContext());
-        String currentState;
+    public void userLocationCallback(Map<String, String> userLocationInfo) {
+        currentState = userLocationInfo.get("State");
+        zipCode = userLocationInfo.get("ZipCode");
 
-        if (userIsConnectedToInternet) {
-            Map<String, String> StateData = internet.getCurrentUserLocation(this, repDataHelper);
-            currentState = StateData.get("State");
-            zipCode = StateData.get("ZipCode");
-
-            if (!currentState.equals("UnknownState")) {
-                String[] StatePair = currentState.split(",");
-                stateFullName = StatePair[0];
-                stateAbbreviation = StatePair[1];
-            }
-        } else {
-            currentState = "UnknownState";
+        if (!currentState.equals("UnknownState")) {
+            String[] StatePair = currentState.split(",");
+            stateFullName = StatePair[0];
+            stateAbbreviation = StatePair[1];
         }
+        finishBuildingLocalRepPage();
+    }
 
+    public void finishBuildingLocalRepPage(){
         if (!currentState.equals("UnknownState") && repDataHelper.stateIsKnown(stateAbbreviation)) {
             try {
                 //Best case scenario to here.
@@ -112,12 +103,23 @@ public class ActivityLocalReps extends Activity {
             } catch (Exception ex) {
                 //todo handle this
             }
-
         } else {
             Intent intent = new Intent(getApplicationContext(), ChangeState.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+        }
+    }
+
+    public void buildPageBasedOnGPS() {
+        InternetConnectivity internet = new InternetConnectivity(context);
+        internet.setListener(this);
+
+        if (internet.isConnected()) {
+            internet.new getUserLocationAsync().execute(repDataHelper);
+        } else {
+            currentState = "UnknownState";
+            finishBuildingLocalRepPage();
         }
     }
 
@@ -208,21 +210,21 @@ public class ActivityLocalReps extends Activity {
         });
     }
 
-    public void removeUnknownContactMethods(View msgBoxView){
+    public void removeUnknownContactMethods(View msgBoxView) {
 
-        if (email.equals("null") || email.equals("")){
+        if (email.equals("null") || email.equals("")) {
             ImageView imgEmail = (ImageView) msgBoxView.findViewById(R.id.imgEmail);
             imgEmail.setVisibility(View.GONE);
         }
-        if (twitter.equals("null") || twitter.equals("")){
+        if (twitter.equals("null") || twitter.equals("")) {
             ImageView imgTwitter = (ImageView) msgBoxView.findViewById(R.id.imgTwitter);
             imgTwitter.setVisibility(View.GONE);
         }
-        if (website.equals("null") || website.equals("")){
+        if (website.equals("null") || website.equals("")) {
             ImageView imgWebsite = (ImageView) msgBoxView.findViewById(R.id.imgWebsite);
             imgWebsite.setVisibility(View.GONE);
         }
-        if (youTube.equals("null") || youTube.equals("")){
+        if (youTube.equals("null") || youTube.equals("")) {
             ImageView imgYouTube = (ImageView) msgBoxView.findViewById(R.id.imgYouTube);
             imgYouTube.setVisibility(View.GONE);
         }
@@ -234,8 +236,8 @@ public class ActivityLocalReps extends Activity {
     }
 
     public void emailRep(View v) {
-        InternetConnectivity internet = new InternetConnectivity();
-        if(!internet.isConnected(getApplicationContext())){
+        InternetConnectivity internet = new InternetConnectivity(context);
+        if (!internet.isConnected()) {
             Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
                     Toast.LENGTH_LONG).show();
             return;
@@ -246,8 +248,8 @@ public class ActivityLocalReps extends Activity {
     }
 
     public void twitterRep(View v) {
-        InternetConnectivity internet = new InternetConnectivity();
-        if(!internet.isConnected(getApplicationContext())){
+        InternetConnectivity internet = new InternetConnectivity(context);
+        if (!internet.isConnected()) {
             Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
                     Toast.LENGTH_LONG).show();
             return;
@@ -258,8 +260,8 @@ public class ActivityLocalReps extends Activity {
     }
 
     public void youTubeRep(View v) {
-        InternetConnectivity internet = new InternetConnectivity();
-        if(!internet.isConnected(getApplicationContext())){
+        InternetConnectivity internet = new InternetConnectivity(context);
+        if (!internet.isConnected()) {
             Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
                     Toast.LENGTH_LONG).show();
             return;
@@ -270,8 +272,8 @@ public class ActivityLocalReps extends Activity {
     }
 
     public void websiteRep(View v) {
-        InternetConnectivity internet = new InternetConnectivity();
-        if(!internet.isConnected(getApplicationContext())){
+        InternetConnectivity internet = new InternetConnectivity(context);
+        if (!internet.isConnected()) {
             Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
                     Toast.LENGTH_LONG).show();
             return;
@@ -373,9 +375,9 @@ public class ActivityLocalReps extends Activity {
                 InputStream buffer;
                 if (repParty.equals("(R)")) {
                     buffer = new BufferedInputStream((assets.open("republican_elephant.jpg")));
-                } else if(repParty.equals("(D)")) {
+                } else if (repParty.equals("(D)")) {
                     buffer = new BufferedInputStream((assets.open("democratic_donkey.jpg")));
-                } else{
+                } else {
                     buffer = new BufferedInputStream((assets.open("unknown_representative.png")));
                 }
 

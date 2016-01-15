@@ -1,7 +1,7 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context="airbornegamer.com.grgr4.ChangeState">
+    tools:context="com.airborne.grgr4.ChangeState">
     <group android:checkableBehavior="single">
         <item android:id="@+id/action_saveCurrentStateSelection"
             android:title="Remember Next State Selection"

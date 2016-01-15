@@ -1,4 +1,4 @@
-package airbornegamer.com.grgr4.util;
+package com.airborne.grgr4.util;
 
 import android.app.Activity;
 import android.os.Build;
@@ -73,7 +73,7 @@ public abstract class SystemUiHider {
     protected int mFlags;
 
     /**
-     * The current visibility callback.
+     * The current visibility userLocationCallback.
      */
     protected OnVisibilityChangeListener mOnVisibilityChangeListener = sDummyListener;
 
@@ -138,7 +138,7 @@ public abstract class SystemUiHider {
     }
 
     /**
-     * Registers a callback, to be triggered when the system UI visibility
+     * Registers a userLocationCallback, to be triggered when the system UI visibility
      * changes.
      */
     public void setOnVisibilityChangeListener(OnVisibilityChangeListener listener) {
@@ -150,7 +150,7 @@ public abstract class SystemUiHider {
     }
 
     /**
-     * A dummy no-op callback for use when there is no other listener set.
+     * A dummy no-op userLocationCallback for use when there is no other listener set.
      */
     private static OnVisibilityChangeListener sDummyListener = new OnVisibilityChangeListener() {
         @Override
@@ -159,7 +159,7 @@ public abstract class SystemUiHider {
     };
 
     /**
-     * A callback interface used to listen for system UI visibility changes.
+     * A userLocationCallback interface used to listen for system UI visibility changes.
      */
     public interface OnVisibilityChangeListener {
         /**

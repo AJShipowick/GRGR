@@ -1,4 +1,4 @@
-package airbornegamer.com.grgr4;
+package com.airborne.grgr4;
 
 public class RepDetailInfo {
 

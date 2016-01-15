@@ -1,9 +1,8 @@
-package airbornegamer.com.grgr4;
+package com.airborne.grgr4;
 
 import java.util.Locale;
 import java.util.Random;
 
-import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         for (int i = 0; i < mSectionsPagerAdapter.getCount(); i++) {
             // Create a tab with text corresponding to the page title defined by
             // the adapter. Also specify this Activity allRepData, which implements
-            // the TabListener interface, as the callback (listener) for when
+            // the TabListener interface, as the userLocationCallback (listener) for when
             // this tab is selected.
             actionBar.addTab(
                     actionBar.newTab()

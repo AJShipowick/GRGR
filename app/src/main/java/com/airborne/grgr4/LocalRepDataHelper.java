@@ -1,4 +1,4 @@
-package airbornegamer.com.grgr4;
+package com.airborne.grgr4;
 
 import android.content.Context;
 import android.content.res.AssetManager;
@@ -117,7 +117,7 @@ class LocalRepDataHelper {
         //Set State Flag
         myHeader = header;
         try {
-            new getCurrentStateFlagForHeader().execute(stateFullName).get();
+           new getCurrentStateFlagForHeader().execute(stateFullName).get();
         } catch (Exception ex) {
             //todo handle this
         }
