@@ -8,8 +8,10 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v4.content.ContextCompat;
+import android.widget.Toast;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,6 +22,7 @@ public class InternetConnectivity {
 
     Context mContext;
     CallBackListener mListener;
+    String mInternetConnectionStatus;
 
     public InternetConnectivity(Context context) {
         mContext = context;
@@ -32,38 +35,32 @@ public class InternetConnectivity {
     public boolean isConnected() {
         try {
 
-            if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
+            ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
+            NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+            if (cm.getActiveNetworkInfo() == null || !networkInfo.isConnected()) {
+                Toast.makeText(mContext, R.string.internet_not_connected, Toast.LENGTH_LONG).show();
                 return false;
             }
 
-            ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
-            if (cm.getActiveNetworkInfo() == null) {
-                return false;
-            }
-            return cm.getActiveNetworkInfo().isConnected();
+            //GOOD!
+            return true;
+
         } catch (Exception ex) {
             return false;
         }
     }
 
-//    public Map<String, String> getUserLocation(LocalRepDataHelper repData) {
-//        try {
-//            new getUserLocationAsync().execute(repData).get();
-//        } catch (Exception ex) {
-//
-//        }
-//        return null;
-//    }
-
-     class getUserLocationAsync extends AsyncTask<LocalRepDataHelper, Void, Map<String, String>> {
+    class getUserLocationAsync extends AsyncTask<LocalRepDataHelper, Void, Map<String, String>> {
 
         protected Map<String, String> doInBackground(LocalRepDataHelper... params) {
 
             Map<String, String> UserLocationInfo = new HashMap<>();
+            mInternetConnectionStatus = "";
 
             try {
                 if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
                     UserLocationInfo.put("State", "UnknownState");
+                    mInternetConnectionStatus = mContext.getString(R.string.internet_permissions_disabled);
                     return UserLocationInfo;
                 }
 
@@ -74,6 +71,7 @@ public class InternetConnectivity {
 
                 if (availableLocation == null) {
                     UserLocationInfo.put("State", "UnknownState");
+                    mInternetConnectionStatus = mContext.getString(R.string.internet_no_gps_location);
                     return UserLocationInfo;
                 }
 
@@ -92,15 +90,15 @@ public class InternetConnectivity {
                 return UserLocationInfo;
 
             } catch (Exception ex) {
-                //todo handle this
                 UserLocationInfo.put("State", "UnknownState");
+                mInternetConnectionStatus = mContext.getString(R.string.internet_gps_failed);
                 return UserLocationInfo;
             }
         }
 
         @Override
         protected void onPostExecute(Map<String, String> userLocationInfo) {
-            mListener.userLocationCallback(userLocationInfo);
+            mListener.userLocationCallback(userLocationInfo, mInternetConnectionStatus);
         }
     }
 }

@@ -82,7 +82,12 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
         return false;
     }
 
-    public void userLocationCallback(Map<String, String> userLocationInfo) {
+    public void userLocationCallback(Map<String, String> userLocationInfo, String internetConnectionStatus) {
+
+        if(!internetConnectionStatus.equals("")){
+            Toast.makeText(context, internetConnectionStatus, Toast.LENGTH_LONG).show();
+        }
+
         currentState = userLocationInfo.get("State");
         zipCode = userLocationInfo.get("ZipCode");
 
@@ -128,14 +133,12 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
             setupAdapter();
             new getRepInfoAndPictures().execute(stateSpecificRepData);
             dialog.dismiss();
-
         } catch (Exception ex) {
             //todo handle this
         }
     }
 
     LocalRepAdapter adapter = null;
-
     public void setupAdapter() {
         adapter = new LocalRepAdapter(this, R.layout.list_reps, new ArrayList<RepRow>());
         repsListView = (ListView) findViewById(R.id.listView_Reps);
@@ -237,11 +240,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
 
     public void emailRep(View v) {
         InternetConnectivity internet = new InternetConnectivity(context);
-        if (!internet.isConnected()) {
-            Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
+        if (!internet.isConnected()) { return; }
 
         Intent emailIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(email));
         startActivity(emailIntent);
@@ -249,11 +248,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
 
     public void twitterRep(View v) {
         InternetConnectivity internet = new InternetConnectivity(context);
-        if (!internet.isConnected()) {
-            Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
+        if (!internet.isConnected()) { return; }
 
         Intent twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitter));
         startActivity(twitterIntent);
@@ -261,11 +256,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
 
     public void youTubeRep(View v) {
         InternetConnectivity internet = new InternetConnectivity(context);
-        if (!internet.isConnected()) {
-            Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
+        if (!internet.isConnected()) { return; }
 
         Intent youTubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(youTube));
         startActivity(youTubeIntent);
@@ -273,11 +264,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
 
     public void websiteRep(View v) {
         InternetConnectivity internet = new InternetConnectivity(context);
-        if (!internet.isConnected()) {
-            Toast.makeText(getApplicationContext(), "Unable to connect to the Internet :(",
-                    Toast.LENGTH_LONG).show();
-            return;
-        }
+        if (!internet.isConnected()) { return; }
 
         Intent websiteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
         startActivity(websiteIntent);

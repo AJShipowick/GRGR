@@ -10,19 +10,19 @@ android {
         }
     }
     compileSdkVersion 23
-    buildToolsVersion "22.0.1"
+    buildToolsVersion "23.0.2"
     defaultConfig {
         applicationId "com.airborne.grgr4"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "1.1"
     }
     buildTypes {
         release {
-            minifyEnabled false
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
-            debuggable true
+            debuggable false
             signingConfig signingConfigs.MobileMinutemen
         }
     }

@@ -38,8 +38,11 @@ right of the people to keep and bear Arms, shall not be infringed.\n</string>
     <string name="txtChangeState">Change State:</string>
     <!-- Why get involved? -->
     <string name="title_activity_why_take_action">Why should you get involved?</string>
-    <string name="title_activity_build_custom_email">Build Custom Email</string>
-
     <!-- Rep Strings-->
     <string name="contact_rep">Contact your representative!</string>
+    <!-- Toast Messages-->
+    <string name="internet_permissions_disabled">Internet Permissions Disabled for Application.</string>
+    <string name="internet_not_connected">No Stable Internet Connection Found.</string>
+    <string name="internet_no_gps_location">GPS Location Unavailable.</string>
+    <string name="internet_gps_failed">GPS Lookup Failed.</string>
 </resources>
