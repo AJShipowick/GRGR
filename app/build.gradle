@@ -12,11 +12,11 @@ android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
     defaultConfig {
-        applicationId "com.airborne.grgr4"
+        applicationId "com.airborne.mobileminutemen"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 3
-        versionName "1.1"
+        versionCode 5
+        versionName "1.5"
     }
     buildTypes {
         release {
@@ -28,6 +28,8 @@ android {
     }
 }
 
+//todo Obfuscate code...
+//http://developer.android.com/tools/help/proguard.html
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':jsoup-1.8.3')

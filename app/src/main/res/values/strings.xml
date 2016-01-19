@@ -41,8 +41,8 @@ right of the people to keep and bear Arms, shall not be infringed.\n</string>
     <!-- Rep Strings-->
     <string name="contact_rep">Contact your representative!</string>
     <!-- Toast Messages-->
-    <string name="internet_permissions_disabled">Internet Permissions Disabled for Application.</string>
-    <string name="internet_not_connected">No Stable Internet Connection Found.</string>
-    <string name="internet_no_gps_location">GPS Location Unavailable.</string>
-    <string name="internet_gps_failed">GPS Lookup Failed.</string>
+    <string name="internet_permissions_disabled">Internet Permissions Disabled for Application :(</string>
+    <string name="internet_not_connected">No Stable Internet Connection Found :(</string>
+    <string name="internet_no_gps_location">GPS Location Unavailable :(</string>
+    <string name="internet_gps_failed">GPS Lookup Failed :(</string>
 </resources>

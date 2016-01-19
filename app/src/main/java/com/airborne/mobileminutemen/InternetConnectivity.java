@@ -1,4 +1,4 @@
-package com.airborne.grgr4;
+package com.airborne.mobileminutemen;
 
 import android.Manifest;
 import android.content.Context;
@@ -34,7 +34,6 @@ public class InternetConnectivity {
 
     public boolean isConnected() {
         try {
-
             ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
             if (cm.getActiveNetworkInfo() == null || !networkInfo.isConnected()) {
@@ -42,7 +41,7 @@ public class InternetConnectivity {
                 return false;
             }
 
-            //GOOD!
+            //GOOD, we have a solid internet connection!
             return true;
 
         } catch (Exception ex) {
@@ -50,16 +49,17 @@ public class InternetConnectivity {
         }
     }
 
+    //todo query without geocoder every time: http://stackoverflow.com/questions/15182853/android-geocoder-getfromlocationname-always-returns-null
     class getUserLocationAsync extends AsyncTask<LocalRepDataHelper, Void, Map<String, String>> {
 
         protected Map<String, String> doInBackground(LocalRepDataHelper... params) {
 
             Map<String, String> UserLocationInfo = new HashMap<>();
+            UserLocationInfo.put("State", "UnknownState");
             mInternetConnectionStatus = "";
 
             try {
                 if (ContextCompat.checkSelfPermission(mContext, Manifest.permission.INTERNET) != PackageManager.PERMISSION_GRANTED) {
-                    UserLocationInfo.put("State", "UnknownState");
                     mInternetConnectionStatus = mContext.getString(R.string.internet_permissions_disabled);
                     return UserLocationInfo;
                 }
@@ -70,7 +70,6 @@ public class InternetConnectivity {
                 Location availableLocation = (gpsLocation != null) ? gpsLocation : networkLocation;
 
                 if (availableLocation == null) {
-                    UserLocationInfo.put("State", "UnknownState");
                     mInternetConnectionStatus = mContext.getString(R.string.internet_no_gps_location);
                     return UserLocationInfo;
                 }
@@ -79,18 +78,19 @@ public class InternetConnectivity {
                 double latitude = availableLocation.getLatitude();
 
                 Geocoder gcd = new Geocoder(mContext.getApplicationContext(), Locale.getDefault());
-
                 List<Address> addresses = gcd.getFromLocation(latitude, longitude, 1);
+                if (addresses == null  || addresses.size() == 0){ return UserLocationInfo; } //bad
+
                 String fullStateName = addresses.get(0).getAdminArea();//Gets state name from GPS.
                 String zipCode = addresses.get(0).getPostalCode();
                 String StateValues = params[0].getStateAbbreviationAndFullName(fullStateName);
 
+                UserLocationInfo.clear();
                 UserLocationInfo.put("State", StateValues);
                 UserLocationInfo.put("ZipCode", zipCode);
                 return UserLocationInfo;
 
             } catch (Exception ex) {
-                UserLocationInfo.put("State", "UnknownState");
                 mInternetConnectionStatus = mContext.getString(R.string.internet_gps_failed);
                 return UserLocationInfo;
             }
@@ -98,7 +98,7 @@ public class InternetConnectivity {
 
         @Override
         protected void onPostExecute(Map<String, String> userLocationInfo) {
-            mListener.userLocationCallback(userLocationInfo, mInternetConnectionStatus);
+            mListener.userLocationCallback(userLocationInfo);
         }
     }
 }

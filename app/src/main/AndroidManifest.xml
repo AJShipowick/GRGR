@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.airborne.grgr4" >
+    package="com.airborne.mobileminutemen" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -14,7 +14,7 @@
         android:largeHeap="true"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.airborne.grgr4.MainActivity"
+            android:name="com.airborne.mobileminutemen.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -23,55 +23,55 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ActivityLocalReps"
+            android:name="com.airborne.mobileminutemen.ActivityLocalReps"
             android:configChanges="orientation|screenSize"
             android:label="@string/title_activity_activity_local_reps" >
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ActivityReadDeclarationOfIndependence"
+            android:name="com.airborne.mobileminutemen.ActivityReadDeclarationOfIndependence"
             android:label="@string/title_activity_activity_read_declaration_of_independence" >
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ChangeState">
+            android:name="com.airborne.mobileminutemen.ChangeState">
         </activity>
         <activity
-            android:name="com.airborne.grgr4.WhyTakeAction"
+            android:name="com.airborne.mobileminutemen.WhyTakeAction"
             android:label="@string/title_activity_why_take_action" >
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ActivityReadArticle1"
+            android:name="com.airborne.mobileminutemen.ActivityReadArticle1"
             android:label="@string/title_activity_read_article1" >
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ActivityReadArticle2"
+            android:name="com.airborne.mobileminutemen.ActivityReadArticle2"
             android:label="@string/title_activity_read_article2" >
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ActivityReadArticle3"
+            android:name="com.airborne.mobileminutemen.ActivityReadArticle3"
             android:label="@string/title_activity_read_article3" >
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ActivityReadArticle4"
+            android:name="com.airborne.mobileminutemen.ActivityReadArticle4"
             android:label="@string/title_activity_read_article4" >
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ActivityReadArticle5"
+            android:name="com.airborne.mobileminutemen.ActivityReadArticle5"
             android:label="@string/title_activity_read_article5" >
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ActivityReadArticle6"
+            android:name="com.airborne.mobileminutemen.ActivityReadArticle6"
             android:label="@string/title_activity_read_article6" >
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ActivityReadArticle7"
+            android:name="com.airborne.mobileminutemen.ActivityReadArticle7"
             android:label="@string/title_activity_read_article7" >
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ActivityReadBillOfRights"
+            android:name="com.airborne.mobileminutemen.ActivityReadBillOfRights"
             android:label="@string/title_activity_read_billOfRights" >
         </activity>
         <activity
-            android:name="com.airborne.grgr4.ActivityReadOtherAmendments"
+            android:name="com.airborne.mobileminutemen.ActivityReadOtherAmendments"
             android:label="@string/title_activity_read_otherAmendments" >
         </activity>
     </application>

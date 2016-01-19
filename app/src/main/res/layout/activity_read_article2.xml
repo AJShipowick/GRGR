@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.airborne.grgr4.ActivityReadArticle2"
+    tools:context="com.airborne.mobileminutemen.ActivityReadArticle2"
     android:padding="10dp">
 
     <ScrollView

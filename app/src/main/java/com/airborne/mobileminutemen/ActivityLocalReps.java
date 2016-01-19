@@ -1,4 +1,4 @@
-package com.airborne.grgr4;
+package com.airborne.mobileminutemen;
 
 //https://www.govtrack.us/
 //https://www.govtrack.us/developers/api
@@ -52,6 +52,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
     ArrayList<RepDetailInfo> stateSpecificRepData;
     Context context = this;
     ProgressDialog dialog;
+    InternetConnectivity internet;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,12 +83,29 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
         return false;
     }
 
-    public void userLocationCallback(Map<String, String> userLocationInfo, String internetConnectionStatus) {
+    public void buildPageBasedOnGPS() {
+        internet = new InternetConnectivity(context);
+        internet.setListener(this);
 
-        if(!internetConnectionStatus.equals("")){
-            Toast.makeText(context, internetConnectionStatus, Toast.LENGTH_LONG).show();
+        if (internet.isConnected()) {
+            internet.new getUserLocationAsync().execute(repDataHelper);
+        } else {
+            currentState = "UnknownState";
+            finishBuildingLocalRepPage();
         }
+    }
 
+    public void start_Main_UI_Flow() {
+        try {
+            setupAdapter();
+            new getRepInfoAndPictures().execute(stateSpecificRepData);
+            dialog.dismiss();
+        } catch (Exception ex) {
+            //todo handle this
+        }
+    }
+
+    public void userLocationCallback(Map<String, String> userLocationInfo) {
         currentState = userLocationInfo.get("State");
         zipCode = userLocationInfo.get("ZipCode");
 
@@ -113,28 +131,11 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
-        }
-    }
 
-    public void buildPageBasedOnGPS() {
-        InternetConnectivity internet = new InternetConnectivity(context);
-        internet.setListener(this);
-
-        if (internet.isConnected()) {
-            internet.new getUserLocationAsync().execute(repDataHelper);
-        } else {
-            currentState = "UnknownState";
-            finishBuildingLocalRepPage();
-        }
-    }
-
-    public void start_Main_UI_Flow() {
-        try {
-            setupAdapter();
-            new getRepInfoAndPictures().execute(stateSpecificRepData);
-            dialog.dismiss();
-        } catch (Exception ex) {
-            //todo handle this
+            //display error with internet connection to user.
+            if(internet != null && internet.mInternetConnectionStatus != null && !internet.mInternetConnectionStatus.equals("")){
+                Toast.makeText(context, internet.mInternetConnectionStatus, Toast.LENGTH_LONG).show();
+            }
         }
     }
 

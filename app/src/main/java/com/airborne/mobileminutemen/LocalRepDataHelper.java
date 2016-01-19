@@ -1,4 +1,4 @@
-package com.airborne.grgr4;
+package com.airborne.mobileminutemen;
 
 import android.content.Context;
 import android.content.res.AssetManager;

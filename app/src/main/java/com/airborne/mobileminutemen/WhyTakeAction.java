@@ -1,4 +1,4 @@
-package com.airborne.grgr4;
+package com.airborne.mobileminutemen;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
