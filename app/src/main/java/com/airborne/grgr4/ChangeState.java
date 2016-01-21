@@ -1,4 +1,4 @@
-package com.airborne.mobileminutemen;
+package com.airborne.grgr4;
 
 import android.app.Activity;
 import android.content.Intent;

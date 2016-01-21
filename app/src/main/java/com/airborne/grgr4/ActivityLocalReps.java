@@ -1,4 +1,4 @@
-package com.airborne.mobileminutemen;
+package com.airborne.grgr4;
 
 //https://www.govtrack.us/
 //https://www.govtrack.us/developers/api
@@ -88,7 +88,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
         internet.setListener(this);
 
         if (internet.isConnected()) {
-            internet.new getUserLocationAsync().execute(repDataHelper);
+            internet.new getUserLocationAsync().execute(""); //No Prams, just using the callback.
         } else {
             currentState = "UnknownState";
             finishBuildingLocalRepPage();

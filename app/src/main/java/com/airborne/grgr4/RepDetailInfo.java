@@ -1,4 +1,4 @@
-package com.airborne.mobileminutemen;
+package com.airborne.grgr4;
 
 public class RepDetailInfo {
 

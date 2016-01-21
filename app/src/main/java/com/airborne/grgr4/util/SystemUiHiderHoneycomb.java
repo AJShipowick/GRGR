@@ -1,4 +1,4 @@
-package com.airborne.mobileminutemen.util;
+package com.airborne.grgr4.util;
 
 import android.annotation.TargetApi;
 import android.app.Activity;

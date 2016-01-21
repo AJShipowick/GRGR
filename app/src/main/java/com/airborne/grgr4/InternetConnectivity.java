@@ -1,4 +1,4 @@
-package com.airborne.mobileminutemen;
+package com.airborne.grgr4;
 
 import android.Manifest;
 import android.content.Context;
@@ -50,9 +50,9 @@ public class InternetConnectivity {
     }
 
     //todo query without geocoder every time: http://stackoverflow.com/questions/15182853/android-geocoder-getfromlocationname-always-returns-null
-    class getUserLocationAsync extends AsyncTask<LocalRepDataHelper, Void, Map<String, String>> {
+    class getUserLocationAsync extends AsyncTask<String, Void, Map<String, String>> {
 
-        protected Map<String, String> doInBackground(LocalRepDataHelper... params) {
+        protected Map<String, String> doInBackground(String... params) {
 
             Map<String, String> UserLocationInfo = new HashMap<>();
             UserLocationInfo.put("State", "UnknownState");
@@ -83,7 +83,9 @@ public class InternetConnectivity {
 
                 String fullStateName = addresses.get(0).getAdminArea();//Gets state name from GPS.
                 String zipCode = addresses.get(0).getPostalCode();
-                String StateValues = params[0].getStateAbbreviationAndFullName(fullStateName);
+
+                LocalRepDataHelper repDataHelper = new LocalRepDataHelper(mContext);
+                String StateValues = repDataHelper.getStateAbbreviationAndFullName(fullStateName);
 
                 UserLocationInfo.clear();
                 UserLocationInfo.put("State", StateValues);
