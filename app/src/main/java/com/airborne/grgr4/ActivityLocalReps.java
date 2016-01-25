@@ -41,9 +41,9 @@ import java.util.Comparator;
 import java.util.Map;
 
 //todo popular state facts? http://www.50states.com/
-public class ActivityLocalReps extends Activity implements CallBackListener {
+public class ActivityLocalReps extends Activity {
 
-    LocalRepDataHelper repDataHelper = null;
+    LocalRepDataHelper repDataHelper;
     ListView repsListView;
     String stateFullName = "";
     String stateAbbreviation = "";
@@ -66,7 +66,10 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
             stateSpecificRepData = repDataHelper.buildStateSpecificData(stateAbbreviation);
             start_Main_UI_Flow();
         } else {
-            buildPageBasedOnGPS();
+            setUserStateAndZip();
+            if (buildingRepDataSucceeded()) {
+                new selectRepsBasedOnZipCode().execute(zipCode);
+            }
         }
     }
 
@@ -83,46 +86,41 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
         return false;
     }
 
-    public void buildPageBasedOnGPS() {
+    public void setUserStateAndZip() {
         internet = new InternetConnectivity(context);
-        internet.setListener(this);
 
         if (internet.isConnected()) {
-            internet.new getUserLocationAsync().execute(""); //No Prams, just using the callback.
+            Map<String, String> userLocationInfo = internet.getUserLocation();
+
+            currentState = userLocationInfo.get("State");
+            zipCode = userLocationInfo.get("ZipCode");
+
+            if (!currentState.equals("UnknownState")) {
+                String[] StatePair = currentState.split(",");
+                stateFullName = StatePair[0];
+                stateAbbreviation = StatePair[1];
+            }
         } else {
             currentState = "UnknownState";
-            finishBuildingLocalRepPage();
         }
     }
 
     public void start_Main_UI_Flow() {
         try {
             setupAdapter();
-            new getRepInfoAndPictures().execute(stateSpecificRepData);
+            ArrayList<RepRow> repRowToDisplay = getRepInfoAndPictures();
+            addRepRowsToView(repRowToDisplay);
             dialog.dismiss();
         } catch (Exception ex) {
             //todo handle this
         }
     }
 
-    public void userLocationCallback(Map<String, String> userLocationInfo) {
-        currentState = userLocationInfo.get("State");
-        zipCode = userLocationInfo.get("ZipCode");
-
-        if (!currentState.equals("UnknownState")) {
-            String[] StatePair = currentState.split(",");
-            stateFullName = StatePair[0];
-            stateAbbreviation = StatePair[1];
-        }
-        finishBuildingLocalRepPage();
-    }
-
-    public void finishBuildingLocalRepPage(){
+    public boolean buildingRepDataSucceeded() {
         if (!currentState.equals("UnknownState") && repDataHelper.stateIsKnown(stateAbbreviation)) {
             try {
-                //Best case scenario to here.
                 stateSpecificRepData = repDataHelper.buildStateSpecificData(stateAbbreviation);
-                new selectRepsBasedOnZipCode().execute(zipCode);
+                return true;
             } catch (Exception ex) {
                 //todo handle this
             }
@@ -133,13 +131,21 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
             finish();
 
             //display error with internet connection to user.
-            if(internet != null && internet.mInternetConnectionStatus != null && !internet.mInternetConnectionStatus.equals("")){
+            if (internet != null && internet.mInternetConnectionStatus != null && !internet.mInternetConnectionStatus.equals("")) {
                 Toast.makeText(context, internet.mInternetConnectionStatus, Toast.LENGTH_LONG).show();
             }
         }
+        return false;
     }
 
+    public void finishBuildingLocalRepPage(ArrayList<String> UserRepsBasedOnZip) {
+        setRepAsLocalRep(UserRepsBasedOnZip); //uses stateSpecificRepData to build this list.
+        start_Main_UI_Flow();
+    }
+
+
     LocalRepAdapter adapter = null;
+
     public void setupAdapter() {
         adapter = new LocalRepAdapter(this, R.layout.list_reps, new ArrayList<RepRow>());
         repsListView = (ListView) findViewById(R.id.listView_Reps);
@@ -161,6 +167,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
     String youTube;
     String website;
     String address;
+
     public void addRepRowsToView(final ArrayList<RepRow> repInfoAndPicture) {
         adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
         repsListView = (ListView) findViewById(R.id.listView_Reps);
@@ -241,7 +248,9 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
 
     public void emailRep(View v) {
         InternetConnectivity internet = new InternetConnectivity(context);
-        if (!internet.isConnected()) { return; }
+        if (!internet.isConnected()) {
+            return;
+        }
 
         Intent emailIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(email));
         startActivity(emailIntent);
@@ -249,7 +258,9 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
 
     public void twitterRep(View v) {
         InternetConnectivity internet = new InternetConnectivity(context);
-        if (!internet.isConnected()) { return; }
+        if (!internet.isConnected()) {
+            return;
+        }
 
         Intent twitterIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(twitter));
         startActivity(twitterIntent);
@@ -257,7 +268,9 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
 
     public void youTubeRep(View v) {
         InternetConnectivity internet = new InternetConnectivity(context);
-        if (!internet.isConnected()) { return; }
+        if (!internet.isConnected()) {
+            return;
+        }
 
         Intent youTubeIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(youTube));
         startActivity(youTubeIntent);
@@ -265,7 +278,9 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
 
     public void websiteRep(View v) {
         InternetConnectivity internet = new InternetConnectivity(context);
-        if (!internet.isConnected()) { return; }
+        if (!internet.isConnected()) {
+            return;
+        }
 
         Intent websiteIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(website));
         startActivity(websiteIntent);
@@ -326,62 +341,54 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
         });
     }
 
-    private class getRepInfoAndPictures extends AsyncTask<ArrayList<RepDetailInfo>, Void, ArrayList<RepRow>> {
+    public ArrayList<RepRow> getRepInfoAndPictures() {
 
         ArrayList<RepRow> repRowToDisplay = new ArrayList<>();
 
-        protected ArrayList<RepRow> doInBackground(ArrayList<RepDetailInfo>... params) {
+        for (int i = 0; i < stateSpecificRepData.size(); i++) {
 
-            for (int i = 0; i < params[0].size(); i++) {
+            String repID = stateSpecificRepData.get(i).id;
+            //String repStateView = params[0].get(i).state;
+            String repParty = stateSpecificRepData.get(i).party;
+            String repTitle = stateSpecificRepData.get(i).title;
+            String repFirstName = stateSpecificRepData.get(i).firstName;
+            String repLastName = stateSpecificRepData.get(i).lastName;
 
-                String repID = params[0].get(i).id;
-                //String repStateView = params[0].get(i).state;
-                String repParty = params[0].get(i).party;
-                String repTitle = params[0].get(i).title;
-                String repFirstName = params[0].get(i).firstName;
-                String repLastName = params[0].get(i).lastName;
+            repParty = repParty.substring(0, 1);
+            repParty = "(" + repParty + ")";
 
-                repParty = repParty.substring(0, 1);
-                repParty = "(" + repParty + ")";
+            String currentRep = repTitle + " " + repFirstName + " " + repLastName + " " + repParty;
 
-                String currentRep = repTitle + " " + repFirstName + " " + repLastName + " " + repParty;
+            BitmapDrawable repImage = repDataHelper.matchPictureToRepInfo(repID);
+            BitmapDrawable repPartyImage = findRepParty(repParty);
+            String yourRepresentative = getMyRepresentativeText(stateSpecificRepData.get(i).isUserRepresentative, repTitle);
 
-                BitmapDrawable repImage = repDataHelper.matchPictureToRepInfo(repID);
-                BitmapDrawable repPartyImage = findRepParty(repParty);
-                String yourRepresentative = getMyRepresentativeText(params[0].get(i).isUserRepresentative, repTitle);
+            RepRow newRepData = new RepRow(repImage, currentRep, repID, repPartyImage, yourRepresentative);
+            repRowToDisplay.add(newRepData);
+        }
+        return repRowToDisplay;
+    }
 
-                RepRow newRepData = new RepRow(repImage, currentRep, repID, repPartyImage, yourRepresentative);
-                repRowToDisplay.add(newRepData);
+    BitmapDrawable findRepParty(String repParty) {
+
+        AssetManager assets = getApplicationContext().getResources().getAssets();
+        try {
+            InputStream buffer;
+            if (repParty.equals("(R)")) {
+                buffer = new BufferedInputStream((assets.open("republican_elephant.jpg")));
+            } else if (repParty.equals("(D)")) {
+                buffer = new BufferedInputStream((assets.open("democratic_donkey.jpg")));
+            } else {
+                buffer = new BufferedInputStream((assets.open("unknown_representative.png")));
             }
-            return repRowToDisplay;
+
+            Bitmap bitmap = BitmapFactory.decodeStream(buffer);
+            return new BitmapDrawable(getApplicationContext().getResources(), bitmap);
+
+        } catch (Exception ex) {
+            //todo handle this
         }
-
-        BitmapDrawable findRepParty(String repParty) {
-
-            AssetManager assets = getApplicationContext().getResources().getAssets();
-            try {
-                InputStream buffer;
-                if (repParty.equals("(R)")) {
-                    buffer = new BufferedInputStream((assets.open("republican_elephant.jpg")));
-                } else if (repParty.equals("(D)")) {
-                    buffer = new BufferedInputStream((assets.open("democratic_donkey.jpg")));
-                } else {
-                    buffer = new BufferedInputStream((assets.open("unknown_representative.png")));
-                }
-
-                Bitmap bitmap = BitmapFactory.decodeStream(buffer);
-                return new BitmapDrawable(getApplicationContext().getResources(), bitmap);
-
-            } catch (Exception ex) {
-                //todo handle this
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(ArrayList<RepRow> repInfoAndPicture) {
-            addRepRowsToView(repInfoAndPicture);
-        }
+        return null;
     }
 
     String getMyRepresentativeText(boolean isUserRepresentative, String repTitle) {
@@ -398,7 +405,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
     private class selectRepsBasedOnZipCode extends AsyncTask<String, Void, ArrayList<String>> {
 
         protected ArrayList<String> doInBackground(String... params) {
-            ArrayList<String> UserRepsBasedOnZip = new ArrayList<>();
+            ArrayList<String> UserRepsBasedOnZip = new ArrayList<String>();
 
             String firstPartOfURL = "https://www.opencongress.org/search/result?q=";
             String lastPartOfURL = "&search_people=1";
@@ -412,17 +419,17 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
                     UserRepsBasedOnZip.add(name.childNode(0).toString().trim());
                 }
             } catch (Exception ex) {
-                //todo handle ex here
+                return UserRepsBasedOnZip;
             }
             return UserRepsBasedOnZip;
         }
 
         @Override
         protected void onPostExecute(ArrayList<String> UserRepsBasedOnZip) {
-            setRepAsLocalRep(UserRepsBasedOnZip);
-            start_Main_UI_Flow();
+            finishBuildingLocalRepPage(UserRepsBasedOnZip);
         }
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
