@@ -15,8 +15,8 @@ android {
         applicationId "com.airborne.grgr4"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 7
-        versionName "1.7"
+        versionCode 8
+        versionName "1.8"
     }
     buildTypes {
         release {
@@ -28,7 +28,6 @@ android {
     }
 }
 
-//todo Obfuscate code...
 //http://developer.android.com/tools/help/proguard.html
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
