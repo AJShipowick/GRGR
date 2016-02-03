@@ -67,10 +67,6 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
             start_Main_UI_Flow();
         } else {
             buildPageBasedOnGPS();
-//            setUserStateAndZip();
-//            if (buildingRepDataSucceeded()) {
-//                new selectRepsBasedOnZipCode().execute(zipCode);
-//            }
         }
     }
 
