@@ -24,27 +24,29 @@ public class InternetConnectivity {
     String mInternetConnectionStatus;
     CallBackListener mListener;
 
-    public InternetConnectivity(Context context) {
+    public InternetConnectivity(Context context, CallBackListener listener) {
         mContext = context;
+        mListener = listener;
     }
 
-    public void setListener(CallBackListener listener) {
-        mListener = listener;
+    public InternetConnectivity(Context context) {
+        mContext = context;
     }
 
     public boolean isConnected() {
         try {
             ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
             NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-            if (cm.getActiveNetworkInfo() == null || !networkInfo.isConnected()) {
+            if (networkInfo != null && networkInfo.isConnected()) {
+                //GOOD, we have a solid internet connection!
+                return true;
+            } else {
                 Toast.makeText(mContext, R.string.internet_not_connected, Toast.LENGTH_LONG).show();
                 return false;
             }
 
-            //GOOD, we have a solid internet connection!
-            return true;
-
         } catch (Exception ex) {
+            Toast.makeText(mContext, R.string.internet_not_connected, Toast.LENGTH_LONG).show();
             return false;
         }
     }

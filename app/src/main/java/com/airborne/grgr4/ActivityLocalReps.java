@@ -27,12 +27,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -95,7 +91,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
         finishBuildingLocalRepPage();
     }
 
-    public void finishBuildingLocalRepPage(){
+    public void finishBuildingLocalRepPage() {
         if (!currentState.equals("UnknownState") && repDataHelper.stateIsKnown(stateAbbreviation)) {
             try {
                 //Best case scenario to here.
@@ -118,8 +114,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
     }
 
     public void buildPageBasedOnGPS() {
-        internet = new InternetConnectivity(context);
-        internet.setListener(this);
+        internet = new InternetConnectivity(context, this);
 
         if (internet.isConnected()) {
             internet.new getUserLocationAsync().execute(repDataHelper);
@@ -163,6 +158,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
     String youTube;
     String website;
     String address;
+
     public void addRepRowsToView(final ArrayList<RepRow> repInfoAndPicture) {
         adapter = new LocalRepAdapter(this, R.layout.list_reps, repInfoAndPicture);
         repsListView = (ListView) findViewById(R.id.listView_Reps);
@@ -318,6 +314,10 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
     //https://www.govtrack.us/data/photos/
     public void setRepAsLocalRep(ArrayList<String> specificReps) {
 
+        if (specificReps.size() < 1) {
+            Toast.makeText(context, R.string.internet_specificRepLookup_failed, Toast.LENGTH_LONG).show();
+        }
+
         //Compares all reps in state reps for user's specific zip code.
         for (RepDetailInfo stateRepresentative : stateSpecificRepData) {
 
@@ -408,19 +408,17 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
     private class selectRepsBasedOnZipCode extends AsyncTask<String, Void, ArrayList<String>> {
 
         protected ArrayList<String> doInBackground(String... params) {
-            ArrayList<String> UserRepsBasedOnZip = new ArrayList<String>();
+            ArrayList<String> UserRepsBasedOnZip = new ArrayList<>();
 
-            String firstPartOfURL = "https://www.opencongress.org/search/result?q=";
-            String lastPartOfURL = "&search_people=1";
-            String urlToParse = firstPartOfURL + params[0] + lastPartOfURL;
+            String firstPartOfURL = "http://ziplook.house.gov/htbin/findrep?ZIP=";
+            String urlToParse = firstPartOfURL + params[0];
 
             try {
+                //https://jsoup.org/cookbook/extracting-data/attributes-text-html
                 Document doc = Jsoup.connect(urlToParse).get();
-                Elements content = doc.getElementsByClass("name");
+                String repName = doc.getElementById("RepInfo").select("a").first().text();
+                UserRepsBasedOnZip.add(repName);
 
-                for (Element name : content) {
-                    UserRepsBasedOnZip.add(name.childNode(0).toString().trim());
-                }
             } catch (Exception ex) {
                 return UserRepsBasedOnZip;
             }

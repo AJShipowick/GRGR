@@ -45,4 +45,5 @@ right of the people to keep and bear Arms, shall not be infringed.\n</string>
     <string name="internet_not_connected">No Stable Internet Connection Found :(</string>
     <string name="internet_no_gps_location">GPS Location Unavailable :(</string>
     <string name="internet_gps_failed">GPS Lookup Failed :(</string>
+    <string name="internet_specificRepLookup_failed">Displaying all state Representatives. Zip code Representative lookup Error :(</string>
 </resources>

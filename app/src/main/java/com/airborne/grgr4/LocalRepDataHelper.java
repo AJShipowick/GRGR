@@ -93,7 +93,12 @@ class LocalRepDataHelper {
                 String repYouTube = RepArray[10].substring(8);
                 String repEmail = RepArray[11].substring(13);
 
-                RepDetailInfo currentRepInfo = new RepDetailInfo(repID, state, repParty, repTitle, repFirstName, repLastName, false, repAddress, repPhone, repWebsite, repTwitter, repYouTube, repEmail);
+                Boolean userRepresentative = false;
+                if (repTitle.toUpperCase().equals("SEN")){
+                    userRepresentative = true;
+                }
+
+                RepDetailInfo currentRepInfo = new RepDetailInfo(repID, state, repParty, repTitle, repFirstName, repLastName, userRepresentative, repAddress, repPhone, repWebsite, repTwitter, repYouTube, repEmail);
 
                 allRepInfo.add(currentRepInfo);
             }

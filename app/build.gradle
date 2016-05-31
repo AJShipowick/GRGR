@@ -15,8 +15,8 @@ android {
         applicationId "com.airborne.grgr4"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 10
-        versionName "1.10"
+        versionCode 11
+        versionName "1.11"
     }
     buildTypes {
         release {
