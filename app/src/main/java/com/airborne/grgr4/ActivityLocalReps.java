@@ -60,6 +60,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
 
         if (userHasSelectedStateManually(savedInstanceState)) {
             stateSpecificRepData = repDataHelper.buildStateSpecificData(stateAbbreviation);
+            setRepAsLocalRep_Sort(stateSpecificRepData);
             start_Main_UI_Flow();
         } else {
             buildPageBasedOnGPS();
@@ -336,6 +337,15 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
         });
     }
 
+    public void setRepAsLocalRep_Sort(ArrayList<RepDetailInfo> specificReps) {
+        Collections.sort(specificReps, new Comparator<RepDetailInfo>() {
+            @Override
+            public int compare(RepDetailInfo abc1, RepDetailInfo abc2) {
+                return Boolean.compare(abc2.isUserRepresentative, abc1.isUserRepresentative);
+            }
+        });
+    }
+
     private class getRepInfoAndPictures extends AsyncTask<ArrayList<RepDetailInfo>, Void, ArrayList<RepRow>> {
 
         ArrayList<RepRow> repRowToDisplay = new ArrayList<>();
@@ -397,7 +407,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
     String getMyRepresentativeText(boolean isUserRepresentative, String repTitle) {
 
         if (isUserRepresentative) {
-            return (repTitle.toUpperCase().equals("SEN") ? "Your Senator!" : "Your Representative!");
+            return (repTitle.toUpperCase().equals("SEN") ? "State Senator!" : "Your Representative!");
         } else {
             return "";
         }

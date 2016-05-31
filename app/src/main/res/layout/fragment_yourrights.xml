@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:layout_centerHorizontal="true"
     android:padding="5dp">
 
@@ -16,13 +16,13 @@
         android:textColor="@color/primary_material_dark"/>
 
     <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_below="@+id/txtYourRightsHeader">
 
         <GridLayout
             android:id="@+id/grdYourRights"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:orientation="vertical"
             android:layout_height="wrap_content">
 
@@ -120,6 +120,7 @@
                 android:onClick="readArticle7"
                 android:text="Article VII" />
 
+
             <TextView
                 android:id="@+id/textView4"
                 android:layout_width="wrap_content"
@@ -152,15 +153,6 @@
                 android:onClick="readOtherAmendments"
                 android:text="XI-XXVII" />
 
-
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="150dp"
-                android:layout_height="125dp"
-                android:layout_column="1"
-                android:layout_row="8"
-                android:src="@drawable/band_playing3" />
-
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
@@ -177,7 +169,6 @@
                 android:layout_width="175dp"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
-                android:layout_marginBottom="137dp"
                 android:layout_row="10"
                 android:background="#E0162B"
                 android:layout_margin="5dp"
@@ -185,12 +176,21 @@
                 android:onClick="readDeclarationOfIndependence"
                 android:text="Declaration Of Independence" />
 
+
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="175dp"
+                android:layout_height="150dp"
+                android:layout_column="1"
+                android:layout_row="12"
+                android:src="@drawable/band_playing3" />
+
             <Button
                 android:id="@+id/btnArticlesOfConfederation"
                 android:layout_width="175dp"
                 android:layout_height="wrap_content"
-                android:layout_column="1"
-                android:layout_row="10"
+                android:layout_column="0"
+                android:layout_row="11"
                 android:background="#E0162B"
                 android:layout_margin="5dp"
                 android:textColor="#FFFFFF"
