@@ -210,6 +210,10 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         startActivity(new Intent(getApplicationContext(), ActivityReadDeclarationOfIndependence.class));
     }
 
+    public void readArticlesOfConfederation(View view) {
+        startActivity(new Intent(getApplicationContext(), ActivityReadArticlesOfConfederation.class));
+    }
+
     //http://www.usconstitution.net/const.txt
     public void readArticle1(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));

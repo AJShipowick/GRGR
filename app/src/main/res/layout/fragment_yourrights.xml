@@ -23,10 +23,8 @@
         <GridLayout
             android:id="@+id/grdYourRights"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/textView3"
@@ -155,13 +153,21 @@
                 android:text="XI-XXVII" />
 
 
+            <ImageView
+                android:id="@+id/imageView2"
+                android:layout_width="150dp"
+                android:layout_height="125dp"
+                android:layout_column="1"
+                android:layout_row="8"
+                android:src="@drawable/band_playing3" />
+
             <TextView
                 android:id="@+id/textView5"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_marginEnd="30dp"
-                android:layout_row="8"
+                android:layout_row="9"
                 android:text="Extras"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textStyle="bold|italic" />
@@ -172,20 +178,26 @@
                 android:layout_height="wrap_content"
                 android:layout_column="0"
                 android:layout_marginBottom="137dp"
-                android:layout_row="9"
+                android:layout_row="10"
                 android:background="#E0162B"
                 android:layout_margin="5dp"
                 android:textColor="#FFFFFF"
                 android:onClick="readDeclarationOfIndependence"
                 android:text="Declaration Of Independence" />
 
-            <ImageView
-                android:id="@+id/imageView2"
-                android:layout_width="200dp"
-                android:layout_height="200dp"
+            <Button
+                android:id="@+id/btnArticlesOfConfederation"
+                android:layout_width="175dp"
+                android:layout_height="wrap_content"
                 android:layout_column="1"
-                android:layout_row="9"
-                android:src="@drawable/band_playing3" />
+                android:layout_row="10"
+                android:background="#E0162B"
+                android:layout_margin="5dp"
+                android:textColor="#FFFFFF"
+                android:onClick="readArticlesOfConfederation"
+                android:text="Articles of Confederation"
+                android:layout_marginBottom="5dp" />
+
 
         </GridLayout>
     </ScrollView>

@@ -28,6 +28,7 @@ right of the people to keep and bear Arms, shall not be infringed.\n</string>
     <string name="title_activity_read_article7">US Constitution - Article VII</string>
     <string name="title_activity_read_billOfRights">Amendments I - X (Bill of Rights)</string>
     <string name="title_activity_read_otherAmendments">Amendments XI - XXVII</string>
+    <string name="title_activity_read_articlesOfConfederation">Articles of Confederation</string>
     <!-- Your Local Representatives -->
     <string name="title_activity_activity_local_reps">Your Local Representatives</string>
     <string name="YourLocalReps">Your Local Representatives</string>
