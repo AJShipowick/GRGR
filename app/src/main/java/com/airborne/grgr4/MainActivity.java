@@ -202,10 +202,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         startActivity(takeAction);
     }
 
-    public void whyTakeAction(View view){
-        startActivity(new Intent(getApplicationContext(), WhyTakeAction.class));
-    }
-
     public void readDeclarationOfIndependence(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadDeclarationOfIndependence.class));
     }

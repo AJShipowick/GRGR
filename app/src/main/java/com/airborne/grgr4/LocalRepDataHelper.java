@@ -28,7 +28,7 @@ class LocalRepDataHelper {
 
         AssetManager assets = mContext.getResources().getAssets();
         try {
-            InputStream buffer = new BufferedInputStream((assets.open("repid" + repID + ".jpg")));
+            InputStream buffer = new BufferedInputStream((assets.open("repid" + repID + ".jpeg")));
 
             Bitmap bitmap = BitmapFactory.decodeStream(buffer);
             if (bitmap == null) {

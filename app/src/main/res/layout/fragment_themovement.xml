@@ -12,8 +12,8 @@
         android:layout_height="wrap_content"
         android:id="@+id/imageView"
         android:src="@drawable/soldier7"
-        android:layout_alignParentBottom="true"
-        android:layout_toEndOf="@+id/imgHeader" />
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true" />
 
     <ImageView
         android:id="@+id/imgHeader"
@@ -22,30 +22,22 @@
         android:contentDescription="picEagleFlag"
         android:src="@drawable/home_header_1"
         android:longClickable="false"
-        android:layout_alignTop="@+id/imageView"
-        android:layout_alignParentStart="true" />
+        android:layout_marginTop="20dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignStart="@+id/btnTakeAction" />
 
     <Button
         android:id="@+id/btnTakeAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:background="#0052A5"
         android:onClick="takeAction"
-        android:text="Contact Representatives!"
+        android:text="Contact Representatives"
         android:textColor="#FFFFFF"
-        android:layout_centerVertical="true"
-        android:layout_alignParentStart="true"
-        android:layout_toStartOf="@+id/imageView"
-        android:layout_margin="5dp"
-        android:background="#0052A5" />
+        android:layout_marginBottom="110dp"
+        android:layout_alignParentBottom="true"
+        android:layout_toStartOf="@+id/imageView" />
 
-    <Button
-        android:id="@+id/bthWhy"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="whyTakeAction"
-        android:text="Why?"
-        android:backgroundTint="#FFFFFF"
-        android:layout_below="@+id/btnTakeAction"
-        android:layout_margin="5dp"
-        android:layout_alignParentStart="true" />
 </RelativeLayout>

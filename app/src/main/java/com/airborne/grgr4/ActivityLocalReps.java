@@ -119,6 +119,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
 
         if (internet.isConnected()) {
             internet.new getUserLocationAsync().execute(repDataHelper);
+            //Next method will be a callback => userLocationCallback();
         } else {
             currentState = "UnknownState";
             finishBuildingLocalRepPage();

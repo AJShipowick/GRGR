@@ -30,9 +30,6 @@
             android:label="@string/title_activity_activity_read_declaration_of_independence"></activity>
         <activity android:name=".ChangeState"></activity>
         <activity
-            android:name=".WhyTakeAction"
-            android:label="@string/title_activity_why_take_action"></activity>
-        <activity
             android:name=".ActivityReadArticle1"
             android:label="@string/title_activity_read_article1"></activity>
         <activity
