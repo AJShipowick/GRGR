@@ -10,7 +10,7 @@ android {
         }
     }
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion '25.0.0'
     defaultConfig {
         applicationId "com.airborne.grgr4"
         minSdkVersion 19
@@ -29,9 +29,10 @@ android {
 }
 
 //http://developer.android.com/tools/help/proguard.html
+//https://jsoup.org/
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile project(':jsoup-1.8.3')
+    compile 'org.jsoup:jsoup:1.10.2'
     compile 'com.android.support:appcompat-v7:23.1.1'
     compile 'com.android.support:support-v4:23.1.1'
     compile 'com.android.support:design:23.1.1'
