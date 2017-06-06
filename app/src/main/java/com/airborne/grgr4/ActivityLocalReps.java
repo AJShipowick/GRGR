@@ -408,7 +408,7 @@ public class ActivityLocalReps extends Activity implements CallBackListener {
     String getMyRepresentativeText(boolean isUserRepresentative, String repTitle) {
 
         if (isUserRepresentative) {
-            return (repTitle.toUpperCase().equals("SEN") ? "State Senator!" : "Your Representative!");
+            return (repTitle.toUpperCase().equals("SEN") ? "State Senator" : "Your Representative");
         } else {
             return "";
         }

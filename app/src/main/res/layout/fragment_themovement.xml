@@ -8,36 +8,34 @@
     android:gravity="top">
 
     <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
         android:id="@+id/imageView"
         android:src="@drawable/soldier7"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true" />
+        android:layout_alignParentStart="true" />
 
     <ImageView
-        android:id="@+id/imgHeader"
-        android:layout_width="180dp"
-        android:layout_height="140dp"
-        android:contentDescription="picEagleFlag"
-        android:src="@drawable/home_header_1"
+        android:id="@+id/imgIcon"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:onClick="visitOnAppStore"
+        android:contentDescription="icon"
+        android:src="@drawable/mmicon"
         android:longClickable="false"
-        android:layout_marginTop="20dp"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/btnTakeAction" />
+        android:layout_alignParentStart="true" />
 
     <Button
         android:id="@+id/btnTakeAction"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
         android:background="#0052A5"
         android:onClick="takeAction"
-        android:text="Contact Representatives"
+        android:text="  Find Representatives  "
         android:textColor="#FFFFFF"
-        android:layout_marginBottom="110dp"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:layout_alignParentBottom="true"
-        android:layout_toStartOf="@+id/imageView" />
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

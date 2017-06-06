@@ -1,12 +1,10 @@
 package com.airborne.grgr4;
 
 import java.util.Locale;
-import java.util.Random;
-
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -19,7 +17,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 
 public class MainActivity extends AppCompatActivity implements ActionBar.TabListener {
 
@@ -63,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
             actionBar.addTab(
                     actionBar.newTab()
                             .setText(mSectionsPagerAdapter.getPageTitle(i))
-                                    //.setIcon()
+                            //.setIcon()
                             .setTabListener(this));
         }
     }
@@ -72,46 +69,10 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     public boolean onCreateOptionsMenu(Menu menu) {
         //No menu/action bar currently...
         //getMenuInflater().inflate(R.menu.menu_main, menu);
-        setRandomHeaderImages();
-
-
-
+        //setRandomHeaderImages();
         //setRandomHeaderQuotes();
         return true;
     }
-
-    public void setRandomHeaderImages(){
-        Random randomNumber = new Random();
-        //setLeftAndRightHeaderImages(randomNumber);
-        setMainHeaderImage(randomNumber);
-    }
-    public void setMainHeaderImage(Random randomNumber){
-        String imgMainHeaderConstant = "@drawable/home_header_";
-        ImageView mainHeaderImage = (ImageView) findViewById(R.id.imgHeader);
-
-        int i = randomNumber.nextInt(3) + 1;
-        String randomImage = Integer.toString(i);
-        String imageURI = imgMainHeaderConstant + randomImage ;
-
-        int imageResource = getResources().getIdentifier(imageURI, null, getPackageName());
-        Drawable res = getResources().getDrawable(imageResource);
-        mainHeaderImage.setImageDrawable(res);
-    }
-
-//    public void setLeftAndRightHeaderImages(Random randomNumber){
-//        String imgMainHeaderSideConstant = "@drawable/home_header_side_";
-//        ImageView leftHeaderImages = (ImageView) findViewById(R.id.imgLeftBorder);
-//        //ImageView rightHeaderImages = (ImageView) findViewById(R.id.imgRightBorder);
-//
-//        int i = randomNumber.nextInt(4) + 1;
-//        String randomImage = Integer.toString(i);
-//        String imageName = imgMainHeaderSideConstant + randomImage;
-//
-//        int imageResource = getResources().getIdentifier(imageName, null, getPackageName());
-//        Drawable res = getResources().getDrawable(imageResource);
-//        leftHeaderImages.setImageDrawable(res);
-//        //rightHeaderImages.setImageDrawable(res);
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -129,9 +90,6 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     @Override
     public void onTabSelected(ActionBar.Tab tab, FragmentTransaction fragmentTransaction) {
         mViewPager.setCurrentItem(tab.getPosition());
-
-
-
     }
 
     @Override
@@ -191,15 +149,21 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
         ColorDrawable buttonColor = (ColorDrawable) btnTakeAction.getBackground();
 
         //Change the button color between Red and Blue each time it is clicked.
-        if (buttonColor.getColor() == Color.parseColor("#E0162B")){
+        if (buttonColor.getColor() == Color.parseColor("#E0162B")) {
             btnTakeAction.setBackgroundColor(Color.parseColor("#0052A5"));
-        }else{
+        } else {
             btnTakeAction.setBackgroundColor(Color.parseColor("#E0162B"));
         }
 
         Intent takeAction = new Intent(getApplicationContext(), ActivityLocalReps.class);
         takeAction.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivity(takeAction);
+    }
+
+    public void visitOnAppStore(View view) {
+
+        Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.airborne.grgr4"));
+        startActivity(browserIntent);
     }
 
     public void readDeclarationOfIndependence(View view) {
@@ -214,27 +178,35 @@ public class MainActivity extends AppCompatActivity implements ActionBar.TabList
     public void readArticle1(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadArticle1.class));
     }
+
     public void readArticle2(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadArticle2.class));
     }
+
     public void readArticle3(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadArticle3.class));
     }
+
     public void readArticle4(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadArticle4.class));
     }
+
     public void readArticle5(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadArticle5.class));
     }
+
     public void readArticle6(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadArticle6.class));
     }
+
     public void readArticle7(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadArticle7.class));
     }
+
     public void readBillOfRights(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadBillOfRights.class));
     }
+
     public void readOtherAmendments(View view) {
         startActivity(new Intent(getApplicationContext(), ActivityReadOtherAmendments.class));
     }

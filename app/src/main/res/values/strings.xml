@@ -2,7 +2,7 @@
     <string name="app_name">Mobile Minutemen</string>
     <string name="action_settings">Settings</string>
     <!-- Tab 1 (Take Action) -->
-    <string name="tab1_contactReps">Take Action</string>
+    <string name="tab1_contactReps">Representatives</string>
     <string name="Movement_Fragment">Movement Fragment</string>
     <string name="MovementIntroMsg_1">Preserve your natural born right to keep and bear arms</string>
     <string name="MovementIntroMsg_2">It is your Right</string>
@@ -11,9 +11,9 @@
     <string name="MovementIntroMsg_5">Hold your elected officials accountable</string>
     <string name="MovementIntroMsg_6">Take action today.</string>
     <!-- Tab 2 (Learn History) -->
-    <string name="tab2_yourRights">Your Rights</string>
+    <string name="tab2_yourRights">Constitution</string>
     <string name="Rights_Fragment">Your Rights Fragment</string>
-    <string name="YourRights_1">Explore your natural born rights</string>
+    <string name="YourRights_1">Read up on your rights</string>
     <string name="YourRights_2">Time to learn some history</string>
     <string name="YourRights_3">It\'s reading time</string>
     <string name="YourRights_4">A well regulated Militia, being necessary to the security of a free State, the
